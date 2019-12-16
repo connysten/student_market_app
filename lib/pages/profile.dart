@@ -174,6 +174,39 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  Widget _buildListView(){
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 20.0),
+      height: 160,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: <Widget>[
+          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
+          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
+          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
+          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListItem(String srcFile, String heading, String isbn){
+    return Container(
+      width: 160.0,
+      child: Card(
+        child: Wrap(
+          children: <Widget>[
+            Image.network(srcFile),
+            ListTile(
+              title: Text(heading),
+              subtitle: Text(isbn),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -190,9 +223,8 @@ class _ProfileState extends State<Profile> {
                   _buildUserName(),
                   _buildProgramName(context),
                   _buildStatContainer(),
-                  SizedBox(height: screenSize.height / 4.0),
+                  _buildListView(),
                   _buildButtons(),
-
                 ],
               ),
             ),
