@@ -1,0 +1,4 @@
+#Mon Dec 16 15:30:50 CET 2019
+base.0=/Users/Jonathan/Development/student_market_app/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

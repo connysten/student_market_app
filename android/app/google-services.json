@@ -1,0 +1,117 @@
+{
+  "project_info": {
+    "project_number": "451826774522",
+    "firebase_url": "https://student-market-app.firebaseio.com",
+    "project_id": "student-market-app",
+    "storage_bucket": "student-market-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451826774522:android:4833ae5aae339c54a47443",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451826774522-tu00p5obpv92d9jmoaijkg37v01vebi1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAY1MtVzmjck9NuwM2HoDVcJbApSoCCJqw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451826774522-tu00p5obpv92d9jmoaijkg37v01vebi1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "451826774522-58av6huafknbrjehv7r12um4js7fskj2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.stundentmarketapp.myapp",
+                "app_store_id": "123456789"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451826774522:android:207e091b3c236745a47443",
+        "android_client_info": {
+          "package_name": "com.example.student_market_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451826774522-blhtgd2rn00vjh44l65v0t3lp10lmr30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.student_market_app",
+            "certificate_hash": "cc4aec5c9f5c5ca89c9cf56cb0a4401da4998f1a"
+          }
+        },
+        {
+          "client_id": "451826774522-f6oq8gf9lg7d6vocvqk3hrqbgg5q5acl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.student_market_app",
+            "certificate_hash": "3de764c30067b2487844aabb3584786b85166a7c"
+          }
+        },
+        {
+          "client_id": "451826774522-el02cu0akikalt24pe99blf8ft7t8kec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.student_market_app",
+            "certificate_hash": "84e1d82d391b1d3565483ea866dca1cfdd9b8989"
+          }
+        },
+        {
+          "client_id": "451826774522-6jumrtbnf21e8v7cmk9d6p7a94htugpi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.student_market_app",
+            "certificate_hash": "da3c2239807d08e31ea6a2e0d8b9da446aa1db6a"
+          }
+        },
+        {
+          "client_id": "451826774522-tu00p5obpv92d9jmoaijkg37v01vebi1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAY1MtVzmjck9NuwM2HoDVcJbApSoCCJqw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451826774522-tu00p5obpv92d9jmoaijkg37v01vebi1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "451826774522-58av6huafknbrjehv7r12um4js7fskj2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.stundentmarketapp.myapp",
+                "app_store_id": "123456789"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
