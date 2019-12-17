@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.student_market_app">
+    <uses-permission android:name="android.permission.CAMERA" />
 
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -12,6 +13,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="student_market_app"
         android:icon="@mipmap/ic_launcher">
+        <activity android:name="com.apptreesoftware.barcodescan.BarcodeScannerActivity"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

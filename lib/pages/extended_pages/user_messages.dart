@@ -54,7 +54,6 @@ class _UserMessagesState extends State<UserMessages> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           title: Text(
             "Messages",
             style: TextStyle(color: Colors.black, fontSize: 24),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:student_market_app/services/user_details.dart';
 
+import './extended_pages/user_messages.dart';
+
 class Profile extends StatefulWidget {
   final UserDetails userDetails;
   @override
@@ -129,7 +131,7 @@ class _ProfileState extends State<Profile> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              onTap: () => print("Messages"),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserMessages())),
               child: Container(
                 height: 40.0,
                 decoration: BoxDecoration(
