@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import "../services/user_details.dart";
-import "../services/login_button.dart";
+import "../services/widgets/login_button.dart";
 import "../main.dart";
 
 class Login extends StatefulWidget {
@@ -14,12 +14,13 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googlSignIn = new GoogleSignIn();
+  final GoogleSignIn _googlSignIn = GoogleSignIn();
 
   Future<FirebaseUser> _signIn(BuildContext context) async {
     Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text('Sign in'),
+      content: Text('Sign In'),
     ));
 
     final GoogleSignInAccount googleUser = await _googlSignIn.signIn();

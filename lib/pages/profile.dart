@@ -42,7 +42,7 @@ class _ProfileState extends State<Profile> {
     );
 
     return Text(
-      "Marcus M",
+      widget.userDetails.userName,
       style: _nameTextStyle,
     );
   }

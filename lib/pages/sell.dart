@@ -4,7 +4,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:student_market_app/services/book_info.dart';
+import 'package:student_market_app/services/widgets/book_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
@@ -113,7 +113,6 @@ class _SellState extends State<Sell> {
                 height: 10,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 100),
                 child: RaisedButton(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   color: Colors.orange[300],
@@ -251,33 +250,6 @@ class _SellState extends State<Sell> {
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: RaisedButton(
                         padding: EdgeInsets.symmetric(vertical: 15),
-                        color: Colors.red[300],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        onPressed: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "Reset",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Icon(FontAwesomeIcons.undoAlt)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: RaisedButton(
-                        padding: EdgeInsets.symmetric(vertical: 15),
                         color: Colors.green[300],
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -295,6 +267,33 @@ class _SellState extends State<Sell> {
                               width: 5,
                             ),
                             Icon(FontAwesomeIcons.paperPlane)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: RaisedButton(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        color: Colors.red[300],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        onPressed: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Reset",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(FontAwesomeIcons.undoAlt)
                           ],
                         ),
                       ),

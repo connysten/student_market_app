@@ -8,7 +8,7 @@ import './pages/sell.dart';
 import './pages/profile.dart';
 
 void main() => runApp(MaterialApp(
-      initialRoute: "/home",
+      initialRoute: "/",
       routes: {
         "/": (context) => Login(),
         "/home": (context) => Home(),
