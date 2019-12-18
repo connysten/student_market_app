@@ -8,6 +8,7 @@ import 'package:student_market_app/services/database.dart';
 import 'package:student_market_app/services/widgets/book_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import '../global.dart';
 
 class Sell extends StatefulWidget {
   @override
@@ -310,8 +311,10 @@ class _SellState extends State<Sell> {
                               tempBook.language,
                               int.parse(isbnController.text),
                               double.parse(priceController.text),
+                              conditions[condition.toInt()],
                               descriptionController.text,
-                              widget.;
+                              user.uid,
+                          );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
