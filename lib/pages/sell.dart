@@ -15,21 +15,23 @@ class Sell extends StatefulWidget {
 
 class _SellState extends State<Sell> {
   File _image;
-  String isbnText;
-  Future<Post> post;
-  final txt = TextEditingController();
+  Future<Book> book;
+  Book tempBook;
+  double condition = 0;
+  final conditions = ['Poor', 'Used', 'Barely used', 'Pristine'];
+  final isbnController = TextEditingController();
+  final priceController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    txt.addListener(() {
-      if (txt.text.length == 13) {
+    isbnController.addListener(() {
+      if (isbnController.text.length == 13) {
         setState(() {
-          post = fetchPost(txt.text);
+          book = fetchBook(isbnController.text);
         });
-      } else {
-        setState(() {});
       }
     });
   }
@@ -81,7 +83,10 @@ class _SellState extends State<Sell> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
-                      controller: txt,
+                      onChanged: (text) {
+                        setState(() {});
+                      },
+                      controller: isbnController,
                       maxLines: 1,
                       decoration: InputDecoration(
                         hintText: "Numbers on the back of the book...",
@@ -148,31 +153,48 @@ class _SellState extends State<Sell> {
                   color: Colors.grey[300],
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 40),
-                child: FutureBuilder<Post>(
-                  future: post,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                        children: <Widget>[
-                          BookInfo(
-                              first: "Title:",
-                              second: snapshot.data.books[0].title),
-                          Divider(
-                            height: 20,
-                          ),
-                          BookInfo(
-                              first: "Author:",
-                              second: snapshot.data.books[0].creator),
-                          Divider(
-                            height: 20,
-                          ),
-                          BookInfo(
-                              first: "Language:",
-                              second: snapshot.data.books[0].language),
-                        ],
-                      );
-                    } else {
-                      return Column(
+                child: isbnController.text.length == 13
+                    ? FutureBuilder<Book>(
+                        future: book,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Column(
+                              children: <Widget>[
+                                BookInfo(
+                                    first: "Title:",
+                                    second: snapshot.data.title),
+                                Divider(
+                                  height: 20,
+                                ),
+                                BookInfo(
+                                    first: "Author:",
+                                    second: snapshot.data.creator),
+                                Divider(
+                                  height: 20,
+                                ),
+                                BookInfo(
+                                    first: "Language:",
+                                    second: snapshot.data.language),
+                              ],
+                            );
+                          } else {
+                            return Column(
+                              children: <Widget>[
+                                BookInfo(first: "Title:", second: ""),
+                                Divider(
+                                  height: 20,
+                                ),
+                                BookInfo(first: "Author:", second: ""),
+                                Divider(
+                                  height: 20,
+                                ),
+                                BookInfo(first: "Language:", second: ""),
+                              ],
+                            );
+                          }
+                        },
+                      )
+                    : Column(
                         children: <Widget>[
                           BookInfo(first: "Title:", second: ""),
                           Divider(
@@ -184,15 +206,13 @@ class _SellState extends State<Sell> {
                           ),
                           BookInfo(first: "Language:", second: ""),
                         ],
-                      );
-                    }
-                  },
-                ),
+                      ),
               ),
               SizedBox(
                 height: 20,
               ),
               TextField(
+                controller: priceController,
                 maxLines: 1,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -217,7 +237,35 @@ class _SellState extends State<Sell> {
               SizedBox(
                 height: 20,
               ),
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Text('Condition: '),
+                    Expanded(
+                      child: Slider(
+                        activeColor: Colors.orange,
+                        value: condition,
+                        onChanged: (newCondition) {
+                          setState(() {
+                            condition = newCondition;
+                          });
+                        },
+                        divisions: 3,
+                        min: 0,
+                        max: 3,
+                        label: conditions[condition.toInt()],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               TextField(
+                controller: descriptionController,
                 maxLines: 5,
                 minLines: 5,
                 maxLength: 255,
@@ -281,7 +329,7 @@ class _SellState extends State<Sell> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        onPressed: () {},
+                        onPressed: reset,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -303,7 +351,7 @@ class _SellState extends State<Sell> {
               ),
               SizedBox(
                 height: 20,
-              )
+              ),
             ],
           ),
         ),
@@ -311,26 +359,22 @@ class _SellState extends State<Sell> {
     );
   }
 
+  void reset() {
+    setState(() {
+      isbnController.text = '';
+      priceController.text = '';
+      descriptionController.text = '';
+      _image = null;
+    });
+  }
+
   Future scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
       setState(() {
-        isbnText = barcode;
-        txt.text = isbnText;
+        isbnController.text = barcode;
       });
-    } catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-        setState(() {
-          isbnText = 'Camera permission not granted';
-          txt.text = isbnText;
-        });
-      } else {
-        setState(() {
-          isbnText = 'Unknown error $e';
-          txt.text = isbnText;
-        });
-      }
-    }
+    } catch (e) {}
   }
 
   void getImage() async {
@@ -358,31 +402,19 @@ class _SellState extends State<Sell> {
     }
   }
 
-  Future<Post> fetchPost(String query) async {
+  Future<Book> fetchBook(String query) async {
     final response = await http
         .get('http://api.libris.kb.se/xsearch?query=$query&format=json');
 
     if (response.statusCode == 200) {
       // If server returns an OK response, parse the JSON.
-      return Post.fromJson(json.decode(response.body));
+      setState(() {
+        tempBook = Book.fromJson(json.decode(response.body));
+      });
+      return tempBook;
     } else {
       return null;
     }
-  }
-}
-
-class Post {
-  final int records;
-  final List<Book> books;
-
-  Post({this.records, this.books});
-
-  factory Post.fromJson(Map<String, dynamic> json) {
-    var list = json['xsearch']['list'] as List;
-
-    return Post(
-        records: json['xsearch']['records'],
-        books: list.map((i) => Book.fromJson(i)).toList());
   }
 }
 
@@ -394,13 +426,20 @@ class Book {
   Book({this.creator, this.title, this.language});
 
   factory Book.fromJson(Map<String, dynamic> json) {
-    List<String> author = json['creator'].split(',');
+    var book = json['xsearch']['list'][0];
+    List<String> author = book['creator'].split(',');
     String bookTitle =
-        json['title'].toString().replaceAll('[Elektronisk resurs]', '');
+        book['title'].toString().replaceAll('[Elektronisk resurs]', '');
 
-    return Book(
-        creator: author[0] + ',' + author[1],
-        title: bookTitle,
-        language: json['language']);
+    if (author.length == 1) {
+
+      return Book(
+          creator: author[0], title: bookTitle, language: book['language']);
+    } else {
+      return Book(
+          creator: author[0] + ',' + author[1],
+          title: bookTitle,
+          language: book['language']);
+    }
   }
 }
