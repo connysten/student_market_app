@@ -10,6 +10,7 @@ import '../global.dart' as global;
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
+  
 }
 
 AuthService authService = AuthService();
