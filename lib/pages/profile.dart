@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:student_market_app/services/user_details.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:async';
 
 import './extended_pages/user_messages.dart';
 
@@ -32,6 +35,21 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+final GoogleSignIn googleSignIn = new GoogleSignIn();
+
+  Future<Null> signOutWithGoogle() async {
+  // Sign out with firebase
+  await firebaseAuth.signOut();
+  // Sign out with google
+  await googleSignIn.signOut();
+  print("logged out");
+  print(widget.userDetails.userName);
+
+  Navigator.pop(context);
+
+}
 
   Widget _buildUserName(){
     TextStyle _nameTextStyle = TextStyle(
@@ -153,7 +171,7 @@ class _ProfileState extends State<Profile> {
           SizedBox(width: 10.0),
           Expanded(
             child: InkWell(
-              onTap: () => print("Log out"),
+              onTap: signOutWithGoogle,
               child: Container(
                 height: 40.0,
                 decoration: BoxDecoration(

@@ -77,18 +77,6 @@ class _SearchPageState extends State<SearchPage>
             ],
           ),
         ),
-        bottom: TabBar(
-          controller: controller,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white,
-          tabs: <Widget>[
-            Tab(icon: Icon(Icons.home)),
-            Tab(icon: Icon(Icons.person_add)),
-            Tab(icon: Icon(Icons.alarm)),
-            Tab(icon: Icon(Icons.list)),
-          ],
-        ),
       ),
       body: TabBarView(
         controller: controller,
