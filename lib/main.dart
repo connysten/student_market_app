@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:student_market_app/services/user_details.dart';
 
@@ -7,13 +8,18 @@ import './pages/search.dart';
 import './pages/sell.dart';
 import './pages/profile.dart';
 
-void main() => runApp(MaterialApp(
+void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(MaterialApp(
       initialRoute: "/",
       routes: {
         "/": (context) => Login(),
         "/home": (context) => Home(),
       },
     ));
+  });
+}
 
 class Home extends StatefulWidget {
   final UserDetails userDetails;
@@ -25,13 +31,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int _selectedPage = 0;
-   List <Widget> _pageOptions() => [
-    Search(),
-    Sell(),
-    Profile(userDetails: widget.userDetails,),
-  ];
+
+  List<Widget> _pageOptions() => [
+        Search(),
+        Sell(),
+        Profile(
+          userDetails: widget.userDetails,
+        ),
+      ];
 
   @override
   Widget build(BuildContext context) {
