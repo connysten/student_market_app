@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:student_market_app/services/user_details.dart';
 
 import './pages/login.dart';
 import './pages/search.dart';
@@ -22,9 +21,6 @@ void main() {
 }
 
 class Home extends StatefulWidget {
-  final UserDetails userDetails;
-
-  Home({Key key, this.userDetails}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -32,14 +28,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedPage = 0;
-
-  List<Widget> _pageOptions() => [
-        Search(),
-        Sell(),
-        Profile(
-          userDetails: widget.userDetails,
-        ),
-      ];
+   List <Widget> _pageOptions() => [
+    Search(),
+    Sell(),
+    Profile(),
+  ];
 
   @override
   Widget build(BuildContext context) {

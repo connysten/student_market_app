@@ -62,9 +62,11 @@ class _UserMessagesState extends State<UserMessages> {
           backgroundColor: Colors.orange,
         ),
         body: ListView.separated(
-          
-          separatorBuilder: (context, index) => Divider(color: Colors.grey[300],height: 0, thickness: 1,
-          ),
+            separatorBuilder: (context, index) => Divider(
+                  color: Colors.grey[300],
+                  height: 0,
+                  thickness: 1,
+                ),
             itemCount: messages.length,
             itemBuilder: (context, index) {
               return Slidable(

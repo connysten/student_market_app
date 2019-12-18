@@ -20,11 +20,9 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage>
     with SingleTickerProviderStateMixin {
-  TabController controller;
   @override
   void initState() {
     super.initState();
-    controller = new TabController(vsync: this, length: 4, initialIndex: 0);
   }
 
   @override
@@ -33,7 +31,6 @@ class _SearchPageState extends State<SearchPage>
       appBar: AppBar(
         backgroundColor: Colors.orange,
         title: Container(
-          margin: const EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
             color: Color.fromARGB(50, 255, 255, 255),
             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -45,6 +42,7 @@ class _SearchPageState extends State<SearchPage>
                 child: Container(
                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                   child: TextFormField(
+                    style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Search",
@@ -78,24 +76,16 @@ class _SearchPageState extends State<SearchPage>
           ),
         ),
       ),
-      body: TabBarView(
-        controller: controller,
-        children: <Widget>[
-          HomePage(),
-          HomePage(),
-          HomePage(),
-          HomePage(),
-        ],
-      ),
+      body: SearchResult(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  _HomePageState createState() => _HomePageState();
+class SearchResult extends StatefulWidget {
+  _SearchResultState createState() => _SearchResultState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _SearchResultState extends State<SearchResult> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
