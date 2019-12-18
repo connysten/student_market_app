@@ -315,6 +315,7 @@ class _SellState extends State<Sell> {
                               descriptionController.text,
                               user.uid,
                           );
+                          reset();
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
