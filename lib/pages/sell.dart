@@ -4,6 +4,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:student_market_app/services/database.dart';
 import 'package:student_market_app/services/widgets/book_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -302,7 +303,16 @@ class _SellState extends State<Sell> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          DatabaseService().createAdd(
+                              tempBook.title,
+                              tempBook.creator,
+                              tempBook.language,
+                              int.parse(isbnController.text),
+                              double.parse(priceController.text),
+                              descriptionController.text,
+                              widget.;
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
