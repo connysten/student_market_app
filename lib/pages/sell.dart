@@ -18,7 +18,7 @@ class _SellState extends State<Sell> {
   Future<Book> book;
   Book tempBook;
   double condition = 0;
-  final conditions = ['Poor', 'Used', 'Barely used', 'Pristine'];
+  final conditions = ['Poor', 'Used', 'Barely used', 'As new'];
   final isbnController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();

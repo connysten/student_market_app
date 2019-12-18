@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:student_market_app/services/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:async';
 
 import './extended_pages/user_messages.dart';
+import '../global.dart';
 
 class Profile extends StatefulWidget {
-  final UserDetails userDetails;
   @override
   _ProfileState createState() => _ProfileState();
 
-  Profile({this.userDetails});
 }
 
 class _ProfileState extends State<Profile> {
@@ -37,7 +35,7 @@ class _ProfileState extends State<Profile> {
   }
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-final GoogleSignIn googleSignIn = new GoogleSignIn();
+final GoogleSignIn googleSignIn =  GoogleSignIn();
 
   Future<Null> signOutWithGoogle() async {
   // Sign out with firebase
@@ -45,7 +43,6 @@ final GoogleSignIn googleSignIn = new GoogleSignIn();
   // Sign out with google
   await googleSignIn.signOut();
   print("logged out");
-  print(widget.userDetails.userName);
 
   Navigator.pop(context);
 
@@ -60,7 +57,7 @@ final GoogleSignIn googleSignIn = new GoogleSignIn();
     );
 
     return Text(
-      widget.userDetails.userName,
+      user.displayName,
       style: _nameTextStyle,
     );
   }

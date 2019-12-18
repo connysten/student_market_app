@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:student_market_app/services/user_details.dart';
 
 import './pages/login.dart';
 import './pages/search.dart';
@@ -16,9 +15,6 @@ void main() => runApp(MaterialApp(
     ));
 
 class Home extends StatefulWidget {
-  final UserDetails userDetails;
-
-  Home({Key key, this.userDetails}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -30,7 +26,7 @@ class _HomeState extends State<Home> {
    List <Widget> _pageOptions() => [
     Search(),
     Sell(),
-    Profile(userDetails: widget.userDetails,),
+    Profile(),
   ];
 
   @override
