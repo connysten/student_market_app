@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'dart:async';
 
 import './extended_pages/user_messages.dart';
 import '../global.dart';
+import '../auth_service.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -13,6 +11,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+  AuthService authService = AuthService();
 
   Widget _buildProfileImage(){
     return Center(
@@ -33,20 +33,6 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-final GoogleSignIn googleSignIn =  GoogleSignIn();
-
-  Future<Null> signOutWithGoogle() async {
-  // Sign out with firebase
-  await firebaseAuth.signOut();
-  // Sign out with google
-  await googleSignIn.signOut();
-  print("logged out");
-
-  Navigator.pop(context);
-
-}
 
   Widget _buildUserName(){
     TextStyle _nameTextStyle = TextStyle(
@@ -168,7 +154,9 @@ final GoogleSignIn googleSignIn =  GoogleSignIn();
           SizedBox(width: 10.0),
           Expanded(
             child: InkWell(
-              onTap: signOutWithGoogle,
+              onTap:() { authService.signOut();
+              Navigator.pop(context);
+              },
               child: Container(
                 height: 40.0,
                 decoration: BoxDecoration(

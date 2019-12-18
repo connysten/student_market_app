@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import './pages/login.dart';
@@ -8,31 +7,27 @@ import './pages/sell.dart';
 import './pages/profile.dart';
 
 void main() {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
-    runApp(MaterialApp(
-      initialRoute: "/",
-      routes: {
-        "/": (context) => Login(),
-        "/home": (context) => Home(),
-      },
-    ));
-  });
+  runApp(MaterialApp(
+    initialRoute: "/",
+    routes: {
+      "/": (context) => Login(),
+      "/home": (context) => Home(),
+    },
+  ));
 }
 
 class Home extends StatefulWidget {
-
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   int _selectedPage = 0;
-   List <Widget> _pageOptions() => [
-    Search(),
-    Sell(),
-    Profile(),
-  ];
+  List<Widget> _pageOptions() => [
+        Search(),
+        Sell(),
+        Profile(),
+      ];
 
   @override
   Widget build(BuildContext context) {
