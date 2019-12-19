@@ -48,14 +48,14 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildCoverImage(Size screenSize){
+  Widget _buildCoverImage(Size screenSize) {
     return Container(
       height: screenSize.height / 2.8,
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage("https://upload.wikimedia.org/wikipedia/commons/6/66/M%C3%A4lardalens_h%C3%B6gskolas_huvudentr%C3%A9_V%C3%A4ster%C3%A5s.jpg")
-        )
-      ),
+          image: DecorationImage(
+              image: NetworkImage(
+                  "https://upload.wikimedia.org/wikipedia/commons/6/66/M%C3%A4lardalens_h%C3%B6gskolas_huvudentr%C3%A9_V%C3%A4ster%C3%A5s.jpg"),
+              fit: BoxFit.cover)),
     );
   }
 
