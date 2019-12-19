@@ -14,11 +14,11 @@ class _ProfileState extends State<Profile> {
 
   AuthService authService = AuthService();
 
-  Widget _buildProfileImage(){
+  Widget _buildProfileImage(Size screenSize){
     return Center(
       child: Container(
-        width: 140.0,
-        height: 140.0,
+        width: screenSize.height / 5.5,
+        height: screenSize.height / 5.5,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage("https://i.pinimg.com/originals/97/00/00/970000a282c18eb41e47fd76adda2983.png"),
@@ -78,9 +78,9 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildStatContainer(){
+  Widget _buildStatContainer(Size screenSize){
     return Container(
-      height: 60.0,
+      height: screenSize.height / 12,
       margin: EdgeInsets.only(top: 8.0),
       decoration: BoxDecoration(
         color: Color(0xFFEFF4F7),
@@ -125,7 +125,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildButtons(Size screenSize) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Row(
@@ -134,7 +134,7 @@ class _ProfileState extends State<Profile> {
             child: InkWell(
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserMessages())),
               child: Container(
-                height: 40.0,
+                height: screenSize.height / 20,
                 decoration: BoxDecoration(
                   border: Border.all(),
                   color: Color(0xFF404A5C),
@@ -158,7 +158,7 @@ class _ProfileState extends State<Profile> {
               Navigator.pop(context);
               },
               child: Container(
-                height: 40.0,
+                height: screenSize.height / 20,
                 decoration: BoxDecoration(
                   border: Border.all(),
                 ),
@@ -179,10 +179,10 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildListView(){
+  Widget _buildListView(Size screenSize){
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20.0),
-      height: 160,
+      height: screenSize.height / 5.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
@@ -224,12 +224,12 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 children: <Widget>[
                   SizedBox(height: screenSize.height / 5.3),
-                  _buildProfileImage(),
+                  _buildProfileImage(screenSize),
                   _buildUserName(),
                   _buildProgramName(context),
-                  _buildStatContainer(),
-                  _buildListView(),
-                  _buildButtons(),
+                  _buildStatContainer(screenSize),
+                  _buildListView(screenSize),
+                  _buildButtons(screenSize),
                 ],
               ),
             ),
