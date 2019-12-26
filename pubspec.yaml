@@ -29,6 +29,8 @@ dependencies:
   cloud_firestore: ^0.12.9+5
   firebase_storage: ^3.0.3
 
+  uuid: 2.0.4
+
   rxdart: 0.20.0
 
   cupertino_icons: ^0.1.2
