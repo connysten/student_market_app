@@ -1,6 +1,6 @@
 # This is a generated file; do not edit or check into version control.
 barcode_scan=/home/dennis/development/flutter/.pub-cache/hosted/pub.dartlang.org/barcode_scan-1.0.0/
-cloud_firestore=/home/dennis/development/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.12.11/
+cloud_firestore=/home/dennis/development/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.13.0+1/
 firebase_auth=/home/dennis/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.15.0+1/
 firebase_core=/home/dennis/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.4.2+1/
 firebase_storage=/home/dennis/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-3.1.1/

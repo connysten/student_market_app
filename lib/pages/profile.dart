@@ -1,40 +1,38 @@
 import 'package:flutter/material.dart';
-
-import './extended_pages/user_messages.dart';
-import '../global.dart';
-import '../auth_service.dart';
+//import 'package:student_market_app/services/user_details.dart';
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'extended_pages/edit_entry.dart';
+import 'package:student_market_app/global.dart';
 
 class Profile extends StatefulWidget {
+  //final UserDetails userDetails;
+
   @override
   _ProfileState createState() => _ProfileState();
 
 }
 
 class _ProfileState extends State<Profile> {
-
-  AuthService authService = AuthService();
-
-  Widget _buildProfileImage(Size screenSize){
+  Widget _buildProfileImage(Size screenSize) {
     return Center(
       child: Container(
         width: screenSize.height / 5.5,
         height: screenSize.height / 5.5,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage("https://i.pinimg.com/originals/97/00/00/970000a282c18eb41e47fd76adda2983.png"),
-            fit: BoxFit.cover
-          ),
-          borderRadius: BorderRadius.circular(80.0),
-          border: Border.all(
-            color: Colors.white,
-            width: 5.0,
-          )
-        ),
+            image: DecorationImage(
+                image: NetworkImage(
+                    "https://i.pinimg.com/originals/97/00/00/970000a282c18eb41e47fd76adda2983.png"),
+                fit: BoxFit.cover),
+            borderRadius: BorderRadius.circular(80.0),
+            border: Border.all(
+              color: Colors.white,
+              width: 5.0,
+            )),
       ),
     );
   }
-
-  Widget _buildUserName(){
+  Widget _buildUserName() {
     TextStyle _nameTextStyle = TextStyle(
       //fontFamily:
       color: Colors.black,
@@ -43,11 +41,10 @@ class _ProfileState extends State<Profile> {
     );
 
     return Text(
-      user.displayName,
+      "Marcus M",
       style: _nameTextStyle,
     );
   }
-
   Widget _buildCoverImage(Size screenSize) {
     return Container(
       height: screenSize.height / 2.8,
@@ -58,8 +55,7 @@ class _ProfileState extends State<Profile> {
               fit: BoxFit.cover)),
     );
   }
-
-  Widget _buildProgramName(BuildContext context){
+  Widget _buildProgramName(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
       decoration: BoxDecoration(
@@ -77,8 +73,7 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
-  Widget _buildStatContainer(Size screenSize){
+  Widget _buildStatContainer(Size screenSize) {
     return Container(
       height: screenSize.height / 12,
       margin: EdgeInsets.only(top: 8.0),
@@ -95,7 +90,6 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
   Widget _buildStatItem(String label, String count) {
     TextStyle _statLabelTextStyle = TextStyle(
       //fontFamily: 'Roboto',
@@ -124,7 +118,6 @@ class _ProfileState extends State<Profile> {
       ],
     );
   }
-
   Widget _buildButtons(Size screenSize) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -132,7 +125,7 @@ class _ProfileState extends State<Profile> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserMessages())),
+              onTap: () => print("Messages"),
               child: Container(
                 height: screenSize.height / 20,
                 decoration: BoxDecoration(
@@ -154,9 +147,7 @@ class _ProfileState extends State<Profile> {
           SizedBox(width: 10.0),
           Expanded(
             child: InkWell(
-              onTap:() { authService.signOut();
-              Navigator.pop(context);
-              },
+              onTap: () => print("Log out"),
               child: Container(
                 height: screenSize.height / 20,
                 decoration: BoxDecoration(
@@ -179,39 +170,72 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildListView(Size screenSize){
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 20.0),
-      height: screenSize.height / 5.0,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
-          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
-          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
-          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
-        ],
-      ),
-    );
+  List<DocumentSnapshot> fillSnaps(){
+    int i = 0;
+
+    List<DocumentSnapshot> sortedSnapList = new List<DocumentSnapshot>();
+
+    Firestore.instance.collection("Annons").snapshots().forEach((element){
+      print(element.documents[i]['userid']);
+      print(user.uid);
+      print(element.documents[i]);
+
+      if(element.documents[i]['userid'] == user.uid){
+        sortedSnapList.add(element.documents[i]);
+      }
+      i++;
+    });
+    return sortedSnapList;
   }
 
-  Widget _buildListItem(String srcFile, String heading, String isbn){
+  Widget _buildListView(Size screenSize) {
+    List<DocumentSnapshot> sortedList;
+    sortedList = fillSnaps();
+    return Container(
+        margin: EdgeInsets.symmetric(vertical: 20.0),
+        height: screenSize.height / 4.5,
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: sortedList.length,
+            itemBuilder: (context, index) {
+              return _buildListItem(
+                  context, sortedList[index], index);
+            })
+    );
+  }
+  Widget _buildListItem(
+      BuildContext context, DocumentSnapshot document, int index) {
     return Container(
       width: 160.0,
       child: Card(
         child: Wrap(
           children: <Widget>[
-            Image.network(srcFile),
+            GestureDetector(
+              child: Hero(
+                tag: 'editTag' + index.toString(),
+                child: Image.network(
+                  document['imageUrl'],
+                  height: 100,
+                  width: 150,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditEntry(index, document)));
+              },
+            ),
             ListTile(
-              title: Text(heading),
-              subtitle: Text(isbn),
+              title: Text(document["title"]),
+              subtitle: Text("Price: " + (document["price"]).toString()),
             )
           ],
         ),
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
