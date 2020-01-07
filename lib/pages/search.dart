@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_market_app/services/add.dart';
 import 'package:student_market_app/services/database.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Search extends StatelessWidget {
   @override
@@ -24,16 +25,15 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage>
     with SingleTickerProviderStateMixin {
-
   @override
   void initState() {
     _filter.addListener(onChange);
     super.initState();
   }
+
   String _searchText = "";
   static final TextEditingController _filter = new TextEditingController();
   FocusNode _textFocus = new FocusNode();
-
 
   @override
   Widget build(BuildContext context) {
@@ -97,12 +97,9 @@ class _SearchPageState extends State<SearchPage>
     String text = _filter.text;
     bool hasFocus = _textFocus.hasFocus;
 
-    if(mounted){
-      setState(() {
-
-      });
+    if (mounted) {
+      setState(() {});
     }
-
   }
 }
 
@@ -162,15 +159,25 @@ Widget _buildListView() {
                       maxWidth: 84,
                       maxHeight: 64,
                     ),
-                    child: Image.network(
-                        snapshot.data.documents[index]['imageUrl'],
-                        fit: BoxFit.cover),
+                    child: Hero(
+                      tag: 'Add$index',
+                      child: CachedNetworkImage(
+                          imageUrl: snapshot.data.documents[index]['imageUrl'],
+                          fit: BoxFit.cover),
+                    ),
                   ),
                   title: Text(snapshot.data.documents[index]['title']),
                   subtitle:
                       Text('ISBN: ${snapshot.data.documents[index]['isbn']}'),
                   trailing: Text(
                       '${snapshot.data.documents[index]['price'].toString()} kr'),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return DetailAddScreen(
+                          snapshot: snapshot.data.documents[index],
+                          index: index);
+                    }));
+                  },
                 ),
               ),
             );
@@ -179,4 +186,68 @@ Widget _buildListView() {
       },
     ),
   );
+}
+
+class DetailAddScreen extends StatelessWidget {
+  final DocumentSnapshot snapshot;
+  final int index;
+
+  DetailAddScreen({this.snapshot, this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        title: Container(
+          decoration: BoxDecoration(
+            color: Color.fromARGB(50, 255, 255, 255),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+        ),
+      ),
+      body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(children: <Widget>[
+              Expanded(
+              child: new Hero(
+                tag: 'Add$index',
+                child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    return Container(
+                      //margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      height: MediaQuery.of(context).size.height/2.5,
+                      width: MediaQuery.of(context).size.width,
+                      child: CachedNetworkImage(
+                        imageUrl: snapshot['imageUrl'],
+                        fit: BoxFit.fill,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              ),
+            ]),
+            Row(
+              children: <Widget>[
+                Text(
+                  snapshot['title'],
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Text("${snapshot['price'].toString()} kr"),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Text("\n${snapshot['description'].toString()}"),
+              ],
+            )
+          ]),
+    );
+  }
 }
