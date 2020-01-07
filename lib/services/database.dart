@@ -1,14 +1,26 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
+import 'package:student_market_app/services/add.dart';
 
 class DatabaseService {
   //collection reference
-  final CollectionReference addCollection = Firestore.instance.collection('Annons');
+  final CollectionReference addCollection =
+      Firestore.instance.collection('Annons');
 
-  Future createAdd(String title, String author, String language, int isbn, double price, String condition, String description, String userid, File image) async {
+  Future createAdd(
+      String title,
+      String author,
+      String language,
+      int isbn,
+      double price,
+      String condition,
+      String description,
+      String userid,
+      File image) async {
     var tempUrl = await addImage(image, title);
     var imageUrl = tempUrl.toString();
     return await addCollection.add({
@@ -34,7 +46,35 @@ class DatabaseService {
     });
     return uploadedFileUrl;*/
     StorageUploadTask uploadTask = ref.putFile(image);
-    return await(await uploadTask.onComplete).ref.getDownloadURL();
+    return await (await uploadTask.onComplete).ref.getDownloadURL();
+  }
+
+  List<Add> _addListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return Add(
+        title: doc.data['name'] ?? '',
+        author: doc.data['author'] ?? '',
+        language: doc.data['language'] ?? '',
+        isbn: doc.data['isbn'] ?? 0,
+        price: doc.data['price'] ?? 0,
+        condition: doc.data['condition'] ?? '',
+        description: doc.data['description'] ?? '',
+        userid: doc.data['userid'] ?? 0,
+        imageUrl: doc.data['imageUrl'],
+      );
+    }).toList();
+  }
+
+  Stream<List<Add>> get adds {
+    return addCollection.snapshots().map(_addListFromSnapshot);
+  }
+
+  Future<QuerySnapshot> query(String filter) async {
+    QuerySnapshot temp =
+        await addCollection.orderBy('title').startAt([filter])
+            .endAt([filter + "\uf8ff"])
+            .getDocuments();
+    return temp;
   }
 
 /*Stream<Add> get add {
