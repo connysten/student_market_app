@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 //import 'package:student_market_app/services/user_details.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +11,6 @@ class Profile extends StatefulWidget {
 
   @override
   _ProfileState createState() => _ProfileState();
-
 }
 
 class _ProfileState extends State<Profile> {
@@ -21,9 +21,7 @@ class _ProfileState extends State<Profile> {
         height: screenSize.height / 5.5,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(
-                    user.photoUrl),
-                fit: BoxFit.cover),
+                image: NetworkImage(user.photoUrl), fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(80.0),
             border: Border.all(
               color: Colors.white,
@@ -32,6 +30,7 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
   Widget _buildUserName() {
     TextStyle _nameTextStyle = TextStyle(
       //fontFamily:
@@ -45,6 +44,7 @@ class _ProfileState extends State<Profile> {
       style: _nameTextStyle,
     );
   }
+
   Widget _buildCoverImage(Size screenSize) {
     return Container(
       height: screenSize.height / 2.8,
@@ -55,6 +55,7 @@ class _ProfileState extends State<Profile> {
               fit: BoxFit.cover)),
     );
   }
+
   Widget _buildProgramName(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
@@ -73,6 +74,7 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
   Widget _buildStatContainer(Size screenSize) {
     return Container(
       height: screenSize.height / 12,
@@ -90,6 +92,7 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
   Widget _buildStatItem(String label, String count) {
     TextStyle _statLabelTextStyle = TextStyle(
       //fontFamily: 'Roboto',
@@ -118,6 +121,7 @@ class _ProfileState extends State<Profile> {
       ],
     );
   }
+
   Widget _buildButtons(Size screenSize) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -170,72 +174,66 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  List<DocumentSnapshot> fillSnaps(){
-    int i = 0;
-
-    List<DocumentSnapshot> sortedSnapList = new List<DocumentSnapshot>();
-
-    Firestore.instance.collection("Annons").snapshots().forEach((element){
-      print(element.documents[i]['userid']);
-      print(user.uid);
-      print(element.documents[i]);
-
-      if(element.documents[i]['userid'] == user.uid){
-        sortedSnapList.add(element.documents[i]);
-      }
-      i++;
-    });
-    return sortedSnapList;
-  }
-
   Widget _buildListView(Size screenSize) {
-    List<DocumentSnapshot> sortedList;
-    sortedList = fillSnaps();
     return Container(
         margin: EdgeInsets.symmetric(vertical: 20.0),
         height: screenSize.height / 4.5,
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: sortedList.length,
-            itemBuilder: (context, index) {
-              return _buildListItem(
-                  context, sortedList[index], index);
-            })
-    );
+        child: StreamBuilder(
+          stream: Firestore.instance.collection('Annons').snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Text("Loading...");
+            }
+            return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data.documents.toList().length,
+                itemBuilder: (context, index) {
+                  return _buildListItem(context, snapshot.data.documents[index], index);
+                });
+          },
+        ));
   }
+
   Widget _buildListItem(
       BuildContext context, DocumentSnapshot document, int index) {
-    return Container(
-      width: 160.0,
-      child: Card(
-        child: Wrap(
-          children: <Widget>[
-            GestureDetector(
-              child: Hero(
-                tag: 'editTag' + index.toString(),
-                child: Image.network(
-                  document['imageUrl'],
-                  height: 100,
-                  width: 150,
-                  fit: BoxFit.fill,
+
+    if(document['userid'] == user.uid){
+      return Container(
+        width: 160.0,
+        child: Card(
+          child: Wrap(
+            children: <Widget>[
+              GestureDetector(
+                child: Hero(
+                  tag: 'editTag' + index.toString(),
+                  child: Image.network(
+                    document['imageUrl'],
+                    height: 100,
+                    width: 150,
+                    fit: BoxFit.fill,
+                  ),
                 ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditEntry(index, document)));
+                },
               ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditEntry(index, document)));
-              },
-            ),
-            ListTile(
-              title: Text(document["title"]),
-              subtitle: Text("Price: " + (document["price"]).toString()),
-            )
-          ],
+              ListTile(
+                title: Text(document["title"]),
+                subtitle: Text("Price: " + (document["price"]).toString()),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
+    else{
+      return Container();
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
