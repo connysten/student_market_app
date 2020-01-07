@@ -19,40 +19,47 @@ class _EditEntryState extends State<EditEntry> {
         appBar: AppBar(
             title: Text("Edit Information"),
             backgroundColor: Colors.deepOrangeAccent),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        body: ListView(
           children: <Widget>[
-            Container(
-              child: GestureDetector(
-                child: Hero(
-                  tag: 'editTag' + widget.index.toString(),
-                  child: Image.network(
-                    widget.snap['imageUrl'],
-                    height: 250,
-                    fit: BoxFit.fill,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Container(
+                  child: GestureDetector(
+                    child: Hero(
+                      tag: 'editTag' + widget.index.toString(),
+                      child: Image.network(
+                        widget.snap['imageUrl'],
+                        height: 250,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(height: 20),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: widget.snap['title'],
+                    labelText: 'Change title',
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: widget.snap['description'],
+                    labelText: 'Change Description',
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: widget.snap['price'].toString(),
+                    labelText: 'Change Price',
+                  ),
+                ),
+              ],
             ),
-            TextField(
-              decoration: InputDecoration(
-                hintText: widget.snap['title'],
-                labelText: 'Change title',
-              ),
-            ),
-            TextField(
-              decoration: InputDecoration(
-                hintText: widget.snap['description'],
-                labelText: 'Change Description',
-              ),
-            ),
-            TextField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: widget.snap['price'].toString(),
-                labelText: 'Change Price',
-              ),
-            )
           ],
         ));
   }
