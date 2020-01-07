@@ -13,6 +13,8 @@ class EditEntry extends StatefulWidget {
 }
 
 class _EditEntryState extends State<EditEntry> {
+  final db = Firestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,12 +62,22 @@ class _EditEntryState extends State<EditEntry> {
                 ),
                 SizedBox(height: 100),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   child: Row(
                     children: <Widget>[
                       Expanded(
                         child: InkWell(
-                          onTap: () => print("Delete"),
+                          onTap: () async {
+                            await db
+                                .collection('Annons')
+                                .document(widget.snap.documentID)
+                                .delete();
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text(widget.snap['title'] + " Deleted!"),
+                            ));
+                            Navigator.pop(context);
+                          },
                           child: Container(
                             height: 50,
                             decoration: BoxDecoration(
