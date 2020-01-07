@@ -73,9 +73,6 @@ class _EditEntryState extends State<EditEntry> {
                                 .collection('Annons')
                                 .document(widget.snap.documentID)
                                 .delete();
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text(widget.snap['title'] + " Deleted!"),
-                            ));
                             Navigator.pop(context);
                           },
                           child: Container(
