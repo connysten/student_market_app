@@ -58,6 +58,37 @@ class _EditEntryState extends State<EditEntry> {
                     labelText: 'Change Price',
                   ),
                 ),
+                SizedBox(height: 100),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: InkWell(
+                          onTap: () => print("Delete"),
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              color: Color(0xFF404A5C),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Delete",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10.0),
+                    ],
+                  ),
+                )
               ],
             ),
           ],
