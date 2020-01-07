@@ -22,7 +22,7 @@ class _ProfileState extends State<Profile> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: NetworkImage(
-                    "https://i.pinimg.com/originals/97/00/00/970000a282c18eb41e47fd76adda2983.png"),
+                    user.photoUrl),
                 fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(80.0),
             border: Border.all(
@@ -41,7 +41,7 @@ class _ProfileState extends State<Profile> {
     );
 
     return Text(
-      "Marcus M",
+      user.displayName,
       style: _nameTextStyle,
     );
   }
