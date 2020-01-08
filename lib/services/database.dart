@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import 'package:student_market_app/services/add.dart';
+import 'package:intl/intl.dart';
 
 class DatabaseService {
   //collection reference
@@ -23,6 +24,8 @@ class DatabaseService {
       File image) async {
     var tempUrl = await addImage(image, title);
     var imageUrl = tempUrl.toString();
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('kk:mm d MMM').format(now);
     return await addCollection.add({
       'title': title,
       'author': author,
@@ -33,6 +36,7 @@ class DatabaseService {
       'description': description,
       'userid': userid,
       'imageUrl': imageUrl,
+      'timestamp': formattedDate,
     });
   }
 

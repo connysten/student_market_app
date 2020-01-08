@@ -179,16 +179,23 @@ class _ProfileState extends State<Profile> {
         margin: EdgeInsets.symmetric(vertical: 20.0),
         height: screenSize.height / 4.5,
         child: StreamBuilder(
-          stream: Firestore.instance.collection('Annons').snapshots(),
+          stream: Firestore.instance
+              .collection('Annons')
+              .where('userid', isEqualTo: user.uid)
+              .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Text("Loading...");
+            }
+            else if(snapshot.data.documents.toList().length == 0){
+              return Text("No adds");
             }
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: snapshot.data.documents.toList().length,
                 itemBuilder: (context, index) {
-                  return _buildListItem(context, snapshot.data.documents[index], index);
+                  return _buildListItem(
+                      context, snapshot.data.documents[index], index);
                 });
           },
         ));
@@ -196,42 +203,36 @@ class _ProfileState extends State<Profile> {
 
   Widget _buildListItem(
       BuildContext context, DocumentSnapshot document, int index) {
-
-    if(document['userid'] == user.uid){
-      return Container(
-        width: 160.0,
-        child: Card(
-          child: Wrap(
-            children: <Widget>[
-              GestureDetector(
-                child: Hero(
-                  tag: 'editTag' + index.toString(),
-                  child: Image.network(
-                    document['imageUrl'],
-                    height: 100,
-                    width: 150,
-                    fit: BoxFit.fill,
-                  ),
+    return Container(
+      width: 160.0,
+      child: Card(
+        child: Wrap(
+          children: <Widget>[
+            GestureDetector(
+              child: Hero(
+                tag: 'editTag' + index.toString(),
+                child: Image.network(
+                  document['imageUrl'],
+                  height: 100,
+                  width: 150,
+                  fit: BoxFit.fill,
                 ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditEntry(index, document)));
-                },
               ),
-              ListTile(
-                title: Text(document["title"]),
-                subtitle: Text("Price: " + (document["price"]).toString()),
-              )
-            ],
-          ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditEntry(index, document)));
+              },
+            ),
+            ListTile(
+              title: Text(document["title"]),
+              subtitle: Text("Price: " + (document["price"]).toString()),
+            )
+          ],
         ),
-      );
-    }
-    else{
-      return Container();
-    }
+      ),
+    );
   }
 
   @override
