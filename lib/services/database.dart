@@ -81,6 +81,17 @@ class DatabaseService {
     return temp;
   }
 
+  Future<List<DocumentSnapshot>> filterAdds(String filter) async {
+    QuerySnapshot allAdds = await addCollection.orderBy('price').getDocuments();
+    List<DocumentSnapshot> allAddsDocs = allAdds.documents;
+    List<DocumentSnapshot> filteredAdds = new List<DocumentSnapshot>();
+    for(var item in allAddsDocs){
+      if(item['title'].toLowerCase().contains(filter) || item['isbn'].toString().contains(filter)){
+        filteredAdds.add(item);
+      }
+    }
+    return filteredAdds;
+  }
 /*Stream<Add> get add {
     return addCollection.s
   }*/

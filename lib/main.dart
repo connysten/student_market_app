@@ -24,7 +24,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedPage = 0;
   List<Widget> _pageOptions() => [
-        Search(),
+        SearchPage(),
         Sell(),
         Profile(),
       ];
