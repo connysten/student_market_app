@@ -3,22 +3,28 @@ import './extended_pages/user_messages.dart';
 import '../global.dart' as global;
 import '../auth_service.dart';
 
+//import 'package:student_market_app/services/user_details.dart';
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'extended_pages/edit_entry.dart';
+import 'package:student_market_app/global.dart';
+
 class Profile extends StatefulWidget {
+  //final UserDetails userDetails;
+
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-  Widget _buildProfileImage() {
+  Widget _buildProfileImage(Size screenSize) {
     return Center(
       child: Container(
-        width: 140.0,
-        height: 140.0,
+        width: screenSize.height / 5.5,
+        height: screenSize.height / 5.5,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(
-                    "https://i.pinimg.com/originals/97/00/00/970000a282c18eb41e47fd76adda2983.png"),
-                fit: BoxFit.cover),
+                image: NetworkImage(user.photoUrl), fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(80.0),
             border: Border.all(
               color: Colors.white,
@@ -48,7 +54,8 @@ class _ProfileState extends State<Profile> {
       decoration: BoxDecoration(
           image: DecorationImage(
               image: NetworkImage(
-                  "https://upload.wikimedia.org/wikipedia/commons/6/66/M%C3%A4lardalens_h%C3%B6gskolas_huvudentr%C3%A9_V%C3%A4ster%C3%A5s.jpg"))),
+                  "https://upload.wikimedia.org/wikipedia/commons/6/66/M%C3%A4lardalens_h%C3%B6gskolas_huvudentr%C3%A9_V%C3%A4ster%C3%A5s.jpg"),
+              fit: BoxFit.cover)),
     );
   }
 
@@ -71,9 +78,9 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildStatContainer() {
+  Widget _buildStatContainer(Size screenSize) {
     return Container(
-      height: 60.0,
+      height: screenSize.height / 12,
       margin: EdgeInsets.only(top: 8.0),
       decoration: BoxDecoration(
         color: Color(0xFFEFF4F7),
@@ -118,7 +125,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildButtons(Size screenSize) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Row(
@@ -128,7 +135,7 @@ class _ProfileState extends State<Profile> {
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => UserMessages())),
               child: Container(
-                height: 40.0,
+                height: screenSize.height / 20,
                 decoration: BoxDecoration(
                   border: Border.all(),
                   color: Color(0xFF404A5C),
@@ -152,7 +159,7 @@ class _ProfileState extends State<Profile> {
                 await global.authService.signOut(context);
               },
               child: Container(
-                height: 40.0,
+                height: screenSize.height / 20,
                 decoration: BoxDecoration(
                   border: Border.all(),
                 ),
@@ -173,44 +180,60 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildListView() {
+  Widget _buildListView(Size screenSize) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20.0),
-      height: 160,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          _buildListItem(
-              "https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417",
-              "Some Book",
-              "D23FA-32AD-323FF"),
-          _buildListItem(
-              "https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417",
-              "Some Book",
-              "D23FA-32AD-323FF"),
-          _buildListItem(
-              "https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417",
-              "Some Book",
-              "D23FA-32AD-323FF"),
-          _buildListItem(
-              "https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417",
-              "Some Book",
-              "D23FA-32AD-323FF"),
-        ],
-      ),
-    );
+        margin: EdgeInsets.symmetric(vertical: 20.0),
+        height: screenSize.height / 4.5,
+        child: StreamBuilder(
+          stream: Firestore.instance
+              .collection('Annons')
+              .where('userid', isEqualTo: user.uid)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Text("Loading...");
+            }
+            else if(snapshot.data.documents.toList().length == 0){
+              return Text("No adds");
+            }
+            return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data.documents.toList().length,
+                itemBuilder: (context, index) {
+                  return _buildListItem(
+                      context, snapshot.data.documents[index], index);
+                });
+          },
+        ));
   }
 
-  Widget _buildListItem(String srcFile, String heading, String isbn) {
+  Widget _buildListItem(
+      BuildContext context, DocumentSnapshot document, int index) {
     return Container(
       width: 160.0,
       child: Card(
         child: Wrap(
           children: <Widget>[
-            Image.network(srcFile),
+            GestureDetector(
+              child: Hero(
+                tag: 'editTag' + index.toString(),
+                child: Image.network(
+                  document['imageUrl'],
+                  height: 100,
+                  width: 150,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditEntry(index, document)));
+              },
+            ),
             ListTile(
-              title: Text(heading),
-              subtitle: Text(isbn),
+              title: Text(document["title"]),
+              subtitle: Text("Price: " + (document["price"]).toString()),
             )
           ],
         ),
@@ -230,12 +253,12 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 children: <Widget>[
                   SizedBox(height: screenSize.height / 5.3),
-                  _buildProfileImage(),
+                  _buildProfileImage(screenSize),
                   _buildUserName(),
                   _buildProgramName(context),
-                  _buildStatContainer(),
-                  _buildListView(),
-                  _buildButtons(),
+                  _buildStatContainer(screenSize),
+                  _buildListView(screenSize),
+                  _buildButtons(screenSize),
                 ],
               ),
             ),

@@ -314,6 +314,7 @@ class _SellState extends State<Sell> {
                               conditions[condition.toInt()],
                               descriptionController.text,
                               user.uid,
+                              _image,
                           );
                           reset();
                         },
