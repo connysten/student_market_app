@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import './extended_pages/user_messages.dart';
+import '../global.dart' as global;
+import '../auth_service.dart';
 
 //import 'package:student_market_app/services/user_details.dart';
 import 'dart:async';
@@ -40,7 +43,7 @@ class _ProfileState extends State<Profile> {
     );
 
     return Text(
-      user.displayName,
+      global.user.displayName,
       style: _nameTextStyle,
     );
   }
@@ -129,7 +132,8 @@ class _ProfileState extends State<Profile> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              onTap: () => print("Messages"),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserMessages())),
               child: Container(
                 height: screenSize.height / 20,
                 decoration: BoxDecoration(
@@ -151,7 +155,9 @@ class _ProfileState extends State<Profile> {
           SizedBox(width: 10.0),
           Expanded(
             child: InkWell(
-              onTap: () => print("Log out"),
+              onTap: () async {
+                await global.authService.signOut(context);
+              },
               child: Container(
                 height: screenSize.height / 20,
                 decoration: BoxDecoration(

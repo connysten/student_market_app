@@ -13,7 +13,8 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: RaisedButton(
-          color: Colors.orange,
+          color: Colors.white,
+          highlightColor: Colors.orange[300],
           elevation: 4,
       padding: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
