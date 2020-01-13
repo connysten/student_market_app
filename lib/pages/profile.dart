@@ -197,8 +197,8 @@ class _ProfileState extends State<Profile> {
               return Container(
                 padding: EdgeInsets.all(5.0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(20.0),
+                    shape: BoxShape.rectangle,
                     color: Colors.white,
                     border: Border.all(
                       color: Colors.grey,
@@ -280,13 +280,25 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          _buildCoverImage(screenSize),
           SafeArea(
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: screenSize.height / 5.3),
-                  _buildProfileImage(screenSize),
+                  Stack(
+                    overflow: Overflow.visible,
+                    children: <Widget>[
+                      _buildCoverImage(screenSize),
+                      Positioned(
+                        bottom: -50,
+                        left: screenSize.width/2.8,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: _buildProfileImage(screenSize),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 50,),
                   _buildUserName(),
                   _buildProgramName(context),
                   _buildStatContainer(screenSize),

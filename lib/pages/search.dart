@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +13,7 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage>{
+class _SearchPageState extends State<SearchPage> {
   static final TextEditingController _filter = new TextEditingController();
   FocusNode _textFocus = new FocusNode();
 
@@ -26,6 +28,7 @@ class _SearchPageState extends State<SearchPage>{
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.orange,
         title: Container(
           decoration: BoxDecoration(
@@ -103,7 +106,13 @@ class _SearchPageState extends State<SearchPage>{
         //DatabaseService().query(_SearchPageState._filter.text),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Text("Loading...");
+            return Expanded(
+                child: Center(
+                    child: CircularProgressIndicator(
+              backgroundColor: Colors.grey[300],
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+              strokeWidth: 5,
+            )));
           }
           return ListView.builder(
             scrollDirection: Axis.vertical,
