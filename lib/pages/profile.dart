@@ -64,7 +64,9 @@ class _ProfileState extends State<Profile> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme
+            .of(context)
+            .scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Text(
@@ -126,6 +128,40 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  Widget _buttonTextMsg() {
+    if (global.currentLanguage == global.Language.eng) {
+      return Text(
+        "Messages",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      );
+    } else if (global.currentLanguage == global.Language.swe) {
+      return Text(
+        "Meddelande",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      );
+    }
+  }
+
+  Widget _buttonLogout() {
+    if (global.currentLanguage == global.Language.eng) {
+      return Text(
+        "Log out",
+        style: TextStyle(fontWeight: FontWeight.w600),
+      );
+    } else if (global.currentLanguage == global.Language.swe) {
+      return Text(
+        "Logga ut",
+        style: TextStyle(fontWeight: FontWeight.w600),
+      );
+    }
+  }
+
   Widget _buildButtons(Size screenSize) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -133,8 +169,9 @@ class _ProfileState extends State<Profile> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => UserMessages())),
+              onTap: () =>
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UserMessages())),
               child: Container(
                 height: screenSize.height / 20,
                 decoration: BoxDecoration(
@@ -142,13 +179,7 @@ class _ProfileState extends State<Profile> {
                   color: Color(0xFF404A5C),
                 ),
                 child: Center(
-                  child: Text(
-                    "Messages",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: _buttonTextMsg(),
                 ),
               ),
             ),
@@ -181,6 +212,59 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  Widget _tempContainer() {
+    if (global.currentLanguage == global.Language.swe) {
+      return Column(
+        children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
+          RichText(
+              text: TextSpan(
+                text: "Det finns ingen annons att visa",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                ),
+              )),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            "När du lägger till en annons visas det här",
+            style: TextStyle(),
+          )
+        ],
+      );
+    }
+    else if (global.currentLanguage == global.Language.eng) {
+      return Column(
+        children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
+          RichText(
+              text: TextSpan(
+                text: "You currently don't have a post to show",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                ),
+              )),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            "When you add a post it will show here",
+            style: TextStyle(),
+          )
+        ],
+      );
+    }
+  }
+
   Widget _buildListView(Size screenSize) {
     return Container(
         margin: EdgeInsets.symmetric(vertical: 20.0),
@@ -193,45 +277,27 @@ class _ProfileState extends State<Profile> {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Text("Loading...");
-            } else if (snapshot.data.documents.toList().length == 0) {
+            } else if (snapshot.data.documents
+                .toList()
+                .length == 0) {
               return Container(
-                padding: EdgeInsets.all(5.0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    shape: BoxShape.rectangle,
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 4,
-                    )),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 30,
-                    ),
-                    RichText(
-                        text: TextSpan(
-                      text: "You currently don't have a post to show",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      "When you add a post it will show here",
-                      style: TextStyle(),
-                    )
-                  ],
-                ),
+                  padding: EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      shape: BoxShape.rectangle,
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 4,
+                      )),
+                  child: _tempContainer()
               );
             }
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data.documents.toList().length,
+                itemCount: snapshot.data.documents
+                    .toList()
+                    .length,
                 itemBuilder: (context, index) {
                   return _buildListItem(
                       context, snapshot.data.documents[index], index);
@@ -240,8 +306,8 @@ class _ProfileState extends State<Profile> {
         ));
   }
 
-  Widget _buildListItem(
-      BuildContext context, DocumentSnapshot document, int index) {
+  Widget _buildListItem(BuildContext context, DocumentSnapshot document,
+      int index) {
     return Container(
       width: 160.0,
       child: Card(
@@ -276,7 +342,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+    Size screenSize = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -290,7 +358,7 @@ class _ProfileState extends State<Profile> {
                       _buildCoverImage(screenSize),
                       Positioned(
                         bottom: -50,
-                        left: screenSize.width/2.8,
+                        left: screenSize.width / 2.8,
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: _buildProfileImage(screenSize),
@@ -298,7 +366,9 @@ class _ProfileState extends State<Profile> {
                       )
                     ],
                   ),
-                  SizedBox(height: 50,),
+                  SizedBox(
+                    height: 50,
+                  ),
                   _buildUserName(),
                   _buildProgramName(context),
                   _buildStatContainer(screenSize),
