@@ -17,19 +17,21 @@ class _DetailAddState extends State<DetailAdd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.orange,
-          title: Container(
-            decoration: BoxDecoration(
-              color: Color.fromARGB(50, 255, 255, 255),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        title: Container(
+          decoration: BoxDecoration(
+            color: Color.fromARGB(50, 255, 255, 255),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         ),
-        body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(children: <Widget>[
+      ),
+      body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              color: Colors.grey[300],
+              child: Row(children: <Widget>[
                 Expanded(
                   child: GestureDetector(
                     child: new Hero(
@@ -39,17 +41,11 @@ class _DetailAddState extends State<DetailAdd> {
                             (BuildContext context, BoxConstraints constraints) {
                           return Container(
                             //margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                            height: MediaQuery
-                                .of(context)
-                                .size
-                                .height / 2.5,
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width,
+                            height: MediaQuery.of(context).size.height / 2.5,
+                            width: MediaQuery.of(context).size.width,
                             child: CachedNetworkImage(
                               imageUrl: widget.snapshot['imageUrl'],
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                             ),
                           );
                         },
@@ -61,7 +57,10 @@ class _DetailAddState extends State<DetailAdd> {
                   ),
                 ),
               ]),
-              Row(
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
                 children: <Widget>[
                   Text(
                     widget.snapshot['title'],
@@ -69,17 +68,28 @@ class _DetailAddState extends State<DetailAdd> {
                   ),
                 ],
               ),
-              Row(
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8,0,0,0),
+              child: Row(
                 children: <Widget>[
                   Text("${widget.snapshot['price'].toString()} kr"),
                 ],
               ),
-              Row(
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Divider(color: Colors.grey[300],),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
                 children: <Widget>[
-                  Text("\n${widget.snapshot['description'].toString()}"),
+                  Text("Uploaded: ${widget.snapshot['timestamp']}")
                 ],
               ),
-            ]),
-      );
+            ),
+          ]),
+    );
   }
 }
