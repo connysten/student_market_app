@@ -45,7 +45,7 @@
     },
     {
       "name": "cloud_firestore",
-      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.12.11",
+      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.13.0+1",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -69,7 +69,7 @@
     },
     {
       "name": "cupertino_icons",
-      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.2",
+      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.3",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -87,7 +87,7 @@
     },
     {
       "name": "firebase_core_platform_interface",
-      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-1.0.0",
+      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-1.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -141,15 +141,15 @@
     },
     {
       "name": "google_sign_in_platform_interface",
-      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_platform_interface-1.0.0",
+      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_platform_interface-1.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
     {
       "name": "http",
-      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.12.0+2",
+      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.12.0+4",
       "packageUri": "lib/",
-      "languageVersion": "2.0"
+      "languageVersion": "2.4"
     },
     {
       "name": "http_parser",
@@ -165,9 +165,15 @@
     },
     {
       "name": "image_picker",
-      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.2+2",
+      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.2+3",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "intl",
+      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.16.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.5"
     },
     {
       "name": "matcher",
@@ -232,12 +238,6 @@
     {
       "name": "quiver",
       "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-2.0.5",
-      "packageUri": "lib/",
-      "languageVersion": "2.0"
-    },
-    {
-      "name": "quiver_hashcode",
-      "rootUri": "file:///Users/Jonathan/Development/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/quiver_hashcode-2.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -332,7 +332,7 @@
       "languageVersion": "2.2"
     }
   ],
-  "generated": "2020-01-13T12:02:40.452952Z",
+  "generated": "2020-01-13T12:44:16.952475Z",
   "generator": "pub",
   "generatorVersion": "2.7.0"
 }

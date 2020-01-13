@@ -105,11 +105,7 @@ packages:
       name: firebase_core_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "1.0.0"
-=======
     version: "1.0.2"
->>>>>>> abeb9ae9e703d503acd73a2ed8c0369d853d425b
   firebase_storage:
     dependency: "direct main"
     description:
@@ -261,23 +257,6 @@ packages:
     source: hosted
     version: "2.4.0"
   platform:
-<<<<<<< HEAD
-    dependency: transitive
-    description:
-      name: platform
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.1"
-  provider:
-    dependency: "direct main"
-    description:
-      name: provider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.2.0"
-  quiver:
-=======
->>>>>>> abeb9ae9e703d503acd73a2ed8c0369d853d425b
     dependency: transitive
     description:
       name: platform
