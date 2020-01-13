@@ -42,7 +42,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final pageOptions = _pageOptions();
     return Scaffold(
-      body: pageOptions[_selectedPage],
+      body: IndexedStack(
+        index: _selectedPage,
+        children: pageOptions,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedPage,
         type: BottomNavigationBarType.fixed,
