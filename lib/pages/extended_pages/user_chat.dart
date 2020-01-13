@@ -16,48 +16,70 @@ class _UserChatState extends State<UserChat> {
   TextEditingController messageController = TextEditingController();
   ScrollController scrollController = ScrollController();
 
+  initState() {
+    super.initState();
+    checkChatId();
+  }
+
   Future<void> callback() async {
     if (messageController.text.length > 0) {
-      await Firestore.instance
-          .collection("chats")
-          .document(widget.chat.chatId)
-          .collection("messages")
-          .add({
-        "text": messageController.text,
-        "from": user.displayName,
-        "timestamp": DateTime.now()
-      });
-      var docRef = await Firestore.instance
-          .collection('chats')
-          .document(widget.chat.otherChatId)
-          .get()
-          .then((doc) {
-        if (doc.exists) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-
-      if (!docRef) {
-        Firestore.instance.runTransaction((Transaction trans) async {
-          await Firestore.instance.collection('chats').add({
-            'otherUser': user.uid,
-            'user': widget.chat.otherUser.uid,
-            'message': {
-              "text": messageController.text,
-              "from": user.displayName,
-              "timestamp": DateTime.now()
-            }
-          });
+      if (widget.chat.chatId == null) {
+        var docRef = await Firestore.instance
+            .collection('chats')
+            .add({'otherUser': widget.chat.otherUser.uid, 'user': user.uid});
+        await Firestore.instance
+            .collection('chats')
+            .document(docRef.documentID)
+            .collection('messages')
+            .add({
+          "text": messageController.text,
+          "from": user.displayName,
+          "timestamp": DateTime.now()
         });
-        messageController.clear();
-        scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
-          curve: Curves.easeOut,
-          duration: const Duration(milliseconds: 300),
-        );
+        widget.chat.chatId = docRef.documentID;
+      } else {
+        await Firestore.instance
+            .collection("chats")
+            .document(widget.chat.chatId)
+            .collection("messages")
+            .add({
+          "text": messageController.text,
+          "from": user.displayName,
+          "timestamp": DateTime.now()
+        });
       }
+      if (widget.chat.otherChatId == null) {
+        var docRef = await Firestore.instance.collection('chats').add({
+          'user': widget.chat.otherUser.uid,
+          'otherUser': user.uid,
+        });
+        await Firestore.instance
+            .collection('chats')
+            .document(docRef.documentID)
+            .collection('messages')
+            .add({
+          "text": messageController.text,
+          "from": user.displayName,
+          "timestamp": DateTime.now()
+        });
+        widget.chat.otherChatId = docRef.documentID;
+      } else {
+        await Firestore.instance
+            .collection("chats")
+            .document(widget.chat.otherChatId)
+            .collection("messages")
+            .add({
+          "text": messageController.text,
+          "from": user.displayName,
+          "timestamp": DateTime.now()
+        });
+      }
+      messageController.clear();
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+      );
     }
   }
 
@@ -79,40 +101,47 @@ class _UserChatState extends State<UserChat> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance
-                      .collection('chats')
-                      .document(widget.chat.chatId)
-                      .collection('messages')
-                      .orderBy('timestamp', descending: false)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData)
-                      return Center(
-                        child: Center(child: CircularProgressIndicator()),
-                      );
+                child: widget.chat.chatId != null
+                    ? StreamBuilder<QuerySnapshot>(
+                        stream: Firestore.instance
+                            .collection('chats')
+                            .document(widget.chat.chatId)
+                            .collection('messages')
+                            .orderBy('timestamp', descending: false)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return Center(
+                                child: CircularProgressIndicator(
+                                  backgroundColor: Colors.grey[300],
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.grey),
+                                  strokeWidth: 8,
+                                ),
+                            );
 
-                    List<DocumentSnapshot> docs = snapshot.data.documents;
+                          List<DocumentSnapshot> docs = snapshot.data.documents;
 
-                    var messages = docs
-                        .map((doc) => ChatMessage(
-                              from: doc.data['from'],
-                              text: doc.data['text'],
-                              me: user.displayName == doc.data['from'],
-                            ))
-                        .toList()
-                        .reversed;
+                          var messages = docs
+                              .map((doc) => ChatMessage(
+                                    from: doc.data['from'],
+                                    text: doc.data['text'],
+                                    me: user.displayName == doc.data['from'],
+                                  ))
+                              .toList()
+                              .reversed;
 
-                    return ListView(
-                      shrinkWrap: true,
-                      reverse: true,
-                      controller: scrollController,
-                      children: <Widget>[
-                        ...messages,
-                      ],
-                    );
-                  },
-                ),
+                          return ListView(
+                            shrinkWrap: true,
+                            reverse: true,
+                            controller: scrollController,
+                            children: <Widget>[
+                              ...messages,
+                            ],
+                          );
+                        },
+                      )
+                    : Container(),
               ),
             ),
             Container(
@@ -143,6 +172,38 @@ class _UserChatState extends State<UserChat> {
         ),
       ),
     );
+  }
+
+  void checkChatId() async {
+    if (widget.chat.chatId == null) {
+      await Firestore.instance
+          .collection('chats')
+          .where('otherUser', isEqualTo: widget.chat.otherUser.uid)
+          .where('user', isEqualTo: user.uid)
+          .getDocuments()
+          .then((doc) async {
+        if (doc.documents.isNotEmpty) {
+          setState(() {
+            widget.chat.chatId = doc.documents[0].documentID;
+          });
+        }
+      });
+    }
+
+    if (widget.chat.otherChatId == null) {
+      await Firestore.instance
+          .collection('chats')
+          .where('user', isEqualTo: widget.chat.otherUser.uid)
+          .where('otherUser', isEqualTo: user.uid)
+          .getDocuments()
+          .then((doc) async {
+        if (doc.documents.isNotEmpty) {
+          setState(() {
+            widget.chat.otherChatId = doc.documents[0].documentID;
+          });
+        }
+      });
+    }
   }
 }
 

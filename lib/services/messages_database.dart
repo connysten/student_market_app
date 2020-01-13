@@ -71,4 +71,18 @@ class MessagesDatabaseService {
         .then((data) =>
             data.documents.length > 0 ? data.documents[0].data['text'] : null);
   }
+
+  Future<User> getUser(String uid) async {
+    return await Firestore.instance
+        .collection('users')
+        .document(uid)
+        .get()
+        .then((doc) {
+      return User(
+          uid: uid,
+          displayName: doc.data['displayName'],
+          email: doc.data['email'],
+          photoUrl: doc.data['photoUrl']);
+    });
+  }
 }

@@ -1,13 +1,14 @@
-class ChatWithOtherUser{
-  final String chatId;
+class ChatWithOtherUser {
+  String chatId;
   final User otherUser;
-  final String otherChatId;
+  String otherChatId;
   final String lastMessage;
 
-  ChatWithOtherUser({this.chatId, this.otherUser, this.otherChatId, this.lastMessage});
+  ChatWithOtherUser(
+      {this.chatId, this.otherUser, this.otherChatId, this.lastMessage});
 }
 
-class User{
+class User {
   final String displayName;
   final String email;
   final String photoUrl;

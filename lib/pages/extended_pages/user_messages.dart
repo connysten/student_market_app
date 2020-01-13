@@ -95,7 +95,13 @@ class _UserMessagesState extends State<UserMessages> {
                     );
                   },
                 )
-              : Center(child: CircularProgressIndicator());
+              : Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.grey[300],
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                    strokeWidth: 5,
+                  ),
+                );
         },
       ),
     );
