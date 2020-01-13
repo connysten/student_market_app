@@ -68,7 +68,7 @@ class _ProfileState extends State<Profile> {
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Text(
-        "Datavetenskap",
+        global.user.email,
         style: TextStyle(
           //fontFamily:
           color: Colors.black,
