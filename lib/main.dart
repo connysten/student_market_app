@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:student_market_app/auth_service.dart';
+
+import './pages/extended_pages/user_chat.dart';
 
 import './pages/login.dart';
 import './pages/search.dart';
 import './pages/sell.dart';
 import './pages/profile.dart';
+import './global.dart' as global;
 
 void main() {
   runApp(MaterialApp(
-    initialRoute: "/",
+    initialRoute: "/login",
     routes: {
-      "/": (context) => Login(),
+      "/login": (context) => Login(),
       "/home": (context) => Home(),
     },
   ));
@@ -59,7 +63,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.userAlt),
             title: Text("Profil"),
-          )
+          ),
         ],
       ),
     );

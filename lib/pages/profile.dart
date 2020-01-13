@@ -1,40 +1,34 @@
 import 'package:flutter/material.dart';
-
 import './extended_pages/user_messages.dart';
-import '../global.dart';
+import '../global.dart' as global;
 import '../auth_service.dart';
 
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
-
 }
 
 class _ProfileState extends State<Profile> {
-
-  AuthService authService = AuthService();
-
-  Widget _buildProfileImage(){
+  Widget _buildProfileImage() {
     return Center(
       child: Container(
         width: 140.0,
         height: 140.0,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage("https://i.pinimg.com/originals/97/00/00/970000a282c18eb41e47fd76adda2983.png"),
-            fit: BoxFit.cover
-          ),
-          borderRadius: BorderRadius.circular(80.0),
-          border: Border.all(
-            color: Colors.white,
-            width: 5.0,
-          )
-        ),
+            image: DecorationImage(
+                image: NetworkImage(
+                    "https://i.pinimg.com/originals/97/00/00/970000a282c18eb41e47fd76adda2983.png"),
+                fit: BoxFit.cover),
+            borderRadius: BorderRadius.circular(80.0),
+            border: Border.all(
+              color: Colors.white,
+              width: 5.0,
+            )),
       ),
     );
   }
 
-  Widget _buildUserName(){
+  Widget _buildUserName() {
     TextStyle _nameTextStyle = TextStyle(
       //fontFamily:
       color: Colors.black,
@@ -43,23 +37,22 @@ class _ProfileState extends State<Profile> {
     );
 
     return Text(
-      user.displayName,
+      global.user.displayName,
       style: _nameTextStyle,
     );
   }
 
-  Widget _buildCoverImage(Size screenSize){
+  Widget _buildCoverImage(Size screenSize) {
     return Container(
       height: screenSize.height / 2.8,
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage("https://upload.wikimedia.org/wikipedia/commons/6/66/M%C3%A4lardalens_h%C3%B6gskolas_huvudentr%C3%A9_V%C3%A4ster%C3%A5s.jpg")
-        )
-      ),
+          image: DecorationImage(
+              image: NetworkImage(
+                  "https://upload.wikimedia.org/wikipedia/commons/6/66/M%C3%A4lardalens_h%C3%B6gskolas_huvudentr%C3%A9_V%C3%A4ster%C3%A5s.jpg"))),
     );
   }
 
-  Widget _buildProgramName(BuildContext context){
+  Widget _buildProgramName(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
       decoration: BoxDecoration(
@@ -78,7 +71,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildStatContainer(){
+  Widget _buildStatContainer() {
     return Container(
       height: 60.0,
       margin: EdgeInsets.only(top: 8.0),
@@ -132,7 +125,8 @@ class _ProfileState extends State<Profile> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserMessages())),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserMessages())),
               child: Container(
                 height: 40.0,
                 decoration: BoxDecoration(
@@ -154,8 +148,8 @@ class _ProfileState extends State<Profile> {
           SizedBox(width: 10.0),
           Expanded(
             child: InkWell(
-              onTap:() { authService.signOut();
-              Navigator.pop(context);
+              onTap: () async {
+                await global.authService.signOut(context);
               },
               child: Container(
                 height: 40.0,
@@ -179,23 +173,35 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildListView(){
+  Widget _buildListView() {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20.0),
       height: 160,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
-          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
-          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
-          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
-          _buildListItem("https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417", "Some Book", "D23FA-32AD-323FF"),
+          _buildListItem(
+              "https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417",
+              "Some Book",
+              "D23FA-32AD-323FF"),
+          _buildListItem(
+              "https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417",
+              "Some Book",
+              "D23FA-32AD-323FF"),
+          _buildListItem(
+              "https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417",
+              "Some Book",
+              "D23FA-32AD-323FF"),
+          _buildListItem(
+              "https://media1.tenor.com/images/6aeffef5449984ddec0e5f833f0cece8/tenor.gif?itemid=13154417",
+              "Some Book",
+              "D23FA-32AD-323FF"),
         ],
       ),
     );
   }
 
-  Widget _buildListItem(String srcFile, String heading, String isbn){
+  Widget _buildListItem(String srcFile, String heading, String isbn) {
     return Container(
       width: 160.0,
       child: Card(
