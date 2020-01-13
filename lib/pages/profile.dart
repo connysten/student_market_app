@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import './extended_pages/user_messages.dart';
 import '../global.dart' as global;
 import '../auth_service.dart';
@@ -192,9 +193,41 @@ class _ProfileState extends State<Profile> {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Text("Loading...");
-            }
-            else if(snapshot.data.documents.toList().length == 0){
-              return Text("No adds");
+            } else if (snapshot.data.documents.toList().length == 0) {
+              return Container(
+                padding: EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  shape: BoxShape.rectangle,
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 4,
+                    )),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 30,
+                    ),
+                    RichText(
+                        text: TextSpan(
+                      text: "You currently don't have a post to show",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "When you add a post it will show here",
+                      style: TextStyle(),
+                    )
+                  ],
+                ),
+              );
             }
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
