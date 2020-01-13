@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import '../global.dart';
 
 class Sell extends StatefulWidget {
+  Sell({Key key}) : super(key: key);
   @override
   _SellState createState() => _SellState();
 }

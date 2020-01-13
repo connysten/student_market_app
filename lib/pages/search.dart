@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:student_market_app/pages/extended_pages/detail_add.dart';
 
 class SearchPage extends StatefulWidget {
+  SearchPage({Key key}) : super(key: key);
   _SearchPageState createState() => _SearchPageState();
 }
 
