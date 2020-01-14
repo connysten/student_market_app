@@ -21,7 +21,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   Widget _buildProfileImage(Size screenSize) {
     return Center(
       child: Container(
@@ -43,7 +42,7 @@ class _ProfileState extends State<Profile> {
   Widget _buildUserName() {
     TextStyle _nameTextStyle = TextStyle(
       //fontFamily:
-      color: global.darkModeActive == true ? Colors.grey[400]: Colors.black,
+      color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
       fontSize: 28.0,
       fontWeight: FontWeight.w700,
     );
@@ -73,7 +72,8 @@ class _ProfileState extends State<Profile> {
         global.user.email,
         style: TextStyle(
           //fontFamily:
-          color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
+          color:
+              global.darkModeActive == true ? Colors.grey[400] : Colors.black,
           fontSize: 20.0,
           fontWeight: FontWeight.w300,
         ),
@@ -83,45 +83,97 @@ class _ProfileState extends State<Profile> {
 
   Widget _buildStatContainer(Size screenSize) {
     return Container(
-      height: screenSize.height / 12,
       margin: EdgeInsets.only(top: 8.0),
       decoration: BoxDecoration(
-        color: global.darkModeActive == true ? Colors.grey[800] : Color(0xFFEFF4F7),
+        color: global.darkModeActive == true
+            ? Colors.grey[800]
+            : Color(0xFFEFF4F7),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          IconButton(
-            splashColor: Colors.deepOrange,
-            onPressed: () {
-              if (global.darkModeActive == true) {
-                global.darkModeActive = false;
-                setState(() {});
-              } else {
-                global.darkModeActive = true;
-                setState(() {});
-              }
-            },
-            color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
-            icon: Icon(FontAwesomeIcons.sun),
-            tooltip: "Dark Mode",
-          ),
-          IconButton(
-            onPressed: () {
-              if (global.currentLanguage == global.Language.swe) {
-                global.currentLanguage = global.Language.eng;
-                setState(() {});
-              } else {
-                global.currentLanguage = global.Language.swe;
-                setState(() {});
-              }
-            },
-            color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
-            splashColor: Colors.deepOrange,
-            icon: Icon(Icons.language),
-            tooltip: "ENG",
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            GestureDetector(
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserMessages())),
+              child: Column(
+                children: <Widget>[
+                  Icon(FontAwesomeIcons.envelopeOpenText),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(global.currentLanguage == global.Language.swe
+                      ? "Meddelanden"
+                      : "Messages")
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                if (global.currentLanguage == global.Language.swe) {
+                  global.currentLanguage = global.Language.eng;
+                  setState(() {});
+                } else {
+                  global.currentLanguage = global.Language.swe;
+                  setState(() {});
+                }
+              },
+              child: Column(
+                children: <Widget>[
+                  Icon(FontAwesomeIcons.globe),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(global.currentLanguage == global.Language.swe
+                      ? "Byt Språk"
+                      : "Change Languange")
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                if (global.darkModeActive == true) {
+                  global.darkModeActive = false;
+                  setState(() {});
+                } else {
+                  global.darkModeActive = true;
+                  setState(() {});
+                }
+              },
+              child: Column(
+                children: <Widget>[
+                  Icon(global.darkModeActive == true
+                      ? FontAwesomeIcons.moon
+                      : FontAwesomeIcons.sun),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(global.currentLanguage == global.Language.swe
+                      ? "Byt tema"
+                      : "Change theme"),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                await global.authService.signOut(context);
+              },
+              child: Column(
+                children: <Widget>[
+                  Icon(FontAwesomeIcons.signOutAlt),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(global.currentLanguage == global.Language.swe
+                      ? "Logga ut"
+                      : "Sign out")
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -160,7 +212,8 @@ class _ProfileState extends State<Profile> {
       return Text(
         "Messages",
         style: TextStyle(
-          color: global.darkModeActive == true ? Colors.grey[400] : Colors.white,
+          color:
+              global.darkModeActive == true ? Colors.grey[400] : Colors.white,
           fontWeight: FontWeight.w600,
         ),
       );
@@ -168,70 +221,12 @@ class _ProfileState extends State<Profile> {
       return Text(
         "Meddelande",
         style: TextStyle(
-          color: global.darkModeActive == true ? Colors.grey[400] : Colors.white,
+          color:
+              global.darkModeActive == true ? Colors.grey[400] : Colors.white,
           fontWeight: FontWeight.w600,
         ),
       );
     }
-  }
-
-  Widget _buttonLogout() {
-    if (global.currentLanguage == global.Language.eng) {
-      return Text(
-        "Log out",
-        style: TextStyle(fontWeight: FontWeight.w600,
-            color: global.darkModeActive == true ? Colors.grey[400] : null),
-      );
-    } else if (global.currentLanguage == global.Language.swe) {
-      return Text(
-        "Logga ut",
-        style: TextStyle(fontWeight: FontWeight.w600,
-            color: global.darkModeActive == true ? Colors.grey[400] : null),
-      );
-    }
-  }
-
-  Widget _buildButtons(Size screenSize) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: InkWell(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => UserMessages())),
-              child: Container(
-                height: screenSize.height / 20,
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  color: global.darkModeActive == true ? Colors.grey[900] : Color(0xFF404A5C),
-                ),
-                child: Center(
-                  child: _buttonTextMsg(),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(width: 10.0),
-          Expanded(
-            child: InkWell(
-              onTap: () async {
-                await global.authService.signOut(context);
-              },
-              child: Container(
-                height: screenSize.height / 20,
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                ),
-                child: Center(
-                  child: _buttonLogout(),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _tempContainer() {
@@ -351,20 +346,40 @@ class _ProfileState extends State<Profile> {
             ),
             global.currentLanguage == global.Language.eng
                 ? ListTile(
-                    title: Text(document["title"], style: TextStyle(
-                      color: global.darkModeActive == true ? Colors.grey[400] : null,
-                    ),),
-                    subtitle: Text("Price: " + (document["price"]).toString(), style: TextStyle(
-                      color: global.darkModeActive == true ? Colors.grey[400] : null,
-                    ),),
+                    title: Text(
+                      document["title"],
+                      style: TextStyle(
+                        color: global.darkModeActive == true
+                            ? Colors.grey[400]
+                            : null,
+                      ),
+                    ),
+                    subtitle: Text(
+                      "Price: " + (document["price"]).toString(),
+                      style: TextStyle(
+                        color: global.darkModeActive == true
+                            ? Colors.grey[400]
+                            : null,
+                      ),
+                    ),
                   )
                 : ListTile(
-                    title: Text(document["title"], style: TextStyle(
-                      color: global.darkModeActive == true ? Colors.grey[400] : null,
-                    ),),
-                    subtitle: Text("Pris: " + (document["price"]).toString(), style: TextStyle(
-                      color: global.darkModeActive == true ? Colors.grey[400] : null,
-                    ),),
+                    title: Text(
+                      document["title"],
+                      style: TextStyle(
+                        color: global.darkModeActive == true
+                            ? Colors.grey[400]
+                            : null,
+                      ),
+                    ),
+                    subtitle: Text(
+                      "Pris: " + (document["price"]).toString(),
+                      style: TextStyle(
+                        color: global.darkModeActive == true
+                            ? Colors.grey[400]
+                            : null,
+                      ),
+                    ),
                   )
           ],
         ),
@@ -406,7 +421,6 @@ class _ProfileState extends State<Profile> {
                   _buildProgramName(context),
                   _buildStatContainer(screenSize),
                   _buildListView(screenSize),
-                  _buildButtons(screenSize),
                 ],
               ),
             ),
