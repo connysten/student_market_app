@@ -11,6 +11,7 @@ class DatabaseService {
   //collection reference
   final CollectionReference addCollection =
       Firestore.instance.collection('Annons');
+  String _filter;
 
   Future createAdd(
       String title,
@@ -44,6 +45,8 @@ class DatabaseService {
     var uploadedFileUrl;
     var uuid = Uuid().v1();
     StorageReference ref = FirebaseStorage.instance.ref().child('books/$uuid');
+
+
     /*StorageUploadTask uploadTask = ref.putFile(image);
     ref.getDownloadURL().then((fileURL) {
       uploadedFileUrl = fileURL;
@@ -74,10 +77,9 @@ class DatabaseService {
   }
 
   Future<QuerySnapshot> query(String filter) async {
-    QuerySnapshot temp =
-        await addCollection.orderBy('title').startAt([filter])
-            .endAt([filter + "\uf8ff"])
-            .getDocuments();
+    QuerySnapshot temp = await addCollection
+        .orderBy('title')
+        .startAt([filter]).endAt([filter + "\uf8ff"]).getDocuments();
     return temp;
   }
 
@@ -85,9 +87,55 @@ class DatabaseService {
     QuerySnapshot allAdds = await addCollection.orderBy('price').getDocuments();
     List<DocumentSnapshot> allAddsDocs = allAdds.documents;
     List<DocumentSnapshot> filteredAdds = new List<DocumentSnapshot>();
-    for(var item in allAddsDocs){
-      if(item['title'].toLowerCase().contains(filter) || item['isbn'].toString().contains(filter)){
+    for (var item in allAddsDocs) {
+      if (item['title'].toLowerCase().contains(filter) ||
+          item['isbn'].toString().contains(filter)) {
         filteredAdds.add(item);
+      }
+    }
+    return filteredAdds;
+  }
+
+  Future<List<DocumentSnapshot>> fetchFirstList(String filter) async {
+    _filter = filter;
+    if(_filter.isEmpty){
+      return (await addCollection.orderBy('price').limit(10).getDocuments()).documents;
+    }
+    QuerySnapshot allAdds =
+        await addCollection.orderBy('price').getDocuments();
+    List<DocumentSnapshot> allAddsDocs = allAdds.documents;
+    List<DocumentSnapshot> filteredAdds = new List<DocumentSnapshot>();
+    for(int i = 0, j=0; i<10; i++){
+      if(i >= allAddsDocs.length){
+        break;
+      }
+      if(allAddsDocs[i]['title'].toLowerCase().contains(_filter) || allAddsDocs[i]['isbn'].toString().contains(_filter)){
+        filteredAdds.add(allAddsDocs[i]);
+        j++;
+      }
+      if(j==10){
+        break;
+      }
+    }
+    return filteredAdds;
+  }
+
+  Future<List<DocumentSnapshot>> fetchNextList(
+      List<DocumentSnapshot> documentList) async {
+    QuerySnapshot allAdds =
+    await addCollection.orderBy('price').startAfterDocument(documentList[documentList.length-1]).getDocuments();
+    List<DocumentSnapshot> allAddsDocs = allAdds.documents;
+    List<DocumentSnapshot> filteredAdds = new List<DocumentSnapshot>();
+    for(int i = 0, j=0; i<10; i++){
+      if(i >= allAddsDocs.length){
+        break;
+      }
+      if(allAddsDocs[i]['title'].toLowerCase().contains(_filter) || allAddsDocs[i]['isbn'].toString().contains(_filter)){
+        filteredAdds.add(allAddsDocs[i]);
+        j++;
+      }
+      if(j==10){
+        break;
       }
     }
     return filteredAdds;
