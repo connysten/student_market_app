@@ -226,10 +226,7 @@ class _ProfileState extends State<Profile> {
                   border: Border.all(),
                 ),
                 child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: _buttonLogout(),
-                  ),
+                  child: _buttonLogout(),
                 ),
               ),
             ),

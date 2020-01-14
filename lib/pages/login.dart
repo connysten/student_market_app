@@ -32,59 +32,66 @@ class _LoginState extends State<Login> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 25),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(color: Colors.grey[800], blurRadius: 5)
-                    ],
-                  ),
-                  child: Image.asset(
-                    "assets/pngfuel.com.png",
-                    height: 100,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(20),
+                SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      LoginButton(
-                          iconColor: Color(0xff4caf50),
-                          text: "Sign in with Email",
-                          iconData: FontAwesomeIcons.solidEnvelope,
-                          function: () {}),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 25),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(color: Colors.grey[800], blurRadius: 5)
+                          ],
+                        ),
+                        child: Image.asset(
+                          "assets/pngfuel.com.png",
+                          height: 100,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            LoginButton(
+                                iconColor: Color(0xff4caf50),
+                                text: "Sign in with Email",
+                                iconData: FontAwesomeIcons.solidEnvelope,
+                                function: () {}),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            LoginButton(
+                              iconColor: Color(0xffCE107C),
+                              text: "Sign in with Google",
+                              iconData: FontAwesomeIcons.google,
+                              function: () async {
+                                global.user = await global.authService.handleSignIn();
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => Home()));
+                              },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            LoginButton(
+                              iconColor: Color(0xff4754de),
+                              text: "Sign in with Facebook",
+                              iconData: FontAwesomeIcons.facebookF,
+                              function: () {},
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(
-                        height: 20,
-                      ),
-                      LoginButton(
-                        iconColor: Color(0xffCE107C),
-                        text: "Sign in with Google",
-                        iconData: FontAwesomeIcons.google,
-                        function: () async {
-                          global.user = await global.authService.handleSignIn();
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Home()));
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      LoginButton(
-                        iconColor: Color(0xff4754de),
-                        text: "Sign in with Facebook",
-                        iconData: FontAwesomeIcons.facebookF,
-                        function: () {},
-                      ),
+                        height: 50,
+                      )
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 50,
-                )
               ],
             )
           ],
