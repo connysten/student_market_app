@@ -164,7 +164,7 @@ class _UserChatState extends State<UserChat> {
                       onSubmitted: (value) => callback(),
                       controller: messageController,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
                         hintText: "Type Here...",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),

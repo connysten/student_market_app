@@ -29,12 +29,8 @@ class _DetailAddState extends State<DetailAdd> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
-        title: Container(
-          decoration: BoxDecoration(
-            color: Color.fromARGB(50, 255, 255, 255),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-        ),
+        title: Text("Book For Sale", style: TextStyle(color: Colors.black, fontSize: 24),),
+        centerTitle: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(

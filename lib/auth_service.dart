@@ -42,7 +42,7 @@ class AuthService {
     final AuthResult authResult = await _auth.signInWithCredential(credential);
     FirebaseUser _user = authResult.user;
 
-    updateUserData(_user);
+    googleUpdateUserData(_user);
     print("Signed in " + _user.displayName);
 
     loading.add(false);
@@ -57,17 +57,26 @@ class AuthService {
     final AuthResult authResult = await _auth.signInWithCredential(credential);
     FirebaseUser _user = authResult.user;
 
-    updateUserData(_user);
+    facebookUpdateUserData(_user, token);
 
     return _user;
   }
 
-  void updateUserData(FirebaseUser user) async {
+  void googleUpdateUserData(FirebaseUser user) async {
     DocumentReference ref = _db.collection('users').document(user.uid);
-    String photoUrl = user.photoUrl;
-    if(user.providerData[1].providerId == "facebook.com"){
-      photoUrl = "https://graph.facebook.com/" + user.uid + "/picture?height=500";
-    }
+    return ref.setData({
+      "uid": user.uid,
+      "email": user.email,
+      "photoUrl": user.photoUrl,
+      "displayName": user.displayName,
+      "lastSeen": DateTime.now()
+    }, merge: true);
+  }
+
+  void facebookUpdateUserData(FirebaseUser user, String token) async {
+    DocumentReference ref = _db.collection('users').document(user.uid);
+    String photoUrl =
+        "https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=$token";
     return ref.setData({
       "uid": user.uid,
       "email": user.email,
@@ -82,9 +91,7 @@ class AuthService {
       await _googleSignIn.disconnect();
     } else if (global.user.providerData[1].providerId == "facebook.com") {
       await _facebookLogin.logOut();
-    } else {
-
-    }
+    } else {}
     global.user = null;
     await _auth.signOut();
     _user = null;
