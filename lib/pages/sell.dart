@@ -11,6 +11,9 @@ import 'package:student_market_app/services/widgets/book_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import '../global.dart' as global;
+import '../global.dart';
+import '../global.dart';
+import '../global.dart';
 
 class Sell extends StatefulWidget {
   Sell({Key key}) : super(key: key);
@@ -25,6 +28,7 @@ class _SellState extends State<Sell> {
   Book tempBook;
   double condition = 0;
   final conditions = ['Poor', 'Used', 'Barely used', 'As new'];
+  final skick = ['Dåligt', 'Använd', 'Knappt använd', 'Som ny'];
   final isbnController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -98,7 +102,7 @@ class _SellState extends State<Sell> {
                       controller: isbnController,
                       maxLines: 1,
                       decoration: InputDecoration(
-                        hintText: "Numbers on the back of the book...",
+                        hintText: global.currentLanguage == Language.eng ? "Numbers on the back of the book..." : "Nummer på baksidan av boken...",
                         hintStyle: TextStyle(
                             fontStyle: FontStyle.italic, fontSize: 12),
                         labelText: "ISBN",
@@ -283,6 +287,7 @@ class _SellState extends State<Sell> {
                   suffixIcon: Icon(
                     FontAwesomeIcons.dollarSign,
                     color: Colors.orange,
+
                   ),
                 ),
               ),
@@ -309,7 +314,7 @@ class _SellState extends State<Sell> {
                         divisions: 3,
                         min: 0,
                         max: 3,
-                        label: conditions[condition.toInt()],
+                        label: global.currentLanguage == Language.eng ? conditions[condition.toInt()] : skick[condition.toInt()],
                       ),
                     ),
                   ],
@@ -460,14 +465,26 @@ class _SellState extends State<Sell> {
     final imageSource = await showDialog<ImageSource>(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text("Select the image source"),
+              title: Text(
+                global.currentLanguage == Language.eng
+                    ? "Select the image source"
+                    : "Välj bild källa",
+              ),
               actions: <Widget>[
                 MaterialButton(
-                  child: Text("Camera"),
+                  child: Text(
+                    global.currentLanguage == Language.eng
+                        ? "Camera"
+                        : 'Kamera',
+                  ),
                   onPressed: () => Navigator.pop(context, ImageSource.camera),
                 ),
                 MaterialButton(
-                  child: Text("Gallery"),
+                  child: Text(
+                    global.currentLanguage == Language.eng
+                        ? "Gallery"
+                        : 'Galleri',
+                  ),
                   onPressed: () => Navigator.pop(context, ImageSource.gallery),
                 )
               ],
