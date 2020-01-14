@@ -245,7 +245,7 @@ class _ProfileState extends State<Profile> {
               text: TextSpan(
             text: "Det finns ingen annons att visa",
             style: TextStyle(
-              color: Colors.black,
+              color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
               fontSize: 18.0,
               fontWeight: FontWeight.w400,
             ),
@@ -255,7 +255,9 @@ class _ProfileState extends State<Profile> {
           ),
           Text(
             "När du lägger till en annons visas det här",
-            style: TextStyle(),
+            style: TextStyle(
+              color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
+            ),
           )
         ],
       );
@@ -304,7 +306,7 @@ class _ProfileState extends State<Profile> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
                       shape: BoxShape.rectangle,
-                      color: Colors.white,
+                      color: global.darkModeActive == true ? Colors.grey[700] : Colors.white,
                       border: Border.all(
                         color: Colors.grey,
                         width: 4,

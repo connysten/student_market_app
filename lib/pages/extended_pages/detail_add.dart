@@ -21,20 +21,25 @@ class _DetailAddState extends State<DetailAdd> {
   MessagesDatabaseService _messagesDatabaseService = MessagesDatabaseService();
   String otherUser = "";
 
+  final conditions = ['Poor', 'Used', 'Barely used', 'As new'];
+  final skick = ['Dåligt', 'Använd', 'Knappt använd', 'Som ny'];
+  int index = 0;
+
   @override
   void initState() {
     getAddUserName().then((val) => setState(() {
           otherUser = val;
         }));
+    getConditionIndex();
   }
 
   Future getAddUserName() async {
-    var user = await _messagesDatabaseService.getUser(getUID());
+    var user = await _messagesDatabaseService.getUser(widget.snapshot['userid']);
     return user.displayName;
   }
 
-  String getUID() {
-    return widget.snapshot['userid'];
+  void getConditionIndex(){
+    index = conditions.indexOf(widget.snapshot['condition']);
   }
 
   @override
@@ -141,7 +146,7 @@ class _DetailAddState extends State<DetailAdd> {
                               : null),
                     ),
                     Text(
-                      "${widget.snapshot['condition']}",
+                      global.currentLanguage == global.Language.eng ? conditions[index] : skick[index],
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: global.darkModeActive == true
