@@ -14,16 +14,13 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookLogin _facebookLogin = FacebookLogin();
 
-
-  
-
-  Observable<FirebaseUser> user;
+  Observable<FirebaseUser> _user;
   Observable<Map<String, dynamic>> profile;
   PublishSubject loading = PublishSubject();
 
   AuthService() {
-    user = Observable(_auth.onAuthStateChanged);
-    profile = user.switchMap((FirebaseUser u) {
+    _user = Observable(_auth.onAuthStateChanged);
+    profile = _user.switchMap((FirebaseUser u) {
       if (u != null) {
         return _db
             .collection('users')
@@ -43,50 +40,56 @@ class AuthService {
     final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
     final AuthResult authResult = await _auth.signInWithCredential(credential);
-    FirebaseUser user = authResult.user;
+    FirebaseUser _user = authResult.user;
 
-    updateUserData(user);
-    print("Signed in " + user.displayName);
+    updateUserData(_user);
+    print("Signed in " + _user.displayName);
 
     loading.add(false);
-    return user;
+    return _user;
   }
 
-  Future<FirebaseUser> facebookHandleSignIn() async{
+  Future<FirebaseUser> facebookHandleSignIn() async {
     final FacebookLoginResult result = await _facebookLogin.logIn(['email']);
     final token = result.accessToken.token;
-    AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: token);
+    AuthCredential credential =
+        FacebookAuthProvider.getCredential(accessToken: token);
     final AuthResult authResult = await _auth.signInWithCredential(credential);
-    FirebaseUser user = authResult.user;
-    updateUserData(user);
+    FirebaseUser _user = authResult.user;
 
-    return user;
+    updateUserData(_user);
 
+    return _user;
   }
 
   void updateUserData(FirebaseUser user) async {
     DocumentReference ref = _db.collection('users').document(user.uid);
+    String photoUrl = user.photoUrl;
+    if(user.providerData[1].providerId == "facebook.com"){
+      photoUrl = "https://graph.facebook.com/" + user.uid + "/picture?height=500";
+    }
     return ref.setData({
       "uid": user.uid,
       "email": user.email,
-      "photoUrl": user.photoUrl,
+      "photoUrl": photoUrl,
       "displayName": user.displayName,
       "lastSeen": DateTime.now()
     }, merge: true);
   }
 
   Future<void> signOut(BuildContext context) async {
-    if(global.user.providerData[1].providerId == "google.com"){
+    if (global.user.providerData[1].providerId == "google.com") {
       await _googleSignIn.disconnect();
-    }
-    else if(global.user.providerData[1].providerId == "facebook.com"){
+    } else if (global.user.providerData[1].providerId == "facebook.com") {
       await _facebookLogin.logOut();
-    }
-    else{
+    } else {
 
     }
     global.user = null;
-
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute (builder: (context)=> Login()), ModalRoute.withName("/home"));
+    await _auth.signOut();
+    _user = null;
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => Login()),
+        ModalRoute.withName("/home"));
   }
 }
