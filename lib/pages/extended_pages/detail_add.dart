@@ -47,10 +47,10 @@ class _DetailAddState extends State<DetailAdd> {
     return Scaffold(
       backgroundColor: global.darkModeActive == true ? Colors.black87 : null,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: global.darkModeActive == true ? Colors.black : Colors.orange,
         title: Text(
           "Book For Sale",
-          style: TextStyle(color: Colors.black, fontSize: 24),
+          style: TextStyle(color: global.darkModeActive == true ? Colors.orange : Colors.black, fontSize: 24),
         ),
         centerTitle: true,
       ),
@@ -124,7 +124,7 @@ class _DetailAddState extends State<DetailAdd> {
                               : null),
                     ),
                     Text(
-                      "Uploaded: ${widget.snapshot['timestamp']}",
+                      global.currentLanguage == global.Language.eng ? "Uploaded: ${widget.snapshot['timestamp']}" : "Uppladdad: ${widget.snapshot['timestamp']}",
                       style: TextStyle(
                         color: global.darkModeActive == true
                             ? Colors.grey[700]
@@ -139,7 +139,7 @@ class _DetailAddState extends State<DetailAdd> {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      "Condition: ",
+                      global.currentLanguage == global.Language.eng ? "Condition: " : "Skick: ",
                       style: TextStyle(
                           color: global.darkModeActive == true
                               ? Colors.grey[300]
@@ -167,7 +167,7 @@ class _DetailAddState extends State<DetailAdd> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      "Description",
+                global.currentLanguage == global.Language.eng ? "Description: " : "Beskrivning: ",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -183,7 +183,7 @@ class _DetailAddState extends State<DetailAdd> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                      widget.snapshot['description'],
                       style: TextStyle(
                           fontSize: 16,
                           color: global.darkModeActive == true
@@ -244,7 +244,7 @@ class _DetailAddState extends State<DetailAdd> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
-                                "Send Message",
+                                global.currentLanguage == global.Language.eng ? "Send Message" : "Skicka Meddelande",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
