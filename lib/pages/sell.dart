@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:student_market_app/pages/extended_pages/detail_add.dart';
 import 'package:student_market_app/services/database.dart';
 import 'package:student_market_app/services/widgets/book_info.dart';
 import 'package:http/http.dart' as http;
@@ -385,8 +387,8 @@ class _SellState extends State<Sell> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      onPressed: () {
-                        DatabaseService().createAdd(
+                      onPressed: () async {
+                        var docRef = await DatabaseService().createAdd(
                           tempBook.title,
                           tempBook.creator,
                           tempBook.language,
@@ -397,7 +399,14 @@ class _SellState extends State<Sell> {
                           global.user.uid,
                           _image,
                         );
+                        var docSnap = await docRef.get();
                         reset();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailAdd(docSnap, 1),
+                          ),
+                        );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -419,81 +428,6 @@ class _SellState extends State<Sell> {
                   ),
                 ],
               ),
-              /*Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: RaisedButton(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        color: Colors.green[300],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        onPressed: () {
-                          DatabaseService().createAdd(
-                            tempBook.title,
-                            tempBook.creator,
-                            tempBook.language,
-                            int.parse(isbnController.text),
-                            double.parse(priceController.text),
-                            conditions[condition.toInt()],
-                            descriptionController.text,
-                            global.user.uid,
-                            _image,
-                          );
-                          reset();
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              global.currentLanguage == global.Language.eng
-                                  ? "Publish"
-                                  : "Publicera",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Icon(FontAwesomeIcons.paperPlane)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: RaisedButton(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        color: Colors.red[300],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        onPressed: reset,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              global.currentLanguage == global.Language.eng
-                                  ? "Reset"
-                                  : "Börja om",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Icon(FontAwesomeIcons.undoAlt)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),*/
               SizedBox(
                 height: 20,
               ),
