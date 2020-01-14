@@ -25,13 +25,14 @@ class _UserMessagesState extends State<UserMessages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: darkModeActive == true ? Colors.black : null,
       appBar: AppBar(
         title: Text(
           "Chats",
-          style: TextStyle(color: Colors.black, fontSize: 24),
+          style: TextStyle(color: darkModeActive == true ? Colors.orange : Colors.black, fontSize: 24),
         ),
         centerTitle: true,
-        backgroundColor: Colors.orange,
+        backgroundColor: darkModeActive == true ? Colors.black : Colors.orange,
       ),
       body: StreamBuilder(
         stream: _repo.getStream(),
@@ -72,16 +73,21 @@ class _UserMessagesState extends State<UserMessages> {
                           ),
                         ),
                         child: Container(
-                          color: Colors.white,
+                          color: darkModeActive == true ? Colors.grey[900] : Colors.white,
                           child: ListTile(
                             isThreeLine: true,
                             title: Text(
-                                snapshot.data[index].otherUser.displayName),
+                                snapshot.data[index].otherUser.displayName, style: TextStyle(
+                              color: darkModeActive == true ? Colors.white : null
+                            ),),
                             subtitle: Container(
                               width: double.infinity,
                               child: Text(
                                 snapshot.data[index].lastMessage,
                                 overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: darkModeActive == true ? Colors.grey : null
+                                ),
                               ),
                             ),
                             leading: CircleAvatar(

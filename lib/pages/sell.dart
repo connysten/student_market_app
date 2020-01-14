@@ -106,7 +106,8 @@ class _SellState extends State<Sell> {
                             ? "Numbers on the back of the book..."
                             : "Nummer på baksidan av boken...",
                         hintStyle: TextStyle(
-                            fontStyle: FontStyle.italic, fontSize: 12),
+                            fontStyle: FontStyle.italic, fontSize: 12,
+                        color: global.darkModeActive == true ? Colors.grey[600] : null,),
                         labelText: "ISBN",
                         labelStyle: TextStyle(color: Colors.grey[600]),
                         enabledBorder: OutlineInputBorder(
@@ -125,6 +126,9 @@ class _SellState extends State<Sell> {
                         ),
                       ),
                       keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        color: global.darkModeActive == true ? Colors.grey[400] : null,
+                      ),
                     ),
                   ),
                 ],
@@ -311,6 +315,9 @@ class _SellState extends State<Sell> {
                     color: Colors.orange,
                   ),
                 ),
+                style: TextStyle(
+                  color: global.darkModeActive == true ? Colors.grey[400] : null,
+                ),
               ),
               SizedBox(
                 height: 20,
@@ -378,6 +385,9 @@ class _SellState extends State<Sell> {
                     FontAwesomeIcons.scroll,
                     color: Colors.orange,
                   ),
+                ),
+                style: TextStyle(
+                  color: global.darkModeActive == true ? Colors.grey[400] : null,
                 ),
               ),
               SizedBox(

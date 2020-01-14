@@ -151,7 +151,7 @@ class _SearchPageState extends State<SearchPage> {
                 child: Container(
                   height: 84,
                   color: global.darkModeActive == true
-                      ? Colors.black54
+                      ? Colors.transparent
                       : Colors.white,
                   child: Center(
                     child: ListTile(

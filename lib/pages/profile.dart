@@ -234,9 +234,9 @@ class _ProfileState extends State<Profile> {
     if (global.currentLanguage == global.Language.swe) {
       return Column(
         children: <Widget>[
-          SizedBox(
+          /*SizedBox(
             height: 30,
-          ),
+          ),*/
           RichText(
               text: TextSpan(
             text: "Det finns ingen annons att visa",
@@ -291,7 +291,7 @@ class _ProfileState extends State<Profile> {
   Widget _buildListView(Size screenSize) {
     return Container(
         margin: EdgeInsets.symmetric(vertical: 20.0),
-        height: screenSize.height / 4.5,
+        height: screenSize.height / 4,
         child: StreamBuilder(
           stream: Firestore.instance
               .collection('Annons')

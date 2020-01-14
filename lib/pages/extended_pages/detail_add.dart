@@ -45,7 +45,7 @@ class _DetailAddState extends State<DetailAdd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: global.darkModeActive == true ? Colors.black87 : null,
+      backgroundColor: global.darkModeActive == true ? Colors.grey[900] : null,
       appBar: AppBar(
         backgroundColor: global.darkModeActive == true ? Colors.black : Colors.orange,
         title: Text(
@@ -61,7 +61,7 @@ class _DetailAddState extends State<DetailAdd> {
             children: <Widget>[
               Container(
                 color: global.darkModeActive == true
-                    ? Colors.grey[900]
+                    ? Colors.grey[800]
                     : Colors.grey[300],
                 child: Row(
                   children: <Widget>[

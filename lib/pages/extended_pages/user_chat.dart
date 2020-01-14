@@ -101,13 +101,14 @@ class _UserChatState extends State<UserChat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: darkModeActive == true ? Colors.grey[900] : null,
       appBar: AppBar(
+        backgroundColor: darkModeActive == true ? Colors.black : Colors.orange,
         title: Text(
           "Chat",
-          style: TextStyle(color: Colors.black, fontSize: 24),
+          style: TextStyle(color: darkModeActive == true ? Colors.orange : Colors.black, fontSize: 24,),
         ),
         centerTitle: true,
-        backgroundColor: Colors.orange,
       ),
       body: SafeArea(
         child: Column(
@@ -153,7 +154,7 @@ class _UserChatState extends State<UserChat> {
               ),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+              margin: EdgeInsets.fromLTRB(10, 5, 0, 5),
               padding: EdgeInsets.symmetric(horizontal: 1),
               height: 40,
               width: MediaQuery.of(context).size.width,
@@ -166,9 +167,15 @@ class _UserChatState extends State<UserChat> {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 15),
                         hintText: "Type Here...",
+                        hintStyle: TextStyle(
+                          color: darkModeActive == true ? Colors.grey[600] : null,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
+                      ),
+                      style: TextStyle(
+                        color: darkModeActive == true ? Colors.white : null,
                       ),
                     ),
                   ),
