@@ -351,6 +351,36 @@ class _SellState extends State<Sell> {
                     width: MediaQuery.of(context).size.width,
                     child: RaisedButton(
                       padding: EdgeInsets.symmetric(vertical: 15),
+                      color: Colors.grey[200],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      onPressed: reset,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            global.currentLanguage == global.Language.eng
+                                ? "Clear"
+                                : "Återställ",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(FontAwesomeIcons.undoAlt)
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: RaisedButton(
+                      padding: EdgeInsets.symmetric(vertical: 15),
                       color: Colors.green[300],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -367,7 +397,7 @@ class _SellState extends State<Sell> {
                           global.user.uid,
                           _image,
                         );
-                        //reset();
+                        reset();
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -509,12 +539,10 @@ class _SellState extends State<Sell> {
               ],
             ));
 
-
-
     if (imageSource != null) {
       final file = await ImagePicker.pickImage(source: imageSource);
       if (file != null) {
-          setState(() => _image = file);
+        setState(() => _image = file);
       }
     }
   }
