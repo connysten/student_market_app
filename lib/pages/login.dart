@@ -56,10 +56,11 @@ class _LoginState extends State<Login> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             LoginButton(
-                                iconColor: Color(0xff4caf50),
-                                text: "Sign in with Email",
-                                iconData: FontAwesomeIcons.solidEnvelope,
-                                function: () {}),
+                              iconColor: Color(0xff4caf50),
+                              text: "Sign in with Email",
+                              iconData: FontAwesomeIcons.solidEnvelope,
+                              function: () {},
+                            ),
                             SizedBox(
                               height: 20,
                             ),
