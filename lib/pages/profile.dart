@@ -165,12 +165,9 @@ class _ProfileState extends State<Profile> {
                   border: Border.all(),
                 ),
                 child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      "Log out",
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
+                  child: Text( 
+                    "Log out",
+                    style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
