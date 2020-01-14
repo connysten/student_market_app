@@ -47,7 +47,7 @@ class _DetailAddState extends State<DetailAdd> {
                   children: <Widget>[
                     Expanded(
                       child: GestureDetector(
-                        child: new Hero(
+                        child: Hero(
                           tag: 'Add${widget.index}',
                           child: LayoutBuilder(
                             builder: (BuildContext context,

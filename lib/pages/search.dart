@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_market_app/services/add.dart';
+import 'package:student_market_app/services/annons_bloc.dart';
 import 'package:student_market_app/services/database.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:student_market_app/pages/extended_pages/detail_add.dart';
@@ -16,13 +17,19 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  static final TextEditingController _filter = new TextEditingController();
-  FocusNode _textFocus = new FocusNode();
+  static final TextEditingController _filter = TextEditingController();
+  ScrollController _scroll = ScrollController();
+  FocusNode _textFocus = FocusNode();
+  AnnonsBloc _annonsBloc;
 
   @override
   void initState() {
     _filter.addListener(onChange);
     super.initState();
+    _annonsBloc = AnnonsBloc();
+    _annonsBloc.fetchFirstList("");
+    _scroll.addListener(_scrollListener);
+
   }
 
   @override
@@ -48,6 +55,7 @@ class _SearchPageState extends State<SearchPage> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: TextFormField(
+                    onChanged:(value) => _annonsBloc.fetchFirstList(value),
                     controller: _filter,
                     focusNode: _textFocus,
                     style: TextStyle(color: Colors.white),
@@ -87,11 +95,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Container(
         child: SafeArea(
-          child: ListView(
-            children: <Widget>[
-              _buildListView(),
-            ],
-          ),
+          child: _buildListView(),
         ),
       ),
     );
@@ -108,14 +112,21 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _buildListView() {
     return Container(
-      child: FutureBuilder(
-        future: DatabaseService().filterAdds(_SearchPageState._filter.text),
+      child: StreamBuilder(
+        stream: _annonsBloc.annonsStream,// DatabaseService().filterAdds(_SearchPageState._filter.text),
         //DatabaseService().query(_SearchPageState._filter.text),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Column(
+            return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.grey[300],
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                strokeWidth: 5,
+              ),
+            );
+            /*return Column(
               children: <Widget>[
-                Flexible(
+                Expanded(
                     child: Center(
                         child: CircularProgressIndicator(
                   backgroundColor: Colors.grey[300],
@@ -123,12 +134,13 @@ class _SearchPageState extends State<SearchPage> {
                   strokeWidth: 5,
                 ))),
               ],
-            );
+            );*/
           }
           return ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemCount: snapshot.data.toList().length,
+            controller: _scroll,
             itemBuilder: (context, index) {
               return Card(
                 color: global.darkModeActive == true
@@ -144,11 +156,9 @@ class _SearchPageState extends State<SearchPage> {
                         maxWidth: 84,
                         maxHeight: 64,
                       ),
-                      child: Hero(
-                        tag: 'Add$index',
-                        child: CachedNetworkImage(
-                            imageUrl: snapshot.data[index]['imageUrl'],
-                            fit: BoxFit.cover),
+                      child: CachedNetworkImage(
+                        imageUrl: snapshot.data[index]['imageUrl'],
+                        fit: BoxFit.cover,
                       ),
                     ),
                     title: Container(
@@ -170,9 +180,13 @@ class _SearchPageState extends State<SearchPage> {
                               : Colors.black),
                     ),
                     trailing: Text(
-                        '${snapshot.data[index]['price'].toString()} kr', style: TextStyle(
-                      color: global.darkModeActive == true ? Colors.white : Colors.black,
-                    ),),
+                      '${snapshot.data[index]['price'].toString()} kr',
+                      style: TextStyle(
+                        color: global.darkModeActive == true
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                    ),
                     onTap: () {
                       /*Navigator.push(context, MaterialPageRoute(builder: (_) {
                     return DetailAddScreen(snapshot.data[index], index);
@@ -191,6 +205,13 @@ class _SearchPageState extends State<SearchPage> {
         },
       ),
     );
+  }
+
+  void _scrollListener() {
+    if (_scroll.offset >= _scroll.position.maxScrollExtent &&
+        !_scroll.position.outOfRange) {
+      _annonsBloc.fetchNextAnnons();
+    }
   }
 }
 
