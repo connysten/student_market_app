@@ -13,15 +13,14 @@ class AuthService {
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookLogin _facebookLogin = FacebookLogin();
-  
 
-  Observable<FirebaseUser> user;
+  Observable<FirebaseUser> _user;
   Observable<Map<String, dynamic>> profile;
   PublishSubject loading = PublishSubject();
 
   AuthService() {
-    user = Observable(_auth.onAuthStateChanged);
-    profile = user.switchMap((FirebaseUser u) {
+    _user = Observable(_auth.onAuthStateChanged);
+    profile = _user.switchMap((FirebaseUser u) {
       if (u != null) {
         return _db
             .collection('users')
@@ -41,26 +40,26 @@ class AuthService {
     final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
     final AuthResult authResult = await _auth.signInWithCredential(credential);
-    FirebaseUser user = authResult.user;
+    FirebaseUser _user = authResult.user;
 
-    updateUserData(user);
-    print("Signed in " + user.displayName);
+    updateUserData(_user);
+    print("Signed in " + _user.displayName);
 
     loading.add(false);
-    return user;
+    return _user;
   }
 
-  Future<FirebaseUser> facebookHandleSignIn() async{
+  Future<FirebaseUser> facebookHandleSignIn() async {
     final FacebookLoginResult result = await _facebookLogin.logIn(['email']);
     final token = result.accessToken.token;
-    AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: token);
+    AuthCredential credential =
+        FacebookAuthProvider.getCredential(accessToken: token);
     final AuthResult authResult = await _auth.signInWithCredential(credential);
-    FirebaseUser user = authResult.user;
+    FirebaseUser _user = authResult.user;
 
-    updateUserData(user);
+    updateUserData(_user);
 
-    return user;
-
+    return _user;
   }
 
   void updateUserData(FirebaseUser user) async {
@@ -76,8 +75,18 @@ class AuthService {
   }
 
   Future<void> signOut(BuildContext context) async {
+    if (global.user.providerData[1].providerId == "google.com") {
+      await _googleSignIn.disconnect();
+    } else if (global.user.providerData[1].providerId == "facebook.com") {
+      await _facebookLogin.logOut();
+    } else {
+
+    }
     global.user = null;
-    await _googleSignIn.disconnect();
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute (builder: (context)=> Login()), ModalRoute.withName("/home"));
+    await _auth.signOut();
+    _user = null;
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => Login()),
+        ModalRoute.withName("/home"));
   }
 }

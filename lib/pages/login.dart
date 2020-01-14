@@ -68,9 +68,14 @@ class _LoginState extends State<Login> {
                               text: "Sign in with Google",
                               iconData: FontAwesomeIcons.google,
                               function: () async {
-                                global.user = await global.authService.googleHandleSignIn();
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => Home()));
+                                global.user = await global.authService
+                                    .googleHandleSignIn();
+                                    if(global.user != null){
+                                      Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Home()));
+                                    }
                               },
                             ),
                             SizedBox(
@@ -81,9 +86,12 @@ class _LoginState extends State<Login> {
                               text: "Sign in with Facebook",
                               iconData: FontAwesomeIcons.facebookF,
                               function: () async {
-                                global.user = await global.authService.facebookHandleSignIn();
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => Home()));
+                                global.user = await global.authService
+                                    .facebookHandleSignIn();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Home()));
                               },
                             ),
                           ],
