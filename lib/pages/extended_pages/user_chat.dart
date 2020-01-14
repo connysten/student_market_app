@@ -145,6 +145,10 @@ class _UserChatState extends State<UserChat> {
               ),
             ),
             Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+              padding: EdgeInsets.symmetric(horizontal: 1),
+              height: 40,
+              width: MediaQuery.of(context).size.width,
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -152,16 +156,15 @@ class _UserChatState extends State<UserChat> {
                       onSubmitted: (value) => callback(),
                       controller: messageController,
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
                         hintText: "Type Here...",
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 5,
-                  ),
+
                   SendButton(
                     callback: callback,
                   )

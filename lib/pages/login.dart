@@ -23,8 +23,7 @@ class _LoginState extends State<Login> {
               color: Colors.orange[300],
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              child: Image.network(
-                  "https://whitearkitekter.com/se/wp-content/uploads/sites/3/2019/01/Malardalens-Hogskola-White-Arkitekter-08-3.4-840x1120.jpg",
+              child: Image.asset("assets/mdh-library.jpg",
                   fit: BoxFit.fill,
                   color: Color.fromRGBO(255, 255, 255, 0.1),
                   colorBlendMode: BlendMode.modulate),

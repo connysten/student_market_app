@@ -36,16 +36,17 @@ class _SearchPageState extends State<SearchPage> {
         backgroundColor:
             global.darkModeActive == true ? Colors.black : Colors.orange,
         title: Container(
+          height: 40,
           decoration: BoxDecoration(
             color: Color.fromARGB(50, 255, 255, 255),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(30)),
           ),
           child: Row(
             children: <Widget>[
               Expanded(
                 flex: 1,
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: TextFormField(
                     controller: _filter,
                     focusNode: _textFocus,
@@ -55,7 +56,6 @@ class _SearchPageState extends State<SearchPage> {
                       hintText: global.currentLanguage == global.Language.eng
                           ? "Search"
                           : "Sök",
-                      icon: Icon(Icons.search, color: Colors.white),
                       hintStyle: TextStyle(
                           color: Colors.white, fontStyle: FontStyle.italic),
                     ),
