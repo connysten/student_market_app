@@ -294,7 +294,7 @@ class _SellState extends State<Sell> {
                   children: <Widget>[
                     Text(global.currentLanguage == global.Language.eng
                         ? 'Condition: '
-                        : "Skick"),
+                        : "Skick: ", style: TextStyle(fontSize: 16, color: Colors.grey[600]),),
                     Expanded(
                       child: Slider(
                         activeColor: Colors.orange,

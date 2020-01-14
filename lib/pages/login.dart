@@ -71,12 +71,12 @@ class _LoginState extends State<Login> {
                               function: () async {
                                 global.user = await global.authService
                                     .googleHandleSignIn();
-                                    if(global.user != null){
-                                      Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Home()));
-                                    }
+                                if (global.user != null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
+                                }
                               },
                             ),
                             SizedBox(
@@ -89,10 +89,12 @@ class _LoginState extends State<Login> {
                               function: () async {
                                 global.user = await global.authService
                                     .facebookHandleSignIn();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Home()));
+                                if (global.user != null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
+                                }
                               },
                             ),
                           ],
