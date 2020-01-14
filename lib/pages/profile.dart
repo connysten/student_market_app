@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/painting.dart';
 import './extended_pages/user_messages.dart';
 import '../global.dart' as global;
@@ -64,9 +65,7 @@ class _ProfileState extends State<Profile> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
       decoration: BoxDecoration(
-        color: Theme
-            .of(context)
-            .scaffoldBackgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Text(
@@ -91,9 +90,45 @@ class _ProfileState extends State<Profile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _buildStatItem("Views", "77"),
-          _buildStatItem("Active Ads", "4"),
-          _buildStatItem("Member since", "2018/11/22"),
+          IconButton(
+            splashColor: Colors.deepOrange,
+            onPressed: () {
+              if(global.darkModeActive == true){
+                global.darkModeActive = false;
+                setState(() {
+
+                });
+              }
+              else{
+                global.darkModeActive = true;
+                setState(() {
+
+                });
+              }
+            },
+            color: Colors.black,
+            icon: Icon(FontAwesomeIcons.sun),
+            tooltip: "Dark Mode",
+          ),
+          IconButton(
+            onPressed: () {
+              if(global.currentLanguage == global.Language.swe){
+                global.currentLanguage = global.Language.eng;
+                setState(() {
+
+                });
+              }
+              else{
+                global.currentLanguage = global.Language.swe;
+                setState(() {
+
+                });
+              }
+            },
+            splashColor: Colors.deepOrange,
+            icon: Icon(Icons.language),
+            tooltip: "ENG",
+          ),
         ],
       ),
     );
@@ -169,9 +204,8 @@ class _ProfileState extends State<Profile> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              onTap: () =>
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UserMessages())),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserMessages())),
               child: Container(
                 height: screenSize.height / 20,
                 decoration: BoxDecoration(
@@ -198,10 +232,7 @@ class _ProfileState extends State<Profile> {
                 child: Center(
                   child: Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      "Log out",
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
+                    child: _buttonLogout(),
                   ),
                 ),
               ),
@@ -221,13 +252,13 @@ class _ProfileState extends State<Profile> {
           ),
           RichText(
               text: TextSpan(
-                text: "Det finns ingen annons att visa",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              )),
+            text: "Det finns ingen annons att visa",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18.0,
+              fontWeight: FontWeight.w400,
+            ),
+          )),
           SizedBox(
             height: 15,
           ),
@@ -237,8 +268,7 @@ class _ProfileState extends State<Profile> {
           )
         ],
       );
-    }
-    else if (global.currentLanguage == global.Language.eng) {
+    } else if (global.currentLanguage == global.Language.eng) {
       return Column(
         children: <Widget>[
           SizedBox(
@@ -246,13 +276,13 @@ class _ProfileState extends State<Profile> {
           ),
           RichText(
               text: TextSpan(
-                text: "You currently don't have a post to show",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              )),
+            text: "You currently don't have a post to show",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18.0,
+              fontWeight: FontWeight.w400,
+            ),
+          )),
           SizedBox(
             height: 15,
           ),
@@ -277,9 +307,7 @@ class _ProfileState extends State<Profile> {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Text("Loading...");
-            } else if (snapshot.data.documents
-                .toList()
-                .length == 0) {
+            } else if (snapshot.data.documents.toList().length == 0) {
               return Container(
                   padding: EdgeInsets.all(5.0),
                   decoration: BoxDecoration(
@@ -290,14 +318,11 @@ class _ProfileState extends State<Profile> {
                         color: Colors.grey,
                         width: 4,
                       )),
-                  child: _tempContainer()
-              );
+                  child: _tempContainer());
             }
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data.documents
-                    .toList()
-                    .length,
+                itemCount: snapshot.data.documents.toList().length,
                 itemBuilder: (context, index) {
                   return _buildListItem(
                       context, snapshot.data.documents[index], index);
@@ -306,8 +331,8 @@ class _ProfileState extends State<Profile> {
         ));
   }
 
-  Widget _buildListItem(BuildContext context, DocumentSnapshot document,
-      int index) {
+  Widget _buildListItem(
+      BuildContext context, DocumentSnapshot document, int index) {
     return Container(
       width: 160.0,
       child: Card(
@@ -330,9 +355,15 @@ class _ProfileState extends State<Profile> {
                         builder: (context) => EditEntry(index, document)));
               },
             ),
+            global.currentLanguage == global.Language.eng ?
             ListTile(
               title: Text(document["title"]),
               subtitle: Text("Price: " + (document["price"]).toString()),
+            )
+              :
+            ListTile(
+              title: Text(document["title"]),
+              subtitle: Text("Pris: " + (document["price"]).toString()),
             )
           ],
         ),
@@ -342,9 +373,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery
-        .of(context)
-        .size;
+    Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
         children: <Widget>[

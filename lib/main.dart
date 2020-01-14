@@ -63,14 +63,15 @@ class _HomeState extends State<Home> {
               icon: Icon(
                 FontAwesomeIcons.home,
               ),
-              title: Text("Discover")),
+              title: Text(global.currentLanguage == global.Language.eng ?"Discover"
+              :"Utforska")),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.plus),
-            title: Text("Sell"),
+            title: Text(global.currentLanguage == global.Language.eng ? "Sell" : "Sälj"),
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.userAlt),
-            title: Text("Profil"),
+            title: Text(global.currentLanguage == global.Language.eng ? "Profile" : "Profil"),
           ),
         ],
       ),

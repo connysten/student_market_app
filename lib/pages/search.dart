@@ -7,9 +7,11 @@ import 'package:student_market_app/services/add.dart';
 import 'package:student_market_app/services/database.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:student_market_app/pages/extended_pages/detail_add.dart';
+import '../global.dart' as global;
 
 class SearchPage extends StatefulWidget {
   SearchPage({Key key}) : super(key: key);
+
   _SearchPageState createState() => _SearchPageState();
 }
 
@@ -47,7 +49,9 @@ class _SearchPageState extends State<SearchPage> {
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "Search",
+                      hintText: global.currentLanguage == global.Language.eng
+                          ? "Search"
+                          : "Sök",
                       icon: Icon(Icons.search, color: Colors.white),
                       hintStyle: TextStyle(
                           color: Colors.white, fontStyle: FontStyle.italic),
