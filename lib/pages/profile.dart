@@ -7,6 +7,7 @@ import './extended_pages/user_messages.dart';
 import '../global.dart' as global;
 import '../auth_service.dart';
 import 'package:student_market_app/pages/extended_pages/empty_nav.dart';
+
 //import 'package:student_market_app/services/user_details.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -240,7 +241,9 @@ class _ProfileState extends State<Profile> {
               text: TextSpan(
             text: "Det finns ingen annons att visa",
             style: TextStyle(
-              color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
+              color: global.darkModeActive == true
+                  ? Colors.grey[400]
+                  : Colors.black,
               fontSize: 18.0,
               fontWeight: FontWeight.w400,
             ),
@@ -251,7 +254,9 @@ class _ProfileState extends State<Profile> {
           Text(
             "När du lägger till en annons visas det här",
             style: TextStyle(
-              color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
+              color: global.darkModeActive == true
+                  ? Colors.grey[400]
+                  : Colors.black,
             ),
           )
         ],
@@ -301,10 +306,12 @@ class _ProfileState extends State<Profile> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
                       shape: BoxShape.rectangle,
-                      color: global.darkModeActive == true ? Colors.grey[700] : Colors.white,
+                      color: global.darkModeActive == true
+                          ? Colors.grey[800]
+                          : Color(0xFFEFF4F7),
                       border: Border.all(
                         color: Colors.grey,
-                        width: 4,
+                        width: 2,
                       )),
                   child: _tempContainer());
             }
