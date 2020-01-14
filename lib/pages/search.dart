@@ -72,7 +72,7 @@ class _SearchPageState extends State<SearchPage> {
               Expanded(
                 flex: 0,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: EdgeInsets.symmetric(horizontal: 6.0),
                   child: Row(
                     children: <Widget>[
                       IconButton(
