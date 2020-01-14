@@ -121,7 +121,7 @@ class _DetailAddState extends State<DetailAdd> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Divider(
-                  color: Colors.orange[400],
+                  color: Colors.grey[400],
                 ),
               ),
               Padding(
@@ -159,6 +159,7 @@ class _DetailAddState extends State<DetailAdd> {
                     ),),
                     Text("Dennis Tagesson",style: TextStyle(
                       fontSize: 20,
+                      letterSpacing: 1
                     ),)
                   ],
                 ),
@@ -166,7 +167,7 @@ class _DetailAddState extends State<DetailAdd> {
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Divider(color: Colors.orange[300],),
+                child: Divider(color: Colors.grey[400],),
               ),
 
               Row(

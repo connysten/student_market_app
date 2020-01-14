@@ -68,7 +68,7 @@ class _LoginState extends State<Login> {
                               text: "Sign in with Google",
                               iconData: FontAwesomeIcons.google,
                               function: () async {
-                                global.user = await global.authService.handleSignIn();
+                                global.user = await global.authService.googleHandleSignIn();
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) => Home()));
                               },
@@ -80,7 +80,11 @@ class _LoginState extends State<Login> {
                               iconColor: Color(0xff4754de),
                               text: "Sign in with Facebook",
                               iconData: FontAwesomeIcons.facebookF,
-                              function: () {},
+                              function: () async {
+                                global.user = await global.authService.facebookHandleSignIn();
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => Home()));
+                              },
                             ),
                           ],
                         ),
