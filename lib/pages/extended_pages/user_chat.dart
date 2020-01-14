@@ -15,10 +15,17 @@ class UserChat extends StatefulWidget {
 class _UserChatState extends State<UserChat> {
   TextEditingController messageController = TextEditingController();
   ScrollController scrollController = ScrollController();
+  Stream chatStream;
 
   initState() {
     super.initState();
     checkChatId();
+    chatStream = Firestore.instance
+        .collection('chats')
+        .document(widget.chat.chatId)
+        .collection('messages')
+        .orderBy('timestamp', descending: false)
+        .snapshots();
   }
 
   Future<void> callback() async {
@@ -36,7 +43,15 @@ class _UserChatState extends State<UserChat> {
           "from": user.displayName,
           "timestamp": DateTime.now()
         });
-        widget.chat.chatId = docRef.documentID;
+        setState(() {
+          widget.chat.chatId = docRef.documentID;
+          chatStream = Firestore.instance
+              .collection('chats')
+              .document(widget.chat.chatId)
+              .collection('messages')
+              .orderBy('timestamp', descending: false)
+              .snapshots();
+        });
       } else {
         await Firestore.instance
             .collection("chats")
@@ -101,23 +116,17 @@ class _UserChatState extends State<UserChat> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: widget.chat.chatId != null
-                    ? StreamBuilder<QuerySnapshot>(
-                        stream: Firestore.instance
-                            .collection('chats')
-                            .document(widget.chat.chatId)
-                            .collection('messages')
-                            .orderBy('timestamp', descending: false)
-                            .snapshots(),
+                child: StreamBuilder<QuerySnapshot>(
+                        stream: chatStream,
                         builder: (context, snapshot) {
                           if (!snapshot.hasData)
                             return Center(
-                                child: CircularProgressIndicator(
-                                  backgroundColor: Colors.grey[300],
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.grey),
-                                  strokeWidth: 8,
-                                ),
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.grey[300],
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.grey),
+                                strokeWidth: 8,
+                              ),
                             );
 
                           List<DocumentSnapshot> docs = snapshot.data.documents;
@@ -140,8 +149,7 @@ class _UserChatState extends State<UserChat> {
                             ],
                           );
                         },
-                      )
-                    : Container(),
+                      ),
               ),
             ),
             Container(
@@ -214,11 +222,12 @@ class SendButton extends StatelessWidget {
   final VoidCallback callback;
 
   const SendButton({Key key, this.callback}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
         icon: Icon(Icons.send),
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        //padding: EdgeInsets.symmetric(horizontal: 0),
         color: Colors.orange,
         onPressed: callback);
   }

@@ -226,10 +226,7 @@ class _ProfileState extends State<Profile> {
                   border: Border.all(),
                 ),
                 child: Center(
-                  child: Text( 
-                    "Log out",
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
+                  child: _buttonLogout(),
                 ),
               ),
             ),
