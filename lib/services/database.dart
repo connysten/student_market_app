@@ -25,7 +25,7 @@ class DatabaseService {
     var tempUrl = await addImage(image, title);
     var imageUrl = tempUrl.toString();
     DateTime now = DateTime.now();
-    String formattedDate = DateFormat('kk:mm d MMM').format(now);
+    String formattedDate = DateFormat('d MMM yy').format(now);
     return await addCollection.add({
       'title': title,
       'author': author,

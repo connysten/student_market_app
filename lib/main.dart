@@ -49,8 +49,12 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedPage,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.orange,
-        selectedItemColor: Colors.black,
+        unselectedItemColor:
+            global.darkModeActive == true ? Colors.grey : Colors.black,
+        backgroundColor:
+            global.darkModeActive == true ? Colors.black : Colors.orange,
+        selectedItemColor:
+            global.darkModeActive == true ? Colors.white : Colors.black,
         selectedIconTheme: IconThemeData(size: 30),
         selectedFontSize: 14,
         onTap: (index) {
@@ -63,14 +67,20 @@ class _HomeState extends State<Home> {
               icon: Icon(
                 FontAwesomeIcons.home,
               ),
-              title: Text("Discover")),
+              title: Text(global.currentLanguage == global.Language.eng
+                  ? "Discover"
+                  : "Utforska")),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.plus),
-            title: Text("Sell"),
+            title: Text(global.currentLanguage == global.Language.eng
+                ? "Sell"
+                : "Sälj"),
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.userAlt),
-            title: Text("Profil"),
+            title: Text(global.currentLanguage == global.Language.eng
+                ? "Profile"
+                : "Profil"),
           ),
         ],
       ),

@@ -8,10 +8,11 @@ import 'package:student_market_app/services/database.dart';
 import 'package:student_market_app/services/widgets/book_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import '../global.dart';
+import '../global.dart' as global;
 
 class Sell extends StatefulWidget {
   Sell({Key key}) : super(key: key);
+
   @override
   _SellState createState() => _SellState();
 }
@@ -44,6 +45,7 @@ class _SellState extends State<Sell> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
+          color: global.darkModeActive == true ? Colors.grey : Colors.white,
           width: double.infinity,
           padding: EdgeInsets.all(10),
           child: Column(
@@ -70,7 +72,9 @@ class _SellState extends State<Sell> {
                               width: 3,
                             ),
                             Text(
-                              "Add photo",
+                              global.currentLanguage == global.Language.eng
+                                  ? "Add photo"
+                                  : "Lägg till foto",
                               style: TextStyle(
                                   color: Colors.grey[600], fontSize: 18),
                             ),
@@ -132,7 +136,9 @@ class _SellState extends State<Sell> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Scan ISBN",
+                        global.currentLanguage == global.Language.eng
+                            ? "Scan ISBN"
+                            : "Skanna ISBN",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -164,34 +170,58 @@ class _SellState extends State<Sell> {
                             return Column(
                               children: <Widget>[
                                 BookInfo(
-                                    first: "Title:",
+                                    first: global.currentLanguage ==
+                                            global.Language.eng
+                                        ? "Title:"
+                                        : "Titel",
                                     second: snapshot.data.title),
                                 Divider(
                                   height: 20,
                                 ),
                                 BookInfo(
-                                    first: "Author:",
+                                    first: global.currentLanguage ==
+                                            global.Language.eng
+                                        ? "Author:"
+                                        : "Författare",
                                     second: snapshot.data.creator),
                                 Divider(
                                   height: 20,
                                 ),
                                 BookInfo(
-                                    first: "Language:",
+                                    first: global.currentLanguage ==
+                                            global.Language.eng
+                                        ? "Language:"
+                                        : "Språk",
                                     second: snapshot.data.language),
                               ],
                             );
                           } else {
                             return Column(
                               children: <Widget>[
-                                BookInfo(first: "Title:", second: ""),
+                                BookInfo(
+                                    first: global.currentLanguage ==
+                                            global.Language.eng
+                                        ? "Title:"
+                                        : "Titel",
+                                    second: ""),
                                 Divider(
                                   height: 20,
                                 ),
-                                BookInfo(first: "Author:", second: ""),
+                                BookInfo(
+                                    first: global.currentLanguage ==
+                                            global.Language.eng
+                                        ? "Author:"
+                                        : "Författe",
+                                    second: ""),
                                 Divider(
                                   height: 20,
                                 ),
-                                BookInfo(first: "Language:", second: ""),
+                                BookInfo(
+                                    first: global.currentLanguage ==
+                                            global.Language.eng
+                                        ? "Language:"
+                                        : "Språk",
+                                    second: ""),
                               ],
                             );
                           }
@@ -199,15 +229,30 @@ class _SellState extends State<Sell> {
                       )
                     : Column(
                         children: <Widget>[
-                          BookInfo(first: "Title:", second: ""),
+                          BookInfo(
+                              first:
+                                  global.currentLanguage == global.Language.eng
+                                      ? "Title:"
+                                      : "Titel",
+                              second: ""),
                           Divider(
                             height: 20,
                           ),
-                          BookInfo(first: "Author:", second: ""),
+                          BookInfo(
+                              first:
+                                  global.currentLanguage == global.Language.eng
+                                      ? "Author:"
+                                      : "Författare",
+                              second: ""),
                           Divider(
                             height: 20,
                           ),
-                          BookInfo(first: "Language:", second: ""),
+                          BookInfo(
+                              first:
+                                  global.currentLanguage == global.Language.eng
+                                      ? "Language:"
+                                      : "Språk",
+                              second: ""),
                         ],
                       ),
               ),
@@ -219,7 +264,9 @@ class _SellState extends State<Sell> {
                 maxLines: 1,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: "Price",
+                  labelText: global.currentLanguage == global.Language.eng
+                      ? "Price"
+                      : "Pris",
                   labelStyle: TextStyle(color: Colors.grey[600]),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -245,7 +292,9 @@ class _SellState extends State<Sell> {
                 padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                 child: Row(
                   children: <Widget>[
-                    Text('Condition: '),
+                    Text(global.currentLanguage == global.Language.eng
+                        ? 'Condition: '
+                        : "Skick"),
                     Expanded(
                       child: Slider(
                         activeColor: Colors.orange,
@@ -273,7 +322,9 @@ class _SellState extends State<Sell> {
                 minLines: 5,
                 maxLength: 255,
                 decoration: InputDecoration(
-                  labelText: "Description",
+                  labelText: global.currentLanguage == global.Language.eng
+                      ? "Description"
+                      : "Beskrivning",
                   labelStyle: TextStyle(color: Colors.grey[600]),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -307,15 +358,15 @@ class _SellState extends State<Sell> {
                         ),
                         onPressed: () {
                           DatabaseService().createAdd(
-                              tempBook.title,
-                              tempBook.creator,
-                              tempBook.language,
-                              int.parse(isbnController.text),
-                              double.parse(priceController.text),
-                              conditions[condition.toInt()],
-                              descriptionController.text,
-                              user.uid,
-                              _image,
+                            tempBook.title,
+                            tempBook.creator,
+                            tempBook.language,
+                            int.parse(isbnController.text),
+                            double.parse(priceController.text),
+                            conditions[condition.toInt()],
+                            descriptionController.text,
+                            global.user.uid,
+                            _image,
                           );
                           reset();
                         },
@@ -323,7 +374,9 @@ class _SellState extends State<Sell> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              "Publish",
+                              global.currentLanguage == global.Language.eng
+                                  ? "Publish"
+                                  : "Publicera",
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
@@ -350,7 +403,9 @@ class _SellState extends State<Sell> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              "Reset",
+                              global.currentLanguage == global.Language.eng
+                                  ? "Reset"
+                                  : "Börja om",
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
@@ -448,7 +503,6 @@ class Book {
         book['title'].toString().replaceAll('[Elektronisk resurs]', '');
 
     if (author.length == 1) {
-
       return Book(
           creator: author[0], title: bookTitle, language: book['language']);
     } else {

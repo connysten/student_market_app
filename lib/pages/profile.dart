@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/painting.dart';
+import 'package:student_market_app/main.dart';
+import 'package:student_market_app/pages/search.dart';
 import './extended_pages/user_messages.dart';
 import '../global.dart' as global;
 import '../auth_service.dart';
@@ -89,9 +92,39 @@ class _ProfileState extends State<Profile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _buildStatItem("Views", "77"),
-          _buildStatItem("Active Ads", "4"),
-          _buildStatItem("Member since", "2018/11/22"),
+          IconButton(
+            splashColor: Colors.deepOrange,
+            onPressed: () {
+              if (global.darkModeActive == true) {
+                global.darkModeActive = false;
+                setState(() {});
+              } else {
+                global.darkModeActive = true;
+                setState(() {});
+              }
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Home()));
+            },
+            color: Colors.black,
+            icon: Icon(FontAwesomeIcons.sun),
+            tooltip: "Dark Mode",
+          ),
+          IconButton(
+            onPressed: () {
+              if (global.currentLanguage == global.Language.swe) {
+                global.currentLanguage = global.Language.eng;
+                setState(() {});
+              } else {
+                global.currentLanguage = global.Language.swe;
+                setState(() {});
+              }
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Home()));
+            },
+            splashColor: Colors.deepOrange,
+            icon: Icon(Icons.language),
+            tooltip: "ENG",
+          ),
         ],
       ),
     );
@@ -126,6 +159,40 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  Widget _buttonTextMsg() {
+    if (global.currentLanguage == global.Language.eng) {
+      return Text(
+        "Messages",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      );
+    } else if (global.currentLanguage == global.Language.swe) {
+      return Text(
+        "Meddelande",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      );
+    }
+  }
+
+  Widget _buttonLogout() {
+    if (global.currentLanguage == global.Language.eng) {
+      return Text(
+        "Log out",
+        style: TextStyle(fontWeight: FontWeight.w600),
+      );
+    } else if (global.currentLanguage == global.Language.swe) {
+      return Text(
+        "Logga ut",
+        style: TextStyle(fontWeight: FontWeight.w600),
+      );
+    }
+  }
+
   Widget _buildButtons(Size screenSize) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -142,13 +209,7 @@ class _ProfileState extends State<Profile> {
                   color: Color(0xFF404A5C),
                 ),
                 child: Center(
-                  child: Text(
-                    "Messages",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: _buttonTextMsg(),
                 ),
               ),
             ),
@@ -178,6 +239,58 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  Widget _tempContainer() {
+    if (global.currentLanguage == global.Language.swe) {
+      return Column(
+        children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
+          RichText(
+              text: TextSpan(
+            text: "Det finns ingen annons att visa",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18.0,
+              fontWeight: FontWeight.w400,
+            ),
+          )),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            "När du lägger till en annons visas det här",
+            style: TextStyle(),
+          )
+        ],
+      );
+    } else if (global.currentLanguage == global.Language.eng) {
+      return Column(
+        children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
+          RichText(
+              text: TextSpan(
+            text: "You currently don't have a post to show",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18.0,
+              fontWeight: FontWeight.w400,
+            ),
+          )),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            "When you add a post it will show here",
+            style: TextStyle(),
+          )
+        ],
+      );
+    }
+  }
+
   Widget _buildListView(Size screenSize) {
     return Container(
         margin: EdgeInsets.symmetric(vertical: 20.0),
@@ -192,39 +305,16 @@ class _ProfileState extends State<Profile> {
               return Text("Loading...");
             } else if (snapshot.data.documents.toList().length == 0) {
               return Container(
-                padding: EdgeInsets.all(5.0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    shape: BoxShape.rectangle,
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 4,
-                    )),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 30,
-                    ),
-                    RichText(
-                        text: TextSpan(
-                      text: "You currently don't have a post to show",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      "When you add a post it will show here",
-                      style: TextStyle(),
-                    )
-                  ],
-                ),
-              );
+                  padding: EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      shape: BoxShape.rectangle,
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 4,
+                      )),
+                  child: _tempContainer());
             }
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -261,10 +351,15 @@ class _ProfileState extends State<Profile> {
                         builder: (context) => EditEntry(index, document)));
               },
             ),
-            ListTile(
-              title: Text(document["title"]),
-              subtitle: Text("Price: " + (document["price"]).toString()),
-            )
+            global.currentLanguage == global.Language.eng
+                ? ListTile(
+                    title: Text(document["title"]),
+                    subtitle: Text("Price: " + (document["price"]).toString()),
+                  )
+                : ListTile(
+                    title: Text(document["title"]),
+                    subtitle: Text("Pris: " + (document["price"]).toString()),
+                  )
           ],
         ),
       ),
@@ -287,7 +382,7 @@ class _ProfileState extends State<Profile> {
                       _buildCoverImage(screenSize),
                       Positioned(
                         bottom: -50,
-                        left: screenSize.width/2.8,
+                        left: screenSize.width / 2.8,
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: _buildProfileImage(screenSize),
@@ -295,7 +390,9 @@ class _ProfileState extends State<Profile> {
                       )
                     ],
                   ),
-                  SizedBox(height: 50,),
+                  SizedBox(
+                    height: 50,
+                  ),
                   _buildUserName(),
                   _buildProgramName(context),
                   _buildStatContainer(screenSize),
