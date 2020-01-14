@@ -36,7 +36,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          global.darkModeActive == true ? Colors.grey : Colors.white,
+          global.darkModeActive == true ? Colors.black87 : Colors.white,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,

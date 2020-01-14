@@ -45,7 +45,7 @@ class _SellState extends State<Sell> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: global.darkModeActive == true ? Colors.grey : Colors.white,
+          color: global.darkModeActive == true ? Colors.black87 : Colors.white,
           width: double.infinity,
           padding: EdgeInsets.all(10),
           child: Column(
@@ -159,7 +159,11 @@ class _SellState extends State<Sell> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.grey[300],
+                  color: global.darkModeActive == true ? Colors.transparent : Colors.grey[300],
+                  border: Border.all(
+                    width: 1,
+                    color: Colors.grey[300]
+                  )
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 40),
                 child: isbnController.text.length == 13
@@ -237,6 +241,7 @@ class _SellState extends State<Sell> {
                               second: ""),
                           Divider(
                             height: 20,
+                            color: global.darkModeActive == true ? Colors.white : null,
                           ),
                           BookInfo(
                               first:
@@ -246,6 +251,7 @@ class _SellState extends State<Sell> {
                               second: ""),
                           Divider(
                             height: 20,
+                            color: global.darkModeActive == true ? Colors.white : null,
                           ),
                           BookInfo(
                               first:
@@ -294,7 +300,9 @@ class _SellState extends State<Sell> {
                   children: <Widget>[
                     Text(global.currentLanguage == global.Language.eng
                         ? 'Condition: '
-                        : "Skick"),
+                        : "Skick", style: TextStyle(
+                      color: global.darkModeActive == true ? Colors.grey[600] : null,
+                    ),),
                     Expanded(
                       child: Slider(
                         activeColor: Colors.orange,

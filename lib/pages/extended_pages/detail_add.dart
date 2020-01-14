@@ -8,6 +8,7 @@ import 'package:student_market_app/pages/extended_pages/user_messages.dart';
 import 'package:student_market_app/pages/search.dart';
 import 'package:student_market_app/services/chat_with_other_user.dart';
 import 'package:student_market_app/services/messages_database.dart';
+import 'package:student_market_app/global.dart' as global;
 
 class DetailAdd extends StatefulWidget {
   final DocumentSnapshot snapshot;
@@ -15,18 +16,35 @@ class DetailAdd extends StatefulWidget {
 
   DetailAdd(this.snapshot, this.index);
 
-  MessagesDatabaseService _messagesDatabaseService = MessagesDatabaseService();
-  //var otherUser = _messagesDatabaseService.getUser(widget.snapshot['userid']);
 
   @override
   _DetailAddState createState() => _DetailAddState();
 }
 
 class _DetailAddState extends State<DetailAdd> {
+  MessagesDatabaseService _messagesDatabaseService = MessagesDatabaseService();
+  String otherUser = "";
+
+  @override
+  void initState() {
+    getAddUserName().then((val) => setState(() {
+      otherUser = val;
+    }));
+  }
+
+  Future getAddUserName() async{
+    var user = await _messagesDatabaseService.getUser(getUID());
+    return user.displayName;
+  }
+
+  String getUID(){
+    return widget.snapshot['userid'];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: global.darkModeActive == true ? Colors.black87 : null,
       appBar: AppBar(
         backgroundColor: Colors.orange,
         title: Container(
@@ -42,7 +60,7 @@ class _DetailAddState extends State<DetailAdd> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                color: Colors.grey[300],
+                color: global.darkModeActive == true ? Colors.grey[900] : Colors.grey[300],
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -81,7 +99,7 @@ class _DetailAddState extends State<DetailAdd> {
                     Text(
                       widget.snapshot['title'],
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: global.darkModeActive == true ? Colors.grey[300] : null),
                     ),
                   ]),
                 ),
@@ -93,12 +111,12 @@ class _DetailAddState extends State<DetailAdd> {
                   children: <Widget>[
                     Text(
                       "${widget.snapshot['price'].toString()} kr",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 20, color: global.darkModeActive == true ? Colors.grey[300] : null),
                     ),
                     Text(
                       "Uploaded: ${widget.snapshot['timestamp']}",
                       style: TextStyle(
-                        color: Colors.grey[400],
+                        color: global.darkModeActive == true ? Colors.grey[700] : Colors.grey[400],
                       ),
                     ),
                   ],
@@ -108,11 +126,14 @@ class _DetailAddState extends State<DetailAdd> {
                 padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                 child: Row(
                   children: <Widget>[
-                    Text("Condition: "),
+                    Text("Condition: ", style: TextStyle(
+                        color: global.darkModeActive == true ? Colors.grey[300] : null
+                    ),),
                     Text(
                       "${widget.snapshot['condition']}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                          color: global.darkModeActive == true ? Colors.grey[300] : null
                       ),
                     ),
                   ],
@@ -133,6 +154,7 @@ class _DetailAddState extends State<DetailAdd> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
+                          color: global.darkModeActive == true ? Colors.grey[300] : null
                       ),
                     ),
                   ],
@@ -146,22 +168,26 @@ class _DetailAddState extends State<DetailAdd> {
                       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
                       style: TextStyle(
                         fontSize: 16,
+                        color: global.darkModeActive == true ? Colors.grey[300] : null
                       ),
                     ),
                   ],
                 ),
               ),
-              Center(
-                child: Column(
-                  children: <Widget>[
-                    Text("Sold by", style: TextStyle(
-                      color: Colors.grey[400],
-                    ),),
-                    Text("Dennis Tagesson",style: TextStyle(
-                      fontSize: 20,
-                      letterSpacing: 1
-                    ),)
-                  ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0,8,0,0),
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Text("Sold by", style: TextStyle(
+                          color: global.darkModeActive == true ? Colors.grey[700] : Colors.grey[400]                    ),),
+                      Text(otherUser,style: TextStyle(
+                        fontSize: 20,
+                        letterSpacing: 1,
+                        color: global.darkModeActive == true ? Colors.grey[300] : null
+                      ),)
+                    ],
+                  ),
                 ),
               ),
 
@@ -173,7 +199,7 @@ class _DetailAddState extends State<DetailAdd> {
               Row(
                 children: <Widget>[
                   FutureBuilder(
-                      future: widget._messagesDatabaseService
+                      future: _messagesDatabaseService
                           .getUser(widget.snapshot.data['userid']),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
