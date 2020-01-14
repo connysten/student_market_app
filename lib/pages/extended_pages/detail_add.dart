@@ -2,12 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:student_market_app/pages/extended_pages/user_chat.dart';
-import 'package:student_market_app/pages/extended_pages/user_messages.dart';
-import 'package:student_market_app/pages/search.dart';
 import 'package:student_market_app/services/chat_with_other_user.dart';
 import 'package:student_market_app/services/messages_database.dart';
+import 'package:student_market_app/global.dart' as global;
 
 class DetailAdd extends StatefulWidget {
   final DocumentSnapshot snapshot;
@@ -15,7 +13,9 @@ class DetailAdd extends StatefulWidget {
 
   DetailAdd(this.snapshot, this.index);
 
-  MessagesDatabaseService _messagesDatabaseService = MessagesDatabaseService();
+  final MessagesDatabaseService _messagesDatabaseService =
+      MessagesDatabaseService();
+
   //var otherUser = _messagesDatabaseService.getUser(widget.snapshot['userid']);
 
   @override
@@ -154,29 +154,35 @@ class _DetailAddState extends State<DetailAdd> {
               Center(
                 child: Column(
                   children: <Widget>[
-                    Text("Sold by", style: TextStyle(
-                      color: Colors.grey[400],
-                    ),),
-                    Text("Dennis Tagesson",style: TextStyle(
-                      fontSize: 20,
-                      letterSpacing: 1
-                    ),)
+                    Text(
+                      global.currentLanguage == global.Language.eng
+                          ? "Seller"
+                          : "Säljare",
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                    Text(
+                      "Dennis Tagesson",
+                      style: TextStyle(fontSize: 20, letterSpacing: 1),
+                    )
                   ],
                 ),
               ),
-
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Divider(color: Colors.grey[400],),
+                child: Divider(
+                  color: Colors.grey[400],
+                ),
               ),
-
               Row(
                 children: <Widget>[
                   FutureBuilder(
                       future: widget._messagesDatabaseService
                           .getUser(widget.snapshot.data['userid']),
                       builder: (context, snapshot) {
-                        if (snapshot.hasData) {
+                        if (snapshot.hasData &&
+                            widget.snapshot.data['userid'] != global.user.uid) {
                           return Container(
                             padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
                             width: MediaQuery.of(context).size.width,
@@ -186,10 +192,11 @@ class _DetailAddState extends State<DetailAdd> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Text("Send Message", style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20
-                              ),),
+                              child: Text(
+                                "Send Message",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
                               onPressed: () async => Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -201,7 +208,7 @@ class _DetailAddState extends State<DetailAdd> {
                             ),
                           );
                         } else {
-                          return Text("Trying to access message");
+                          return Container();
                         }
                       })
                 ],

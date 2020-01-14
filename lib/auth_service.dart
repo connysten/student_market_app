@@ -13,6 +13,8 @@ class AuthService {
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookLogin _facebookLogin = FacebookLogin();
+
+
   
 
   Observable<FirebaseUser> user;
@@ -64,14 +66,10 @@ class AuthService {
 
   void updateUserData(FirebaseUser user) async {
     DocumentReference ref = _db.collection('users').document(user.uid);
-    String photoUrl = user.photoUrl;
-    if(user.providerData[1].providerId == "facebook.com"){
-      photoUrl = "https://graph.facebook.com/" + user.uid + "/picture?height=500";
-    }
     return ref.setData({
       "uid": user.uid,
       "email": user.email,
-      "photoUrl": photoUrl,
+      "photoUrl": user.photoUrl,
       "displayName": user.displayName,
       "lastSeen": DateTime.now()
     }, merge: true);

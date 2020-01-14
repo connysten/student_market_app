@@ -57,7 +57,7 @@ class _LoginState extends State<Login> {
                           children: <Widget>[
                             LoginButton(
                               iconColor: Color(0xff4caf50),
-                              text: "Sign in with Email",
+                              text: "Sign in with Mail",
                               iconData: FontAwesomeIcons.solidEnvelope,
                               function: () {},
                             ),
@@ -71,10 +71,11 @@ class _LoginState extends State<Login> {
                               function: () async {
                                 global.user = await global.authService
                                     .googleHandleSignIn();
-                                Navigator.push(
+                                if(global.user != null){Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Home()));
+                                        builder: (context) => Home()));}
+
                               },
                             ),
                             SizedBox(
@@ -87,6 +88,7 @@ class _LoginState extends State<Login> {
                               function: () async {
                                 global.user = await global.authService
                                     .facebookHandleSignIn();
+                                if(global.user != null)
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
