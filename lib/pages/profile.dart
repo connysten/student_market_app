@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/painting.dart';
+import 'package:student_market_app/main.dart';
+import 'package:student_market_app/pages/search.dart';
 import './extended_pages/user_messages.dart';
 import '../global.dart' as global;
 import '../auth_service.dart';
@@ -93,18 +95,15 @@ class _ProfileState extends State<Profile> {
           IconButton(
             splashColor: Colors.deepOrange,
             onPressed: () {
-              if(global.darkModeActive == true){
+              if (global.darkModeActive == true) {
                 global.darkModeActive = false;
-                setState(() {
-
-                });
-              }
-              else{
+                setState(() {});
+              } else {
                 global.darkModeActive = true;
-                setState(() {
-
-                });
+                setState(() {});
               }
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Home()));
             },
             color: Colors.black,
             icon: Icon(FontAwesomeIcons.sun),
@@ -112,17 +111,12 @@ class _ProfileState extends State<Profile> {
           ),
           IconButton(
             onPressed: () {
-              if(global.currentLanguage == global.Language.swe){
+              if (global.currentLanguage == global.Language.swe) {
                 global.currentLanguage = global.Language.eng;
-                setState(() {
-
-                });
-              }
-              else{
+                setState(() {});
+              } else {
                 global.currentLanguage = global.Language.swe;
-                setState(() {
-
-                });
+                setState(() {});
               }
             },
             splashColor: Colors.deepOrange,
@@ -355,16 +349,15 @@ class _ProfileState extends State<Profile> {
                         builder: (context) => EditEntry(index, document)));
               },
             ),
-            global.currentLanguage == global.Language.eng ?
-            ListTile(
-              title: Text(document["title"]),
-              subtitle: Text("Price: " + (document["price"]).toString()),
-            )
-              :
-            ListTile(
-              title: Text(document["title"]),
-              subtitle: Text("Pris: " + (document["price"]).toString()),
-            )
+            global.currentLanguage == global.Language.eng
+                ? ListTile(
+                    title: Text(document["title"]),
+                    subtitle: Text("Price: " + (document["price"]).toString()),
+                  )
+                : ListTile(
+                    title: Text(document["title"]),
+                    subtitle: Text("Pris: " + (document["price"]).toString()),
+                  )
           ],
         ),
       ),

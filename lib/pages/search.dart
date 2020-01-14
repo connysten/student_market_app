@@ -28,10 +28,13 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:
+          global.darkModeActive == true ? Colors.grey : Colors.white,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.orange,
+        backgroundColor:
+            global.darkModeActive == true ? Colors.black : Colors.orange,
         title: Container(
           decoration: BoxDecoration(
             color: Color.fromARGB(50, 255, 255, 255),
@@ -126,6 +129,9 @@ class _SearchPageState extends State<SearchPage> {
               return Padding(
                 padding: EdgeInsets.only(top: 8.0),
                 child: Card(
+                  color: global.darkModeActive == true
+                      ? Colors.black54
+                      : Colors.white,
                   margin: EdgeInsets.fromLTRB(20.0, 3.0, 20.0, 0.0),
                   child: GestureDetector(
                     child: ListTile(
@@ -143,10 +149,24 @@ class _SearchPageState extends State<SearchPage> {
                               fit: BoxFit.cover),
                         ),
                       ),
-                      title: Text(snapshot.data[index]['title']),
-                      subtitle: Text('ISBN: ${snapshot.data[index]['isbn']}'),
+                      title: Text(
+                        snapshot.data[index]['title'],
+                        style: TextStyle(
+                            color: global.darkModeActive == true
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                      subtitle: Text(
+                        'ISBN: ${snapshot.data[index]['isbn']}',
+                        style: TextStyle(
+                            color: global.darkModeActive == true
+                                ? Colors.grey
+                                : Colors.black),
+                      ),
                       trailing: Text(
-                          '${snapshot.data[index]['price'].toString()} kr'),
+                          '${snapshot.data[index]['price'].toString()} kr', style: TextStyle(
+                        color: global.darkModeActive == true ? Colors.white : Colors.black,
+                      ),),
                       onTap: () {
                         /*Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return DetailAddScreen(snapshot.data[index], index);
