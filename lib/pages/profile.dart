@@ -127,8 +127,8 @@ class _ProfileState extends State<Profile> {
                     height: 5,
                   ),
                   Text(global.currentLanguage == global.Language.swe
-                      ? "Svenska"
-                      : "Engelska")
+                      ? "Språk"
+                      : "Language")
                 ],
               ),
             ),
@@ -277,7 +277,7 @@ class _ProfileState extends State<Profile> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
                         shape: BoxShape.rectangle,
-                        color: Colors.white,
+                        color: global.darkModeActive == true ? Colors.grey[800] : Colors.white,
                         border: Border.all(
                           color: Colors.grey,
                           width: 2,

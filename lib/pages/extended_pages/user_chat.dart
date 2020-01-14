@@ -105,7 +105,7 @@ class _UserChatState extends State<UserChat> {
       appBar: AppBar(
         backgroundColor: darkModeActive == true ? Colors.black : Colors.orange,
         title: Text(
-          "Chat",
+          currentLanguage == Language.eng ? "Chat" : "Chatt",
           style: TextStyle(color: darkModeActive == true ? Colors.orange : Colors.black, fontSize: 24,),
         ),
         centerTitle: true,
@@ -258,7 +258,9 @@ class ChatMessage extends StatelessWidget {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             child: Text(
-              me ? "Me" : from,
+              me ? "Me" : from, style: TextStyle(
+              color: darkModeActive == true ? Colors.grey[400] : null,
+            ),
             ),
           ),
           Container(

@@ -28,7 +28,7 @@ class _UserMessagesState extends State<UserMessages> {
       backgroundColor: darkModeActive == true ? Colors.black : null,
       appBar: AppBar(
         title: Text(
-          "Chats",
+          currentLanguage == Language.eng ? "Messages" : "Meddelanden",
           style: TextStyle(color: darkModeActive == true ? Colors.orange : Colors.black, fontSize: 24),
         ),
         centerTitle: true,

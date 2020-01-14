@@ -49,7 +49,7 @@ class _DetailAddState extends State<DetailAdd> {
       appBar: AppBar(
         backgroundColor: global.darkModeActive == true ? Colors.black : Colors.orange,
         title: Text(
-          "Book For Sale",
+          global.currentLanguage == global.Language.eng ? "Book for sale" : "Bok till salu",
           style: TextStyle(color: global.darkModeActive == true ? Colors.orange : Colors.black, fontSize: 24),
         ),
         centerTitle: true,
