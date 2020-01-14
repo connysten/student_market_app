@@ -29,7 +29,6 @@ class _SearchPageState extends State<SearchPage> {
     _annonsBloc = AnnonsBloc();
     _annonsBloc.fetchFirstList("");
     _scroll.addListener(_scrollListener);
-
   }
 
   @override
@@ -55,7 +54,7 @@ class _SearchPageState extends State<SearchPage> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: TextFormField(
-                    onChanged:(value) => _annonsBloc.fetchFirstList(value),
+                    onChanged: (value) => _annonsBloc.fetchFirstList(value),
                     controller: _filter,
                     focusNode: _textFocus,
                     style: TextStyle(color: Colors.white),
@@ -113,7 +112,8 @@ class _SearchPageState extends State<SearchPage> {
   Widget _buildListView() {
     return Container(
       child: StreamBuilder(
-        stream: _annonsBloc.annonsStream,// DatabaseService().filterAdds(_SearchPageState._filter.text),
+        stream: _annonsBloc
+            .annonsStream, // DatabaseService().filterAdds(_SearchPageState._filter.text),
         //DatabaseService().query(_SearchPageState._filter.text),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -136,70 +136,121 @@ class _SearchPageState extends State<SearchPage> {
               ],
             );*/
           }
-          return ListView.builder(
+          return ListView.separated(
+            separatorBuilder: (context, index) => Divider(
+              color: Colors.grey[300],
+              height: 0,
+              thickness: 1,
+            ),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemCount: snapshot.data.toList().length,
             controller: _scroll,
             itemBuilder: (context, index) {
-              return Card(
-                color: global.darkModeActive == true
-                    ? Colors.black54
-                    : Colors.white,
-                //margin: EdgeInsets.fromLTRB(20.0, 3.0, 20.0, 0.0),
-                child: GestureDetector(
-                  child: ListTile(
-                    leading: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: 64,
-                        minHeight: 44,
-                        maxWidth: 84,
-                        maxHeight: 64,
-                      ),
-                      child: CachedNetworkImage(
+              return GestureDetector(
+                child: Container(
+                  height: 84,
+                  color: global.darkModeActive == true
+                      ? Colors.black54
+                      : Colors.white,
+                  child: Center(
+                    child: ListTile(
+                      leading: CachedNetworkImage(
+                        width: 50,
                         imageUrl: snapshot.data[index]['imageUrl'],
                         fit: BoxFit.cover,
                       ),
-                    ),
-                    title: Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Text(
-                        snapshot.data[index]['title'],
-                        overflow: TextOverflow.ellipsis,
+                      title: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          snapshot.data[index]['title'],
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: global.darkModeActive == true
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                      ),
+                      subtitle: Text(
+                        'ISBN: ${snapshot.data[index]['isbn']}',
                         style: TextStyle(
                             color: global.darkModeActive == true
-                                ? Colors.white
+                                ? Colors.grey
                                 : Colors.black),
                       ),
-                    ),
-                    subtitle: Text(
-                      'ISBN: ${snapshot.data[index]['isbn']}',
-                      style: TextStyle(
+                      trailing: Text(
+                        '${snapshot.data[index]['price'].toString()} kr',
+                        style: TextStyle(
                           color: global.darkModeActive == true
-                              ? Colors.grey
-                              : Colors.black),
-                    ),
-                    trailing: Text(
-                      '${snapshot.data[index]['price'].toString()} kr',
-                      style: TextStyle(
-                        color: global.darkModeActive == true
-                            ? Colors.white
-                            : Colors.black,
+                              ? Colors.white
+                              : Colors.black,
+                        ),
                       ),
+                      onTap: () {
+                        /*Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return DetailAddScreen(snapshot.data[index], index);
+                    }));*/
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailAdd(snapshot.data[index], index)));
+                      },
                     ),
-                    onTap: () {
-                      /*Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return DetailAddScreen(snapshot.data[index], index);
-                  }));*/
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  DetailAdd(snapshot.data[index], index)));
-                    },
                   ),
                 ),
               );
+              // return Container(
+              //   color: global.darkModeActive == true
+              //       ? Colors.black54
+              //       : Colors.white,
+              //   child: GestureDetector(
+              //     child: ListTile(
+              //       leading: Container(
+              //         child: CachedNetworkImage(
+              //           imageUrl: snapshot.data[index]['imageUrl'],
+              //           fit: BoxFit.fitHeight,
+              //         ),
+              //       ),
+              //       title: Container(
+              //         width: MediaQuery.of(context).size.width,
+              //         child: Text(
+              //           snapshot.data[index]['title'],
+              //           overflow: TextOverflow.ellipsis,
+              //           style: TextStyle(
+              //               color: global.darkModeActive == true
+              //                   ? Colors.white
+              //                   : Colors.black),
+              //         ),
+              //       ),
+              //       subtitle: Text(
+              //         'ISBN: ${snapshot.data[index]['isbn']}',
+              //         style: TextStyle(
+              //             color: global.darkModeActive == true
+              //                 ? Colors.grey
+              //                 : Colors.black),
+              //       ),
+              //       trailing: Text(
+              //         '${snapshot.data[index]['price'].toString()} kr',
+              //         style: TextStyle(
+              //           color: global.darkModeActive == true
+              //               ? Colors.white
+              //               : Colors.black,
+              //         ),
+              //       ),
+              //       onTap: () {
+              //         /*Navigator.push(context, MaterialPageRoute(builder: (_) {
+              //       return DetailAddScreen(snapshot.data[index], index);
+              //     }));*/
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) =>
+              //                     DetailAdd(snapshot.data[index], index)));
+              //       },
+              //     ),
+              //   ),
+              // );
             },
           );
         },
@@ -214,80 +265,3 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 }
-
-/*class SearchResult extends StatefulWidget {
-  _SearchResultState createState() => _SearchResultState();
-}
-
-class _SearchResultState extends State<SearchResult> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            _buildListView(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildListView() {
-    return Container(
-      child: FutureBuilder(
-        future: DatabaseService().filterAdds(_SearchPageState._filter.text),
-        //DatabaseService().query(_SearchPageState._filter.text),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Text("Loading...");
-          }
-          return ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: snapshot.data.toList().length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(top: 8.0),
-                child: Card(
-                  margin: EdgeInsets.fromLTRB(20.0, 3.0, 20.0, 0.0),
-                  child: ListTile(
-                    leading: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: 64,
-                        minHeight: 44,
-                        maxWidth: 84,
-                        maxHeight: 64,
-                      ),
-                      child: Hero(
-                        tag: 'Add$index',
-                        child: CachedNetworkImage(
-                            imageUrl: snapshot.data[index]['imageUrl'],
-                            fit: BoxFit.cover),
-                      ),
-                    ),
-                    title: Text(snapshot.data[index]['title']),
-                    subtitle: Text('ISBN: ${snapshot.data[index]['isbn']}'),
-                    trailing:
-                        Text('${snapshot.data[index]['price'].toString()} kr'),
-                    onTap: () {
-                      /*Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return DetailAddScreen(snapshot.data[index], index);
-                    }));*/
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  DetailAdd(snapshot.data[index], index)));
-                    },
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-*/

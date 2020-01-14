@@ -28,13 +28,14 @@ class _ProfileState extends State<Profile> {
         width: screenSize.height / 5.5,
         height: screenSize.height / 5.5,
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: NetworkImage(user.photoUrl), fit: BoxFit.cover),
-            borderRadius: BorderRadius.circular(80.0),
-            border: Border.all(
-              color: Colors.white,
-              width: 5.0,
-            )),
+          image: DecorationImage(
+              image: NetworkImage(user.photoUrl), fit: BoxFit.cover),
+          borderRadius: BorderRadius.circular(80.0),
+          border: Border.all(
+            color: Colors.white,
+            width: 5.0,
+          ),
+        ),
       ),
     );
   }
@@ -58,9 +59,7 @@ class _ProfileState extends State<Profile> {
       height: screenSize.height / 2.8,
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(
-                  "assets/mdh-entrance.jpg"),
-              fit: BoxFit.cover)),
+              image: AssetImage("assets/mdh-entrance.jpg"), fit: BoxFit.cover)),
     );
   }
 

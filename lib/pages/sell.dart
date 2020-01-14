@@ -1,14 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:student_market_app/pages/extended_pages/detail_add.dart';
 import 'package:student_market_app/services/database.dart';
 import 'package:student_market_app/services/widgets/book_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import '../global.dart' as global;
+import '../global.dart';
+import '../global.dart';
+import '../global.dart';
 
 class Sell extends StatefulWidget {
   Sell({Key key}) : super(key: key);
@@ -23,6 +28,7 @@ class _SellState extends State<Sell> {
   Book tempBook;
   double condition = 0;
   final conditions = ['Poor', 'Used', 'Barely used', 'As new'];
+  final skick = ['Dåligt', 'Använd', 'Knappt använd', 'Som ny'];
   final isbnController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -96,7 +102,9 @@ class _SellState extends State<Sell> {
                       controller: isbnController,
                       maxLines: 1,
                       decoration: InputDecoration(
-                        hintText: "Numbers on the back of the book...",
+                        hintText: global.currentLanguage == Language.eng
+                            ? "Numbers on the back of the book..."
+                            : "Nummer på baksidan av boken...",
                         hintStyle: TextStyle(
                             fontStyle: FontStyle.italic, fontSize: 12),
                         labelText: "ISBN",
@@ -158,13 +166,11 @@ class _SellState extends State<Sell> {
               ),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: global.darkModeActive == true ? Colors.transparent : Colors.grey[300],
-                  border: Border.all(
-                    width: 1,
-                    color: Colors.grey[300]
-                  )
-                ),
+                    borderRadius: BorderRadius.circular(10),
+                    color: global.darkModeActive == true
+                        ? Colors.transparent
+                        : Colors.grey[300],
+                    border: Border.all(width: 1, color: Colors.grey[300])),
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 40),
                 child: isbnController.text.length == 13
                     ? FutureBuilder<Book>(
@@ -241,7 +247,9 @@ class _SellState extends State<Sell> {
                               second: ""),
                           Divider(
                             height: 20,
-                            color: global.darkModeActive == true ? Colors.white : null,
+                            color: global.darkModeActive == true
+                                ? Colors.white
+                                : null,
                           ),
                           BookInfo(
                               first:
@@ -251,7 +259,9 @@ class _SellState extends State<Sell> {
                               second: ""),
                           Divider(
                             height: 20,
-                            color: global.darkModeActive == true ? Colors.white : null,
+                            color: global.darkModeActive == true
+                                ? Colors.white
+                                : null,
                           ),
                           BookInfo(
                               first:
@@ -298,11 +308,17 @@ class _SellState extends State<Sell> {
                 padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                 child: Row(
                   children: <Widget>[
-                    Text(global.currentLanguage == global.Language.eng
-                        ? 'Condition: '
-                        : "Skick", style: TextStyle(
-                      color: global.darkModeActive == true ? Colors.grey[600] : null,
-                    ),),
+                    Text(
+                      global.currentLanguage == global.Language.eng
+                          ? 'Condition: '
+                          : "Skick: ",
+                      style: TextStyle(
+                        color: global.darkModeActive == true
+                            ? Colors.grey[600]
+                            : null,
+                        fontSize: 16,
+                      ),
+                    ),
                     Expanded(
                       child: Slider(
                         activeColor: Colors.orange,
@@ -315,7 +331,9 @@ class _SellState extends State<Sell> {
                         divisions: 3,
                         min: 0,
                         max: 3,
-                        label: conditions[condition.toInt()],
+                        label: global.currentLanguage == Language.eng
+                            ? conditions[condition.toInt()]
+                            : skick[condition.toInt()],
                       ),
                     ),
                   ],
@@ -359,12 +377,42 @@ class _SellState extends State<Sell> {
                     width: MediaQuery.of(context).size.width,
                     child: RaisedButton(
                       padding: EdgeInsets.symmetric(vertical: 15),
+                      color: Colors.grey[200],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      onPressed: reset,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            global.currentLanguage == global.Language.eng
+                                ? "Clear"
+                                : "Återställ",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(FontAwesomeIcons.undoAlt)
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: RaisedButton(
+                      padding: EdgeInsets.symmetric(vertical: 15),
                       color: Colors.green[300],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      onPressed: () {
-                        DatabaseService().createAdd(
+                      onPressed: () async {
+                        var docRef = await DatabaseService().createAdd(
                           tempBook.title,
                           tempBook.creator,
                           tempBook.language,
@@ -375,7 +423,14 @@ class _SellState extends State<Sell> {
                           global.user.uid,
                           _image,
                         );
-                        //reset();
+                        var docSnap = await docRef.get();
+                        reset();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailAdd(docSnap, 1),
+                          ),
+                        );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -397,81 +452,6 @@ class _SellState extends State<Sell> {
                   ),
                 ],
               ),
-              /*Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: RaisedButton(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        color: Colors.green[300],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        onPressed: () {
-                          DatabaseService().createAdd(
-                            tempBook.title,
-                            tempBook.creator,
-                            tempBook.language,
-                            int.parse(isbnController.text),
-                            double.parse(priceController.text),
-                            conditions[condition.toInt()],
-                            descriptionController.text,
-                            global.user.uid,
-                            _image,
-                          );
-                          reset();
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              global.currentLanguage == global.Language.eng
-                                  ? "Publish"
-                                  : "Publicera",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Icon(FontAwesomeIcons.paperPlane)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: RaisedButton(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        color: Colors.red[300],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        onPressed: reset,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              global.currentLanguage == global.Language.eng
-                                  ? "Reset"
-                                  : "Börja om",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Icon(FontAwesomeIcons.undoAlt)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),*/
               SizedBox(
                 height: 20,
               ),
@@ -504,25 +484,35 @@ class _SellState extends State<Sell> {
     final imageSource = await showDialog<ImageSource>(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text("Select the image source"),
+              title: Text(
+                global.currentLanguage == Language.eng
+                    ? "Select the image source"
+                    : "Välj bild källa",
+              ),
               actions: <Widget>[
                 MaterialButton(
-                  child: Text("Camera"),
+                  child: Text(
+                    global.currentLanguage == Language.eng
+                        ? "Camera"
+                        : 'Kamera',
+                  ),
                   onPressed: () => Navigator.pop(context, ImageSource.camera),
                 ),
                 MaterialButton(
-                  child: Text("Gallery"),
+                  child: Text(
+                    global.currentLanguage == Language.eng
+                        ? "Gallery"
+                        : 'Galleri',
+                  ),
                   onPressed: () => Navigator.pop(context, ImageSource.gallery),
                 )
               ],
             ));
 
-
-
     if (imageSource != null) {
       final file = await ImagePicker.pickImage(source: imageSource);
       if (file != null) {
-          setState(() => _image = file);
+        setState(() => _image = file);
       }
     }
   }

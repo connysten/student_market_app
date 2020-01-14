@@ -56,10 +56,11 @@ class _LoginState extends State<Login> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             LoginButton(
-                                iconColor: Color(0xff4caf50),
-                                text: "Sign in with Email",
-                                iconData: FontAwesomeIcons.solidEnvelope,
-                                function: () {}),
+                              iconColor: Color(0xff4caf50),
+                              text: "Sign in with Mail",
+                              iconData: FontAwesomeIcons.solidEnvelope,
+                              function: () {},
+                            ),
                             SizedBox(
                               height: 20,
                             ),
@@ -68,9 +69,14 @@ class _LoginState extends State<Login> {
                               text: "Sign in with Google",
                               iconData: FontAwesomeIcons.google,
                               function: () async {
-                                global.user = await global.authService.googleHandleSignIn();
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => Home()));
+                                global.user = await global.authService
+                                    .googleHandleSignIn();
+                                if (global.user != null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
+                                }
                               },
                             ),
                             SizedBox(
@@ -81,9 +87,14 @@ class _LoginState extends State<Login> {
                               text: "Sign in with Facebook",
                               iconData: FontAwesomeIcons.facebookF,
                               function: () async {
-                                global.user = await global.authService.facebookHandleSignIn();
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => Home()));
+                                global.user = await global.authService
+                                    .facebookHandleSignIn();
+                                if (global.user != null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
+                                }
                               },
                             ),
                           ],
