@@ -7,7 +7,6 @@ import './extended_pages/user_messages.dart';
 import '../global.dart' as global;
 import '../auth_service.dart';
 import 'package:student_market_app/pages/extended_pages/empty_nav.dart';
-
 //import 'package:student_market_app/services/user_details.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -128,8 +127,8 @@ class _ProfileState extends State<Profile> {
                     height: 5,
                   ),
                   Text(global.currentLanguage == global.Language.swe
-                      ? "Byt Språk"
-                      : "Change Languange")
+                      ? "Svenska"
+                      : "Engelska")
                 ],
               ),
             ),
@@ -231,99 +230,70 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget _tempContainer() {
-    if (global.currentLanguage == global.Language.swe) {
-      return Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          SizedBox(
-            height: 30,
-          ),
           RichText(
               text: TextSpan(
-            text: "Det finns ingen annons att visa",
-            style: TextStyle(
-              color: global.darkModeActive == true
-                  ? Colors.grey[400]
-                  : Colors.black,
-              fontSize: 18.0,
-              fontWeight: FontWeight.w400,
-            ),
-          )),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            "När du lägger till en annons visas det här",
-            style: TextStyle(
-              color: global.darkModeActive == true
-                  ? Colors.grey[400]
-                  : Colors.black,
-            ),
-          )
-        ],
-      );
-    } else if (global.currentLanguage == global.Language.eng) {
-      return Column(
-        children: <Widget>[
-          SizedBox(
-            height: 30,
-          ),
-          RichText(
-              text: TextSpan(
-            text: "You currently don't have a post to show",
+            text: global.currentLanguage == global.Language.swe
+                ? "Du har inga annonser att visa"
+                : "You currently don't have any posts",
             style: TextStyle(
               color: Colors.black,
               fontSize: 18.0,
               fontWeight: FontWeight.w400,
+              letterSpacing: 1,
             ),
           )),
-          SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 10,),
           Text(
-            "When you add a post it will show here",
-            style: TextStyle(),
+            global.currentLanguage == global.Language.swe
+                ? "När du lägger till en annons visas den här"
+                : "When you add a post it will show here",
+            style: TextStyle(letterSpacing: 1,),
           )
         ],
-      );
-    }
+      ),
+    );
   }
 
   Widget _buildListView(Size screenSize) {
-    return Container(
-        margin: EdgeInsets.symmetric(vertical: 20.0),
-        height: screenSize.height / 4.5,
-        child: StreamBuilder(
-          stream: Firestore.instance
-              .collection('Annons')
-              .where('userid', isEqualTo: user.uid)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Text("Loading...");
-            } else if (snapshot.data.documents.toList().length == 0) {
-              return Container(
-                  padding: EdgeInsets.all(5.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shape: BoxShape.rectangle,
-                      color: global.darkModeActive == true
-                          ? Colors.grey[800]
-                          : Color(0xFFEFF4F7),
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 2,
-                      )),
-                  child: _tempContainer());
-            }
-            return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data.documents.toList().length,
-                itemBuilder: (context, index) {
-                  return _buildListItem(
-                      context, snapshot.data.documents[index], index);
-                });
-          },
-        ));
+    return Expanded(
+      child: Container(
+          margin: EdgeInsets.symmetric(vertical: 20.0),
+          child: StreamBuilder(
+            stream: Firestore.instance
+                .collection('Annons')
+                .where('userid', isEqualTo: user.uid)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Text("Loading...");
+              } else if (snapshot.data.documents.toList().length == 0) {
+                return Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        shape: BoxShape.rectangle,
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 2,
+                        )),
+                    child: _tempContainer());
+              }
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data.documents.toList().length,
+                  itemBuilder: (context, index) {
+                    return _buildListItem(
+                        context, snapshot.data.documents[index], index);
+                  });
+            },
+          )),
+    );
   }
 
   Widget _buildListItem(
@@ -402,34 +372,32 @@ class _ProfileState extends State<Profile> {
       body: Stack(
         children: <Widget>[
           SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Stack(
-                    overflow: Overflow.visible,
-                    children: <Widget>[
-                      _buildCoverImage(screenSize),
-                      Positioned(
-                        bottom: -50,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: _buildProfileImage(screenSize),
-                          ),
+            child: Column(
+              children: <Widget>[
+                Stack(
+                  overflow: Overflow.visible,
+                  children: <Widget>[
+                    _buildCoverImage(screenSize),
+                    Positioned(
+                      bottom: -50,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: _buildProfileImage(screenSize),
                         ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  _buildUserName(),
-                  _buildProgramName(context),
-                  _buildStatContainer(screenSize),
-                  _buildListView(screenSize),
-                ],
-              ),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                _buildUserName(),
+                _buildProgramName(context),
+                _buildStatContainer(screenSize),
+                _buildListView(screenSize),
+              ],
             ),
           )
         ],
