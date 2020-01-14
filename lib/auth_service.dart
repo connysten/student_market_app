@@ -56,7 +56,6 @@ class AuthService {
     AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: token);
     final AuthResult authResult = await _auth.signInWithCredential(credential);
     FirebaseUser user = authResult.user;
-
     updateUserData(user);
 
     return user;
@@ -65,19 +64,31 @@ class AuthService {
 
   void updateUserData(FirebaseUser user) async {
     DocumentReference ref = _db.collection('users').document(user.uid);
-
+    String photoUrl = user.photoUrl;
+    if(user.providerData[1].providerId == "facebook.com"){
+      photoUrl = "https://graph.facebook.com/" + user.uid + "/picture?height=500";
+    }
     return ref.setData({
       "uid": user.uid,
       "email": user.email,
-      "photoUrl": user.photoUrl,
+      "photoUrl": photoUrl,
       "displayName": user.displayName,
       "lastSeen": DateTime.now()
     }, merge: true);
   }
 
   Future<void> signOut(BuildContext context) async {
+    if(global.user.providerData[1].providerId == "google.com"){
+      await _googleSignIn.disconnect();
+    }
+    else if(global.user.providerData[1].providerId == "facebook.com"){
+      await _facebookLogin.logOut();
+    }
+    else{
+
+    }
     global.user = null;
-    await _googleSignIn.disconnect();
+
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute (builder: (context)=> Login()), ModalRoute.withName("/home"));
   }
 }
