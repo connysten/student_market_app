@@ -11,6 +11,9 @@ import 'package:student_market_app/services/widgets/book_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import '../global.dart' as global;
+import '../global.dart';
+import '../global.dart';
+import '../global.dart';
 
 class Sell extends StatefulWidget {
   Sell({Key key}) : super(key: key);
@@ -25,6 +28,7 @@ class _SellState extends State<Sell> {
   Book tempBook;
   double condition = 0;
   final conditions = ['Poor', 'Used', 'Barely used', 'As new'];
+  final skick = ['Dåligt', 'Använd', 'Knappt använd', 'Som ny'];
   final isbnController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -47,7 +51,7 @@ class _SellState extends State<Sell> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: global.darkModeActive == true ? Colors.grey : Colors.white,
+          color: global.darkModeActive == true ? Colors.black87 : Colors.white,
           width: double.infinity,
           padding: EdgeInsets.all(10),
           child: Column(
@@ -98,7 +102,9 @@ class _SellState extends State<Sell> {
                       controller: isbnController,
                       maxLines: 1,
                       decoration: InputDecoration(
-                        hintText: "Numbers on the back of the book...",
+                        hintText: global.currentLanguage == Language.eng
+                            ? "Numbers on the back of the book..."
+                            : "Nummer på baksidan av boken...",
                         hintStyle: TextStyle(
                             fontStyle: FontStyle.italic, fontSize: 12),
                         labelText: "ISBN",
@@ -160,9 +166,11 @@ class _SellState extends State<Sell> {
               ),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.grey[300],
-                ),
+                    borderRadius: BorderRadius.circular(10),
+                    color: global.darkModeActive == true
+                        ? Colors.transparent
+                        : Colors.grey[300],
+                    border: Border.all(width: 1, color: Colors.grey[300])),
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 40),
                 child: isbnController.text.length == 13
                     ? FutureBuilder<Book>(
@@ -239,6 +247,9 @@ class _SellState extends State<Sell> {
                               second: ""),
                           Divider(
                             height: 20,
+                            color: global.darkModeActive == true
+                                ? Colors.white
+                                : null,
                           ),
                           BookInfo(
                               first:
@@ -248,6 +259,9 @@ class _SellState extends State<Sell> {
                               second: ""),
                           Divider(
                             height: 20,
+                            color: global.darkModeActive == true
+                                ? Colors.white
+                                : null,
                           ),
                           BookInfo(
                               first:
@@ -294,9 +308,17 @@ class _SellState extends State<Sell> {
                 padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                 child: Row(
                   children: <Widget>[
-                    Text(global.currentLanguage == global.Language.eng
-                        ? 'Condition: '
-                        : "Skick: ", style: TextStyle(fontSize: 16, color: Colors.grey[600]),),
+                    Text(
+                      global.currentLanguage == global.Language.eng
+                          ? 'Condition: '
+                          : "Skick: ",
+                      style: TextStyle(
+                        color: global.darkModeActive == true
+                            ? Colors.grey[600]
+                            : null,
+                        fontSize: 16,
+                      ),
+                    ),
                     Expanded(
                       child: Slider(
                         activeColor: Colors.orange,
@@ -309,7 +331,9 @@ class _SellState extends State<Sell> {
                         divisions: 3,
                         min: 0,
                         max: 3,
-                        label: conditions[condition.toInt()],
+                        label: global.currentLanguage == Language.eng
+                            ? conditions[condition.toInt()]
+                            : skick[condition.toInt()],
                       ),
                     ),
                   ],
@@ -460,14 +484,26 @@ class _SellState extends State<Sell> {
     final imageSource = await showDialog<ImageSource>(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text("Select the image source"),
+              title: Text(
+                global.currentLanguage == Language.eng
+                    ? "Select the image source"
+                    : "Välj bild källa",
+              ),
               actions: <Widget>[
                 MaterialButton(
-                  child: Text("Camera"),
+                  child: Text(
+                    global.currentLanguage == Language.eng
+                        ? "Camera"
+                        : 'Kamera',
+                  ),
                   onPressed: () => Navigator.pop(context, ImageSource.camera),
                 ),
                 MaterialButton(
-                  child: Text("Gallery"),
+                  child: Text(
+                    global.currentLanguage == Language.eng
+                        ? "Gallery"
+                        : 'Galleri',
+                  ),
                   onPressed: () => Navigator.pop(context, ImageSource.gallery),
                 )
               ],

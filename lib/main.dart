@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:student_market_app/auth_service.dart';
-
+import 'package:student_market_app/pages/extended_pages/empty_nav.dart';
 import './pages/extended_pages/user_chat.dart';
 
 import './pages/login.dart';
@@ -16,6 +16,8 @@ void main() {
     routes: {
       "/login": (context) => Login(),
       "/home": (context) => Home(),
+      //"/empty": (context) => Empty(),
+      //"/profile": (context) => Profile(),
     },
   ));
 }
@@ -26,6 +28,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+
   int _selectedPage = 0;
 
   List<Widget> _pageOptions() => [
@@ -38,6 +42,12 @@ class _HomeState extends State<Home> {
         Profile(),
       ];
 
+  void refreshWidget(){
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final pageOptions = _pageOptions();
@@ -46,12 +56,10 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedPage,
         type: BottomNavigationBarType.fixed,
-        unselectedItemColor:
-            global.darkModeActive == true ? Colors.grey : Colors.black,
         backgroundColor:
-            global.darkModeActive == true ? Colors.black : Colors.orange,
+            Colors.orange,
         selectedItemColor:
-            global.darkModeActive == true ? Colors.white : Colors.black,
+            Colors.black,
         selectedIconTheme: IconThemeData(size: 30),
         selectedFontSize: 14,
         onTap: (index) {

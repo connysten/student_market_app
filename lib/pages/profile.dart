@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/painting.dart';
-import 'package:student_market_app/main.dart';
+import 'package:student_market_app/main.dart' as main;
 import 'package:student_market_app/pages/search.dart';
 import './extended_pages/user_messages.dart';
 import '../global.dart' as global;
 import '../auth_service.dart';
-
+import 'package:student_market_app/pages/extended_pages/empty_nav.dart';
 //import 'package:student_market_app/services/user_details.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,9 +21,11 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
   Widget _buildProfileImage(Size screenSize) {
     return Center(
       child: Container(
+        margin: EdgeInsets.fromLTRB(0, 200, 0, 0),
         width: screenSize.height / 5.5,
         height: screenSize.height / 5.5,
         decoration: BoxDecoration(
@@ -42,7 +44,7 @@ class _ProfileState extends State<Profile> {
   Widget _buildUserName() {
     TextStyle _nameTextStyle = TextStyle(
       //fontFamily:
-      color: Colors.black,
+      color: global.darkModeActive == true ? Colors.grey[400]: Colors.black,
       fontSize: 28.0,
       fontWeight: FontWeight.w700,
     );
@@ -66,14 +68,13 @@ class _ProfileState extends State<Profile> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Text(
         global.user.email,
         style: TextStyle(
           //fontFamily:
-          color: Colors.black,
+          color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
           fontSize: 20.0,
           fontWeight: FontWeight.w300,
         ),
@@ -86,7 +87,7 @@ class _ProfileState extends State<Profile> {
       height: screenSize.height / 12,
       margin: EdgeInsets.only(top: 8.0),
       decoration: BoxDecoration(
-        color: Color(0xFFEFF4F7),
+        color: global.darkModeActive == true ? Colors.grey[800] : Color(0xFFEFF4F7),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -101,10 +102,8 @@ class _ProfileState extends State<Profile> {
                 global.darkModeActive = true;
                 setState(() {});
               }
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Home()));
             },
-            color: Colors.black,
+            color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
             icon: Icon(FontAwesomeIcons.sun),
             tooltip: "Dark Mode",
           ),
@@ -117,9 +116,8 @@ class _ProfileState extends State<Profile> {
                 global.currentLanguage = global.Language.swe;
                 setState(() {});
               }
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Home()));
             },
+            color: global.darkModeActive == true ? Colors.grey[400] : Colors.black,
             splashColor: Colors.deepOrange,
             icon: Icon(Icons.language),
             tooltip: "ENG",
@@ -163,7 +161,7 @@ class _ProfileState extends State<Profile> {
       return Text(
         "Messages",
         style: TextStyle(
-          color: Colors.white,
+          color: global.darkModeActive == true ? Colors.grey[400] : Colors.white,
           fontWeight: FontWeight.w600,
         ),
       );
@@ -171,7 +169,7 @@ class _ProfileState extends State<Profile> {
       return Text(
         "Meddelande",
         style: TextStyle(
-          color: Colors.white,
+          color: global.darkModeActive == true ? Colors.grey[400] : Colors.white,
           fontWeight: FontWeight.w600,
         ),
       );
@@ -182,12 +180,14 @@ class _ProfileState extends State<Profile> {
     if (global.currentLanguage == global.Language.eng) {
       return Text(
         "Log out",
-        style: TextStyle(fontWeight: FontWeight.w600),
+        style: TextStyle(fontWeight: FontWeight.w600,
+            color: global.darkModeActive == true ? Colors.grey[400] : null),
       );
     } else if (global.currentLanguage == global.Language.swe) {
       return Text(
         "Logga ut",
-        style: TextStyle(fontWeight: FontWeight.w600),
+        style: TextStyle(fontWeight: FontWeight.w600,
+            color: global.darkModeActive == true ? Colors.grey[400] : null),
       );
     }
   }
@@ -205,7 +205,7 @@ class _ProfileState extends State<Profile> {
                 height: screenSize.height / 20,
                 decoration: BoxDecoration(
                   border: Border.all(),
-                  color: Color(0xFF404A5C),
+                  color: global.darkModeActive == true ? Colors.grey[900] : Color(0xFF404A5C),
                 ),
                 child: Center(
                   child: _buttonTextMsg(),
@@ -328,6 +328,7 @@ class _ProfileState extends State<Profile> {
     return Container(
       width: 160.0,
       child: Card(
+        color: global.darkModeActive == true ? Colors.grey[800] : null,
         child: Wrap(
           children: <Widget>[
             GestureDetector(
@@ -349,12 +350,20 @@ class _ProfileState extends State<Profile> {
             ),
             global.currentLanguage == global.Language.eng
                 ? ListTile(
-                    title: Text(document["title"]),
-                    subtitle: Text("Price: " + (document["price"]).toString()),
+                    title: Text(document["title"], style: TextStyle(
+                      color: global.darkModeActive == true ? Colors.grey[400] : null,
+                    ),),
+                    subtitle: Text("Price: " + (document["price"]).toString(), style: TextStyle(
+                      color: global.darkModeActive == true ? Colors.grey[400] : null,
+                    ),),
                   )
                 : ListTile(
-                    title: Text(document["title"]),
-                    subtitle: Text("Pris: " + (document["price"]).toString()),
+                    title: Text(document["title"], style: TextStyle(
+                      color: global.darkModeActive == true ? Colors.grey[400] : null,
+                    ),),
+                    subtitle: Text("Pris: " + (document["price"]).toString(), style: TextStyle(
+                      color: global.darkModeActive == true ? Colors.grey[400] : null,
+                    ),),
                   )
           ],
         ),
@@ -366,6 +375,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: global.darkModeActive == true ? Colors.black87 : null,
       body: Stack(
         children: <Widget>[
           SafeArea(
@@ -376,18 +386,15 @@ class _ProfileState extends State<Profile> {
                     overflow: Overflow.visible,
                     children: <Widget>[
                       _buildCoverImage(screenSize),
-                      Positioned(
-                        bottom: -50,
-                        left: screenSize.width / 2.8,
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        //left: screenSize.width / 2.8,
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: _buildProfileImage(screenSize),
                         ),
                       )
                     ],
-                  ),
-                  SizedBox(
-                    height: 50,
                   ),
                   _buildUserName(),
                   _buildProgramName(context),

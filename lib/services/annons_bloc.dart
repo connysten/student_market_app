@@ -1,8 +1,10 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:student_market_app/services/database.dart';
+import 'package:student_market_app/global.dart' as global;
+
+import '../global.dart';
 
 class AnnonsBloc {
   DatabaseService databaseService;
@@ -32,11 +34,15 @@ class AnnonsBloc {
       annonsController.sink.add(documentList);
       try {
         if (documentList.length == 0) {
-          annonsController.sink.addError("No Data Available");
+          annonsController.sink.addError(global.currentLanguage == Language.eng
+              ? "No Data Available"
+              : "Ingen data tillgänglig");
         }
       } catch (e) {}
     } on SocketException {
-      annonsController.sink.addError(SocketException("No Internet Connection"));
+      annonsController.sink.addError(SocketException(global.currentLanguage == Language.eng
+          ? "No Internet Connection"
+          : "Ingen internetanslutning"));
     } catch (e) {
       print(e.toString());
       annonsController.sink.addError(e);
@@ -48,19 +54,24 @@ class AnnonsBloc {
     try {
       updateIndicator(true);
       List<DocumentSnapshot> newDocumentList =
-      await databaseService.fetchNextList(documentList);
+          await databaseService.fetchNextList(documentList);
       documentList.addAll(newDocumentList);
       annonsController.sink.add(documentList);
       try {
         if (documentList.length == 0) {
-          annonsController.sink.addError("No Data Available");
+          annonsController.sink.addError(global.currentLanguage == Language.eng
+              ? "No Data Available"
+              : "Ingen data tillgänglig");
           updateIndicator(false);
         }
       } catch (e) {
         updateIndicator(false);
       }
     } on SocketException {
-      annonsController.sink.addError(SocketException("No Internet Connection"));
+      annonsController.sink.addError(SocketException(
+          global.currentLanguage == Language.eng
+              ? "No Internet Connection"
+              : "Ingen internetanslutning"));
       updateIndicator(false);
     } catch (e) {
       updateIndicator(false);
