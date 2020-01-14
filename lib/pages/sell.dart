@@ -187,6 +187,9 @@ class _SellState extends State<Sell> {
                                     second: snapshot.data.title),
                                 Divider(
                                   height: 20,
+                                  color: global.darkModeActive == true
+                                      ? Colors.white
+                                      : null,
                                 ),
                                 BookInfo(
                                     first: global.currentLanguage ==
@@ -196,6 +199,9 @@ class _SellState extends State<Sell> {
                                     second: snapshot.data.creator),
                                 Divider(
                                   height: 20,
+                                  color: global.darkModeActive == true
+                                      ? Colors.white
+                                      : null,
                                 ),
                                 BookInfo(
                                     first: global.currentLanguage ==
@@ -216,6 +222,9 @@ class _SellState extends State<Sell> {
                                     second: ""),
                                 Divider(
                                   height: 20,
+                                  color: global.darkModeActive == true
+                                      ? Colors.white
+                                      : null,
                                 ),
                                 BookInfo(
                                     first: global.currentLanguage ==
@@ -225,6 +234,9 @@ class _SellState extends State<Sell> {
                                     second: ""),
                                 Divider(
                                   height: 20,
+                                  color: global.darkModeActive == true
+                                      ? Colors.white
+                                      : null,
                                 ),
                                 BookInfo(
                                     first: global.currentLanguage ==
