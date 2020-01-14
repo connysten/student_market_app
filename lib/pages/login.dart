@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 25),
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 25),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
@@ -45,9 +45,9 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                         child: Image.asset(
-                          "assets/pngfuel.com.png",
-                          height: 100,
-                        ),
+                            "assets/pngfuel.com.png",
+                            height: 100,
+                          ),
                       ),
                       Container(
                         margin: EdgeInsets.all(20),
