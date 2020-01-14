@@ -118,6 +118,8 @@ class _ProfileState extends State<Profile> {
                 global.currentLanguage = global.Language.swe;
                 setState(() {});
               }
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Home()));
             },
             splashColor: Colors.deepOrange,
             icon: Icon(Icons.language),
