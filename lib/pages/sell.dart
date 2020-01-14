@@ -45,6 +45,7 @@ class _SellState extends State<Sell> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
+          color: global.darkModeActive == true ? Colors.grey : Colors.white,
           width: double.infinity,
           padding: EdgeInsets.all(10),
           child: Column(
