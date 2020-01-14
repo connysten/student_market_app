@@ -25,6 +25,7 @@ class _ProfileState extends State<Profile> {
   Widget _buildProfileImage(Size screenSize) {
     return Center(
       child: Container(
+        margin: EdgeInsets.fromLTRB(0, 200, 0, 0),
         width: screenSize.height / 5.5,
         height: screenSize.height / 5.5,
         decoration: BoxDecoration(
@@ -385,18 +386,15 @@ class _ProfileState extends State<Profile> {
                     overflow: Overflow.visible,
                     children: <Widget>[
                       _buildCoverImage(screenSize),
-                      Positioned(
-                        bottom: -50,
-                        left: screenSize.width / 2.8,
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        //left: screenSize.width / 2.8,
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: _buildProfileImage(screenSize),
                         ),
                       )
                     ],
-                  ),
-                  SizedBox(
-                    height: 50,
                   ),
                   _buildUserName(),
                   _buildProgramName(context),
