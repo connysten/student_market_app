@@ -34,11 +34,12 @@ class _DetailAddState extends State<DetailAdd> {
   }
 
   Future getAddUserName() async {
-    var user = await _messagesDatabaseService.getUser(widget.snapshot['userid']);
+    var user =
+        await _messagesDatabaseService.getUser(widget.snapshot['userid']);
     return user.displayName;
   }
 
-  void getConditionIndex(){
+  void getConditionIndex() {
     index = conditions.indexOf(widget.snapshot['condition']);
   }
 
@@ -47,10 +48,16 @@ class _DetailAddState extends State<DetailAdd> {
     return Scaffold(
       backgroundColor: global.darkModeActive == true ? Colors.grey[900] : null,
       appBar: AppBar(
-        backgroundColor: global.darkModeActive == true ? Colors.black : Colors.orange,
+        backgroundColor:
+            global.darkModeActive == true ? Colors.black : Colors.orange,
         title: Text(
-          global.currentLanguage == global.Language.eng ? "Book for sale" : "Bok till salu",
-          style: TextStyle(color: global.darkModeActive == true ? Colors.orange : Colors.black, fontSize: 24),
+          global.currentLanguage == global.Language.eng
+              ? "Book for sale"
+              : "Bok till salu",
+          style: TextStyle(
+              color:
+                  global.darkModeActive == true ? Colors.orange : Colors.black,
+              fontSize: 24),
         ),
         centerTitle: true,
       ),
@@ -116,7 +123,11 @@ class _DetailAddState extends State<DetailAdd> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "${widget.snapshot['price'].toString()} kr",
+                      widget.snapshot['price'] != 0
+                          ? '\$${widget.snapshot['price'].toString()}'
+                          : global.currentLanguage == global.Language.eng
+                              ? 'Free'
+                              : 'Gratis',
                       style: TextStyle(
                           fontSize: 20,
                           color: global.darkModeActive == true
@@ -124,7 +135,9 @@ class _DetailAddState extends State<DetailAdd> {
                               : null),
                     ),
                     Text(
-                      global.currentLanguage == global.Language.eng ? "Uploaded: ${widget.snapshot['timestamp']}" : "Uppladdad: ${widget.snapshot['timestamp']}",
+                      global.currentLanguage == global.Language.eng
+                          ? "Uploaded: ${widget.snapshot['timestamp']}"
+                          : "Uppladdad: ${widget.snapshot['timestamp']}",
                       style: TextStyle(
                         color: global.darkModeActive == true
                             ? Colors.grey[700]
@@ -139,14 +152,18 @@ class _DetailAddState extends State<DetailAdd> {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      global.currentLanguage == global.Language.eng ? "Condition: " : "Skick: ",
+                      global.currentLanguage == global.Language.eng
+                          ? "Condition: "
+                          : "Skick: ",
                       style: TextStyle(
                           color: global.darkModeActive == true
                               ? Colors.grey[300]
                               : null),
                     ),
                     Text(
-                      global.currentLanguage == global.Language.eng ? conditions[index] : skick[index],
+                      global.currentLanguage == global.Language.eng
+                          ? conditions[index]
+                          : skick[index],
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: global.darkModeActive == true
@@ -167,7 +184,9 @@ class _DetailAddState extends State<DetailAdd> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                global.currentLanguage == global.Language.eng ? "Description: " : "Beskrivning: ",
+                      global.currentLanguage == global.Language.eng
+                          ? "Description: "
+                          : "Beskrivning: ",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -244,7 +263,9 @@ class _DetailAddState extends State<DetailAdd> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
-                                global.currentLanguage == global.Language.eng ? "Send Message" : "Skicka Meddelande",
+                                global.currentLanguage == global.Language.eng
+                                    ? "Send Message"
+                                    : "Skicka Meddelande",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
@@ -257,6 +278,31 @@ class _DetailAddState extends State<DetailAdd> {
                                     ),
                                   )),
                             ),
+                          );
+                        } else if (snapshot.hasData &&
+                            widget.snapshot.data['userid'] == global.user.uid) {
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                            width: MediaQuery.of(context).size.width,
+                            child: RaisedButton(
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                color: Colors.orange[300],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  global.currentLanguage == global.Language.eng
+                                      ? "Delete ad"
+                                      : "Ta bort annons",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                onPressed: () async => await Firestore.instance
+                                    .collection('Annons')
+                                    .document(widget.snapshot.documentID)
+                                    .delete()
+                                    .then((_) => Navigator.pop(context))),
                           );
                         } else {
                           return Container();
