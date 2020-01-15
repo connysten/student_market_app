@@ -124,7 +124,7 @@ class _DetailAddState extends State<DetailAdd> {
                   children: <Widget>[
                     Text(
                       widget.snapshot['price'] != 0
-                          ? '\$${widget.snapshot['price'].toString()}'
+                          ? '${widget.snapshot['price'].toString()} kr'
                           : global.currentLanguage == global.Language.eng
                               ? 'Free'
                               : 'Gratis',

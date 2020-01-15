@@ -443,9 +443,6 @@ class _SellState extends State<Sell> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       onPressed: () async {
-                        if (tempBook == null &&
-                            priceController.text.isNotEmpty &&
-                            int.parse(priceController.text) >= 0) {
                           var docRef = await DatabaseService().createAdd(
                             tempBook.title,
                             tempBook.creator,
@@ -465,11 +462,6 @@ class _SellState extends State<Sell> {
                               builder: (context) => DetailAdd(docSnap, 1),
                             ),
                           );
-                        } else {
-                          setState(() {
-                            error = true;
-                          });
-                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
