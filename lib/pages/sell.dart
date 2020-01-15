@@ -32,6 +32,7 @@ class _SellState extends State<Sell> {
   final isbnController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
+  var error = false;
 
   @override
   void initState() {
@@ -106,8 +107,12 @@ class _SellState extends State<Sell> {
                             ? "Numbers on the back of the book..."
                             : "Nummer på baksidan av boken...",
                         hintStyle: TextStyle(
-                            fontStyle: FontStyle.italic, fontSize: 12,
-                        color: global.darkModeActive == true ? Colors.grey[600] : null,),
+                          fontStyle: FontStyle.italic,
+                          fontSize: 12,
+                          color: global.darkModeActive == true
+                              ? Colors.grey[600]
+                              : null,
+                        ),
                         labelText: "ISBN",
                         labelStyle: TextStyle(color: Colors.grey[600]),
                         enabledBorder: OutlineInputBorder(
@@ -127,7 +132,9 @@ class _SellState extends State<Sell> {
                       ),
                       keyboardType: TextInputType.number,
                       style: TextStyle(
-                        color: global.darkModeActive == true ? Colors.grey[400] : null,
+                        color: global.darkModeActive == true
+                            ? Colors.grey[400]
+                            : null,
                       ),
                     ),
                   ),
@@ -316,7 +323,8 @@ class _SellState extends State<Sell> {
                   ),
                 ),
                 style: TextStyle(
-                  color: global.darkModeActive == true ? Colors.grey[400] : null,
+                  color:
+                      global.darkModeActive == true ? Colors.grey[400] : null,
                 ),
               ),
               SizedBox(
@@ -387,7 +395,8 @@ class _SellState extends State<Sell> {
                   ),
                 ),
                 style: TextStyle(
-                  color: global.darkModeActive == true ? Colors.grey[400] : null,
+                  color:
+                      global.darkModeActive == true ? Colors.grey[400] : null,
                 ),
               ),
               SizedBox(
@@ -434,25 +443,33 @@ class _SellState extends State<Sell> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       onPressed: () async {
-                        var docRef = await DatabaseService().createAdd(
-                          tempBook.title,
-                          tempBook.creator,
-                          tempBook.language,
-                          int.parse(isbnController.text),
-                          double.parse(priceController.text),
-                          conditions[condition.toInt()],
-                          descriptionController.text,
-                          global.user.uid,
-                          _image,
-                        );
-                        var docSnap = await docRef.get();
-                        reset();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailAdd(docSnap, 1),
-                          ),
-                        );
+                        if (tempBook == null &&
+                            priceController.text.isNotEmpty &&
+                            int.parse(priceController.text) >= 0) {
+                          var docRef = await DatabaseService().createAdd(
+                            tempBook.title,
+                            tempBook.creator,
+                            tempBook.language,
+                            int.parse(isbnController.text),
+                            double.parse(priceController.text),
+                            conditions[condition.toInt()],
+                            descriptionController.text,
+                            global.user.uid,
+                            _image,
+                          );
+                          var docSnap = await docRef.get();
+                          reset();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailAdd(docSnap, 1),
+                            ),
+                          );
+                        } else {
+                          setState(() {
+                            error = true;
+                          });
+                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -477,6 +494,11 @@ class _SellState extends State<Sell> {
               SizedBox(
                 height: 20,
               ),
+              error
+                  ? Text(global.currentLanguage == global.Language.eng
+                      ? "Incorrect ISBN or Price"
+                      : "Inkorrekt ISBN eller Pris", style: TextStyle(color: Colors.red[400], fontWeight: FontWeight.bold),)
+                  : Container()
             ],
           ),
         ),
